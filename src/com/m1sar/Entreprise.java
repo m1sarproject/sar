@@ -18,7 +18,7 @@ public class Entreprise{
 	}
 	
 	public double getPrixUnitaireAction(){
-		return prix_unitaire_action;
+		return prixUnitaireAction;
 	}
 	
 	public void setNbActions(int n){
