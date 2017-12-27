@@ -17,13 +17,16 @@ La classe Client qui peut acheter ou vendre des actions
 */
 public class Client {
 
-private int port=4999;
+	public static int cpt=0;
+
+	private int port=4999;
 	static InetAddress hote;
 	Socket sc;
 	
 	BufferedReader in; 
 	PrintWriter out;
 	private String nameClient;// il faut mettre final?
+	private int idClient;
 	private List<Ordre> ordres;
 	private Map<String,Integer> portefeuille;
 	private double solde;
@@ -37,6 +40,8 @@ private int port=4999;
 		this.courtier = courtier;
 		portefeuille=new HashMap<>();
 		ordres =new ArrayList<>();
+		idClient=cpt++;
+		
 	}
 	
 	public void connexion(){
