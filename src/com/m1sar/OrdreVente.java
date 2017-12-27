@@ -10,6 +10,6 @@ public class OrdreVente extends Ordre{
 	public int calculComission(){
 		//...................	
 		return 0;
-		
+		 
 	}
 }

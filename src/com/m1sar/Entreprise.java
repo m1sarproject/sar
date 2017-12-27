@@ -9,7 +9,7 @@ public class Entreprise{
 	private ArrayList<Ordre> ordres;
 	private double prixUnitaireAction;
 	
-	
+	 
 	public Entreprise(String name, int nbActions,double prixUnitaireAction){
 		this.name=name;
 		this.nbActions=nbActions;
