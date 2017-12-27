@@ -87,6 +87,27 @@ public class Client {
 	
 	
 	
+	public boolean venteLegal(String entreprise,int qualite){
+		
+		return portefeuille.get(entreprise)<qualite;
+	}
+	
+	
+	public boolean achatLegal(double prix){
+		
+		return solde>courtier.getTauxCommission()+prix;
+	}
+	
+	
+	public void deconnexion(){
+		//a completer 
+	}
+	
+	public void majPortefeuille(){
+		
+	}
+	
+	
 	
 	
 
