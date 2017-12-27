@@ -82,6 +82,26 @@ private int port=4999;
 	
 	
 	
+	public boolean venteLegal(int qualite){
+		return true;
+	}
+	
+	
+	public boolean achatLegal(double prix){
+		
+		return solde>courtier.getTauxCommission()+prix;
+	}
+	
+	
+	public void deconnexion(){
+		//a completer 
+	}
+	
+	public void majPortefeuille(){
+		
+	}
+	
+	
 	
 	
 
