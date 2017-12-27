@@ -77,7 +77,12 @@ public class Client {
 	}
 	
 	public void vendre (double prix, int quantite, String entreprise){
-		
+		solde+=prix;
+		for (Entry<String, Integer> e : portefeuille.entrySet()){
+			if(e.getKey().equals(entreprise)){
+				e.setValue(e.getValue()-quantite);
+			}
+		}
 	}
 	
 	
