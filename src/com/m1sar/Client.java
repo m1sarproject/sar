@@ -82,8 +82,9 @@ private int port=4999;
 	
 	
 	
-	public boolean venteLegal(int qualite){
-		return true;
+	public boolean venteLegal(String entreprise,int qualite){
+		
+		return portefeuille.get(entreprise)<qualite;
 	}
 	
 	
