@@ -31,6 +31,7 @@ public class Client {
 	private Map<String,Integer> portefeuille;
 	private double solde;
 	private Courtier courtier;
+	private double depensesEventuelles;
 	
 	
 	public Client(String nameClient, double solde, Courtier courtier) {
@@ -47,8 +48,9 @@ public class Client {
 	public void connexion(){
 		
 			try {
+				
 				sc= new Socket(hote,port);
-			
+		
 			in =new BufferedReader(new InputStreamReader(sc.getInputStream()));
 			out=new PrintWriter(sc.getOutputStream(),true);
 			out.println("Client "+nameClient+" veut se connecter");
@@ -61,6 +63,10 @@ public class Client {
 	}
 	
 	public void acheter (double prix, int quantite, String entreprise){
+		
+		if (! achatLegal(prix*quantite)) return;
+		
+		depensesEventuelles+= prix * quantite;
 		boolean existe=false;
 		for (Entry<String, Integer> e : portefeuille.entrySet()){
 			if(e.getKey().equals(entreprise))existe=true;
@@ -76,6 +82,9 @@ public class Client {
 	}
 	
 	public void vendre (double prix, int quantite, String entreprise){
+		
+		if ( ! venteLegal(entreprise,quantite) ) return;
+		
 		solde+=prix;
 		for (Entry<String, Integer> e : portefeuille.entrySet()){
 			if(e.getKey().equals(entreprise)){
@@ -93,8 +102,8 @@ public class Client {
 	
 	
 	public boolean achatLegal(double prix){
-		
-		return solde> Courtier.tauxCommission;
+		double prixReel = prix + Courtier.tauxCommission * prix ;
+		return solde - depensesEventuelles  > prixReel;
 	}
 	
 	
