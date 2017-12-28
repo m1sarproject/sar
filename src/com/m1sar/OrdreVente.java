@@ -3,13 +3,9 @@ package com.m1sar;
 public class OrdreVente extends Ordre{
 
 
-	public OrdreVente(String id, double taux_com){
+	public OrdreVente(Entreprise entreprise, Client client, double prix_Proposé_par_Client){
 		
-		super(id,taux_com);
+		super(entreprise,client, prix_Proposé_par_Client);
 	}
-	public int calculComission(){
-		//...................	
-		return 0;
-		 
-	}
+	
 }

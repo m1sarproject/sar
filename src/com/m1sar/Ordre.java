@@ -2,18 +2,21 @@ package com.m1sar;
 
 public abstract class Ordre{
 	
-	private String id;        // MOFIFIE PAR RAPPORT AU DIAGRAMME DE CLASSES
-	private double taux_com;
-	//private double prix_Max;
+
+	private Entreprise entreprise;
+	private Client client;
+	private double prix_Proposé_par_Client;
+
+	private int id;
+	private static int nb=1;
 	
-	public Ordre( String id, double taux_com){
-		this.id=id;
-		this.taux_com=taux_com;
-		
+	public Ordre(Entreprise entreprise, Client client, double prix_Proposé_par_Client){
+		this.prix_Proposé_par_Client=prix_Proposé_par_Client;
+		this.entreprise = entreprise;
+		id=++nb;
 		
 		
 	}
 	 
-	public abstract int calculComission();
 
 }

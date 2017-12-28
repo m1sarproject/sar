@@ -2,13 +2,11 @@ package com.m1sar;
 
 public class OrdreAchat extends Ordre{
 
-	public OrdreAchat(String id, double taux_com){
+	public OrdreAchat(Entreprise entreprise, Client client, double prix_Proposé_par_Client){
 		
-		super(id,taux_com);
+		super(entreprise,client, prix_Proposé_par_Client);
 	}
-	public int calculComission(){
-		//...................	
-		return 0;
-	}
+	
  
+
 }
