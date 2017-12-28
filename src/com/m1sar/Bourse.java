@@ -8,7 +8,7 @@ public class Bourse {
 	
 	private ArrayList<Entreprise> entreprises = new ArrayList<Entreprise> ();
 	private ArrayList<Courtier> courtiers = new ArrayList<Courtier> ();
-	
+
 	public Bourse() {
 		
 		

@@ -6,7 +6,7 @@ public class Entreprise{
 
 	private String name;
 	private int nbActions;
-	private ArrayList<Ordre> ordres;
+	private ArrayList<Ordre> ordres= new ArrayList<Ordre>();
 	private double prixUnitaireAction;
 	
 	 
@@ -14,7 +14,6 @@ public class Entreprise{
 		this.name=name;
 		this.nbActions=nbActions;
 		this.prixUnitaireAction=prixUnitaireAction;
-		ordres = new ArrayList<Ordre>();
 	}
 	
 	public int getNbActions(){
