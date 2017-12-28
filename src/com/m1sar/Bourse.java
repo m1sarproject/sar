@@ -1,5 +1,7 @@
 package com.m1sar;
 
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,7 +146,33 @@ public class Bourse {
 		entreprises.clear();
 		return true;
 		
-	}
+	}	
+	public static void main(String[] args){
+
+		ServerSocket se=null;
+		int nport = Integer.parseInt(args[0]);
+		
+		try { 
+			se= new ServerSocket(nport); //Socket d'écoute
+		}
+		
+		catch (Exception e) {}
+
+		System.out.println("Le serveur est à  l'écoute :");
+
+		 while(true) {		
+
+		 		try{
+				Socket ssv = se.accept();	//Le courtier se connecte à  la socket de communication
+				System.out.println("Connexion acceptée");		
+				ThreadCourtier tc=new ThreadCourtier(ssv);			
+				}
+
+				catch (Exception e) {}
+			}		
+		 }	
+
+		
 	
 	
 	
