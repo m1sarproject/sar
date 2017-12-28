@@ -87,9 +87,9 @@ public class Client {
 	
 	
 	
-	public boolean venteLegal(String entreprise,int qualite){
+	public boolean venteLegal(String entreprise,int quantite){
 		
-		return portefeuille.get(entreprise)<qualite;
+		return portefeuille.get(entreprise)<quantite;
 	}
 	
 	
