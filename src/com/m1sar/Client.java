@@ -69,7 +69,7 @@ public class Client {
      * 
      * 
      */
-	public void acheter (double prix, int quantite, Entreprise entreprise){
+	public void acheter (double prix, int quantite, String entreprise){
 		
 		solde-=prix+(prix*courtier.getTauxCommission());
 		Ordre r =new OrdreAchat(entreprise, this, 11);
@@ -82,7 +82,7 @@ public class Client {
      * 
      * 
      */
-	public void vendre (double prix, int quantite, Entreprise entreprise){
+	public void vendre (double prix, int quantite, String entreprise){
 		solde+=prix;// enlever les commissions?
 		Ordre r =new OrdreVente(entreprise, this, 11);
 		ordres.add(r);
