@@ -56,7 +56,6 @@ public class Client {
 			reponse=in.readLine();
 			System.out.println("Courtier "+courtier+" repond "+reponse);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
@@ -95,7 +94,7 @@ public class Client {
 	
 	public boolean achatLegal(double prix){
 		
-		return solde>courtier.getTauxCommission()+prix;
+		return solde> Courtier.tauxCommission;
 	}
 	
 	

@@ -12,19 +12,20 @@ private String name;
 /**
  * nb is used to ensure that the name of the broker is unique 
  */
-private static int nb=0;
+private static int nb=1;
 private ArrayList<Client> customers= new ArrayList<Client>();
 /**
  * nbCustomer number of customers which are connected to this Broker
  */
 private int id;
 private int nbCustomer;
-private double tauxCommission=ThreadLocalRandom.current().nextDouble(0.05, 0.1); //un taux alÃ©atoire entre 5% et 10%
+public static double tauxCommission=0.1; //un taux de 10% pour tous les courtiers
 private double accountBalance=0.;
 
 public Courtier(String name) {
-	nb++;
-	this.name=name+nb;
+	
+	id=nb;
+	this.name=name+nb++;
 }
 
 /**
@@ -62,7 +63,7 @@ public void CalculCommission() {
 	
 }
 /**
- * informe le client de la transaction (accord) effectuée pour qu'ils mettent à jours leurs portefeuilles
+ * informe le client de la transaction (accord) effectuï¿½e pour qu'ils mettent ï¿½ jours leurs portefeuilles
  */
 public void SendAccordInformation() {
 	
