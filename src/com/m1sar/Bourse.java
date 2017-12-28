@@ -22,7 +22,7 @@ public class Bourse {
 	
 	void updatePrice() {
 		
-		 
+		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
 	}
 
     /**@author Lyes
