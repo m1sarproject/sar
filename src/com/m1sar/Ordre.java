@@ -11,6 +11,7 @@ public abstract class Ordre{
 		this.taux_com=taux_com;
 		
 		
+		
 	}
 	 
 	public abstract int calculComission();
