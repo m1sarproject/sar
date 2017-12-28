@@ -22,7 +22,7 @@ public class Bourse {
 	
 	void updatePrice() {
 		
-		
+		 
 	}
 
     /**@author Lyes
