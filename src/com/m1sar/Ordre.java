@@ -9,6 +9,8 @@ public abstract class Ordre{
 	public Ordre( String id, double taux_com){
 		this.id=id;
 		this.taux_com=taux_com;
+		
+		
 	}
 	 
 	public abstract int calculComission();
