@@ -84,7 +84,7 @@ public class Client {
 	public void vendre (double prix, int quantite, String entreprise){
 		
 		if ( ! venteLegal(entreprise,quantite) ) return;
-		
+		 
 		solde+=prix;
 		for (Entry<String, Integer> e : portefeuille.entrySet()){
 			if(e.getKey().equals(entreprise)){
