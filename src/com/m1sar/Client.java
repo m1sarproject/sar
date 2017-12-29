@@ -73,7 +73,7 @@ public class Client {
 		if (! achatLegal(entreprise,prix*quantite,quantite)) return;
 		double prixR=prix*quantite;
 		solde-=(prixR+(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreAchat(entreprise, this, 11);
+		Ordre r =new OrdreAchat(entreprise, this, prix);
 		ordres.add(r);
 		
 	}
@@ -87,7 +87,7 @@ public class Client {
 		if ( ! venteLegal(entreprise,quantite) ) return;
 		double prixR=prix*quantite;
 		solde+=(prixR-(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreVente(entreprise, this, 11);
+		Ordre r =new OrdreVente(entreprise, this, prix);
 		ordres.add(r);
 	}
 	
