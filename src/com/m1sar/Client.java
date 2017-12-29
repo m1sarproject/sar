@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
+
+/**@author Vitalina
 La classe Client qui peut acheter ou vendre des actions
 */
 public class Client {
@@ -25,32 +26,33 @@ public class Client {
 	
 	BufferedReader in; 
 	PrintWriter out;
-	private String nameClient;// il faut mettre final?
+	private String nameClient;
 	private int idClient;
 	private List<Ordre> ordres;
 	private Map<String,Integer> portefeuille;
 	private double solde;
 	private Courtier courtier;
+	private static Map<String,Integer> prixBoursePourEntreprise;
 	private double depensesEventuelles;
 	
-	
-	public Client(String nameClient, double solde, Courtier courtier) {
+	public Client(String nameClient, double solde) {
 		
 		this.nameClient = nameClient;
 		this.solde = solde;
-		this.courtier = courtier;
 		portefeuille=new HashMap<>();
 		ordres =new ArrayList<>();
 		idClient=cpt++;
-		
 	}
 	
+	 /**@author Vitalina
+     * 
+     * 
+     */
 	public void connexion(){
 		
 			try {
-				
 				sc= new Socket(hote,port);
-		
+			
 			in =new BufferedReader(new InputStreamReader(sc.getInputStream()));
 			out=new PrintWriter(sc.getOutputStream(),true);
 			out.println("Client "+nameClient+" veut se connecter");
@@ -62,59 +64,109 @@ public class Client {
 			}
 	}
 	
+	
+/**@author Vitalina
+     * 
+     * 
+     */
 	public void acheter (double prix, int quantite, String entreprise){
+		if (! achatLegal(entreprise,prix*quantite,quantite)) return;
+		double prixR=prix*quantite;
+		solde-=(prixR+(prixR*courtier.getTauxCommission()));
+		Ordre r =new OrdreAchat(entreprise, this, prix);
+		ordres.add(r);
 		
-		if (! achatLegal(prix*quantite)) return;
-		
-		depensesEventuelles+= prix * quantite;
-		boolean existe=false;
-		for (Entry<String, Integer> e : portefeuille.entrySet()){
-			if(e.getKey().equals(entreprise))existe=true;
-		}
-		if(existe){
-			int i=portefeuille.get(entreprise);
-			portefeuille.replace(entreprise, quantite+i);
-		}
-		else{
-			portefeuille.put(entreprise, quantite);
-		}
-		solde-=prix;
 	}
 	
+	
+	/**@author Vitalina
+     * 
+     * 
+     */
 	public void vendre (double prix, int quantite, String entreprise){
-		
 		if ( ! venteLegal(entreprise,quantite) ) return;
-		 
-		solde+=prix;
-		for (Entry<String, Integer> e : portefeuille.entrySet()){
-			if(e.getKey().equals(entreprise)){
-				e.setValue(e.getValue()-quantite);
-			}
-		}
+		double prixR=prix*quantite;
+		solde+=(prixR-(prixR*courtier.getTauxCommission()));
+		Ordre r =new OrdreVente(entreprise, this, prix);
+		ordres.add(r);
 	}
 	
 	
-	
+	/**@author Vitalina
+     * 
+     * 
+     */
 	public boolean venteLegal(String entreprise,int quantite){
-				
-		return portefeuille.get(entreprise) < quantite;
+		if(!portefeuille.containsKey(entreprise))return false;
+		return portefeuille.get(entreprise)<quantite;
 	}
 	
-	
-	public boolean achatLegal(double prix){
-		double prixReel = prix + Courtier.tauxCommission * prix ;
-		return solde - depensesEventuelles  > prixReel;
+	/**@author Vitalina
+     * 
+     * 
+     */
+	public boolean achatLegal(String entreprise,double prix,int quantite){
+		double prixReel = prix + courtier.getTauxCommission() * prix ;
+		boolean cond1=solde - depensesEventuelles  > prixReel;
+		boolean cond2=prixReel>(quantite*prixBoursePourEntreprise.get(entreprise));
+		return cond1 &&cond2;
 	}
 	
-	
+	/**@author Vitalina
+     * 
+     * 
+     */
 	public void deconnexion(){
 		//a completer 
 	}
+	/**@author Vitalina
+     * 
+     * 
+     */
+	public void majPortefeuilleAchat(String entreprise, int quantite){
+		if(true){//si ok pour aquis de reception
+			if(portefeuille.containsKey(entreprise)){
+				int i=portefeuille.get(entreprise);
+				portefeuille.replace(entreprise, quantite+i);
+			}
+			else{
+				portefeuille.put(entreprise, quantite);
+			}
+		}
+	}
+		
 	
-	public void majPortefeuille(){
+	
+	
+	/**@author Vitalina
+     * 
+     * 
+     */
+	public void majPortefeuilleVente(String entreprise, int quantite){
+		if(true){
+			if(!portefeuille.containsKey(entreprise))return;
+			int i=portefeuille.get(entreprise);
+			if(i==quantite)portefeuille.remove(entreprise);
+			else{
+			portefeuille.replace(entreprise, i-quantite);
+			}
+		}
 		
 	}
-	
+	/**@author Vitalina
+     * 
+     * 
+     */
+	public void setCourtier(Courtier c){
+		courtier=c;
+	}
+	/**@author Vitalina
+     * 
+     * 
+     */
+	public Courtier getCourtier(){
+		return courtier;
+	}
 	
 	
 	
