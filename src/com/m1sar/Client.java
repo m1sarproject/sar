@@ -26,22 +26,22 @@ public class Client {
 	
 	BufferedReader in; 
 	PrintWriter out;
-	private String nameClient;// il faut mettre final?
+	private String nameClient;
 	private int idClient;
 	private List<Ordre> ordres;
 	private Map<String,Integer> portefeuille;
 	private double solde;
 	private Courtier courtier;
-	
+	private static Map<String,Integer> prixBoursePourEntreprise;
+	private double depensesEventuelles;
 	
 	public Client(String nameClient, double solde) {
 		
-		
+		this.nameClient = nameClient;
 		this.solde = solde;
 		portefeuille=new HashMap<>();
 		ordres =new ArrayList<>();
 		idClient=cpt++;
-		
 	}
 	
 	 /**@author Vitalina
@@ -70,6 +70,7 @@ public class Client {
      * 
      */
 	public void acheter (double prix, int quantite, String entreprise){
+		if (! achatLegal(entreprise,prix*quantite,quantite)) return;
 		
 		solde-=prix+(prix*courtier.getTauxCommission());
 		Ordre r =new OrdreAchat(entreprise, this, 11);
@@ -83,6 +84,8 @@ public class Client {
      * 
      */
 	public void vendre (double prix, int quantite, String entreprise){
+		if ( ! venteLegal(entreprise,quantite) ) return;
+		
 		solde+=prix;// enlever les commissions?
 		Ordre r =new OrdreVente(entreprise, this, 11);
 		ordres.add(r);
@@ -102,9 +105,11 @@ public class Client {
      * 
      * 
      */
-	public boolean achatLegal(double prix){
-		
-		return solde> courtier.getTauxCommission();
+	public boolean achatLegal(String entreprise,double prix,int quantite){
+		double prixReel = prix + courtier.getTauxCommission() * prix ;
+		boolean cond1=solde - depensesEventuelles  > prixReel;
+		boolean cond2=prixReel>(quantite*prixBoursePourEntreprise.get(entreprise));
+		return cond1 &&cond2;
 	}
 	
 	/**@author Vitalina
@@ -148,11 +153,17 @@ public class Client {
 		}
 		
 	}
-	
+	/**@author Vitalina
+     * 
+     * 
+     */
 	public void setCourtier(Courtier c){
 		courtier=c;
 	}
-	
+	/**@author Vitalina
+     * 
+     * 
+     */
 	public Courtier getCourtier(){
 		return courtier;
 	}
