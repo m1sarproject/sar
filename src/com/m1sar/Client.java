@@ -65,14 +65,14 @@ public class Client {
 	}
 	
 	
-	/**@author Vitalina
+/**@author Vitalina
      * 
      * 
      */
 	public void acheter (double prix, int quantite, String entreprise){
 		if (! achatLegal(entreprise,prix*quantite,quantite)) return;
-		
-		solde-=prix+(prix*courtier.getTauxCommission());
+		double prixR=prix*quantite;
+		solde-=(prixR+(prixR*courtier.getTauxCommission()));
 		Ordre r =new OrdreAchat(entreprise, this, 11);
 		ordres.add(r);
 		
@@ -85,8 +85,8 @@ public class Client {
      */
 	public void vendre (double prix, int quantite, String entreprise){
 		if ( ! venteLegal(entreprise,quantite) ) return;
-		
-		solde+=prix;// enlever les commissions?
+		double prixR=prix*quantite;
+		solde+=(prixR-(prixR*courtier.getTauxCommission()));
 		Ordre r =new OrdreVente(entreprise, this, 11);
 		ordres.add(r);
 	}
