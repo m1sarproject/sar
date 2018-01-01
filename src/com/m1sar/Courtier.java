@@ -3,6 +3,7 @@ package com.m1sar;
  * 
  */
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Courtier extends Thread{
@@ -13,7 +14,7 @@ private String name;
  * nb is used to ensure that the name of the broker is unique 
  */
 private static int nb=1;
-private ArrayList<Client> customers= new ArrayList<Client>();
+private Vector<Client> customers= new Vector<Client>();
 /**
  * nbCustomer number of customers which are connected to this Broker
  */

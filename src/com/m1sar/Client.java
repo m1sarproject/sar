@@ -40,7 +40,7 @@ public class Client {
 		this.nameClient = nameClient;
 		this.solde = solde;
 		portefeuille=new HashMap<>();
-		ordres =new ArrayList<>();
+		ordres =new ArrayList<>(); //Inutile de le changer en vector, la liste des ordres est propre au client, donc pas d'accès concurrent à cet attribut
 		idClient=cpt++;
 	}
 	

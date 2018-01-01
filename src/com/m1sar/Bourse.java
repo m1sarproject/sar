@@ -4,13 +4,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class Bourse {
 
 	
-	private ArrayList<Entreprise> entreprises = new ArrayList<Entreprise> ();
-	private ArrayList<Courtier> courtiers = new ArrayList<Courtier> ();
-	
+	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
+	private Vector<Courtier> courtiers = new Vector<Courtier> ();
+
 	public Bourse() {
 		
 		
