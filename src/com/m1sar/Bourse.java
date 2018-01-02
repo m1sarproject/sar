@@ -150,23 +150,28 @@ public class Bourse {
 	}	
 	public static void main(String[] args){
 
-		ServerSocket se=null;
+		ServerSocket serveurCourtier=null;
+		ServerSocket serveurClient=null;
 		int nport = Integer.parseInt(args[0]);
 		
 		try { 
-			se= new ServerSocket(nport); //Socket d'écoute
+			serveurCourtier= new ServerSocket(nport); //Socket d'écoute
+			serveurClient= new ServerSocket(nport+1);
 		}
 		
 		catch (Exception e) {}
 
-		System.out.println("Le serveur est à  l'écoute :");
+		System.out.println("Le serveur courtier est à l'écoute sur le port "+nport);
+		System.out.println("Le serveur client est à l'écoute sur le port "+nport+1);
 
 		 while(true) {		
 
 		 		try{
-				Socket ssv = se.accept();	//Le courtier se connecte à  la socket de communication
+				Socket courtierConnecte = serveurCourtier.accept();	//Le courtier se connecte à  la socket de communication
+				Socket clientConnecte = serveurClient.accept();
 				System.out.println("Connexion acceptée");		
-				ThreadCourtier tc=new ThreadCourtier(ssv);			
+				
+				//ThreadCourtier tc=new ThreadCourtier(ssv);			
 				}
 
 				catch (Exception e) {}
