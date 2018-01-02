@@ -10,7 +10,7 @@ public class Bourse {
 
 	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
-	private Vector<Courtier> courtiers = new Vector<Courtier> ();
+	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
 
 	public Bourse() {
 		
@@ -34,7 +34,7 @@ public class Bourse {
      * IllegalArgumentException if the Broker does exist
      * @return <tt>true</tt> 
      */
-	boolean addBroker(Courtier c) {
+	boolean addBroker(ThreadCourtier c) {
 		
 		if ( courtiers.contains(c) ) throw new IllegalArgumentException("The Broker is already in the list.");
 
@@ -49,9 +49,9 @@ public class Bourse {
      * @param L : the collection of Brokers to be appended to this list
      * @return <tt>true</tt> 
      */
-	boolean addAllBrokers(List<Courtier> L) {
+	boolean addAllBrokers(List<ThreadCourtier> L) {
 		
-		for( Courtier c : L ) {
+		for( ThreadCourtier c : L ) {
 			
 			addBroker(c);
 		}
@@ -68,7 +68,7 @@ public class Bourse {
      * @exception : IllegalArgumentException if the Broker does not exist
      * @return <tt>true</tt> 
      */
-	boolean removeBroker(Courtier c) {
+	boolean removeBroker(ThreadCourtier c) {
 		
 		if ( ! courtiers.contains(c) ) throw new IllegalArgumentException("The Broker does not exist.");
 
@@ -149,7 +149,8 @@ public class Bourse {
 		
 	}	
 	public static void main(String[] args){
-
+		
+		Bourse bourse = new Bourse();
 		ServerSocket serveurCourtier=null;
 		ServerSocket serveurClient=null;
 		int nport = Integer.parseInt(args[0]);
@@ -171,7 +172,9 @@ public class Bourse {
 				Socket clientConnecte = serveurClient.accept();
 				System.out.println("Connexion acceptée");		
 				
-				//ThreadCourtier tc=new ThreadCourtier(ssv);			
+				ThreadCourtier tc=new ThreadCourtier(courtierConnecte);
+				bourse.addBroker(tc); //à compléter avec une méthode obtenant un client à affecter
+
 				}
 
 				catch (Exception e) {}
