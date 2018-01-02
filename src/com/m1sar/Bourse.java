@@ -165,6 +165,12 @@ public class Bourse {
 
 		try { 
 			serveurCourtier= new ServerSocket(nport); //Socket d'Ã©coute
+<<<<<<< HEAD
+=======
+			serveurClient= new ServerSocket(nport+1);
+			
+			//lance le thread qui ecoute les clients 
+>>>>>>> branch 'master' of https://github.com/m1sarproject/sar.git
 		}
 		
 		catch (Exception e) {}
@@ -178,6 +184,9 @@ public class Bourse {
 				
 				ThreadCourtier tc=new ThreadCourtier(courtierConnecte);
 				bourse.addBroker(tc); //Ã  complÃ©ter avec une mÃ©thode obtenant un client Ã  affecter
+				
+				//vérifier s'il y'a un client utilise une méthode qu'il y'a dans threadBourse,si oui il récupère le client 
+				//et l'affecte à courtier
 
 				}
 
