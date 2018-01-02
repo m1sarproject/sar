@@ -11,7 +11,8 @@ public class Bourse {
 	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
-
+	private List<Socket> clients=new ArrayList<Socket> ();
+	
 	public Bourse() {
 		
 		
@@ -89,6 +90,13 @@ public class Bourse {
 		
 	}
 	
+	
+	void addClient(Socket s) {
+		
+		if (! clients.contains(s) ) clients.add(s);
+		
+	}
+	
     /**@author Lyes
      * Add the specified Company  to the list (If it already is in the list).
      * @param e : the company to be added
@@ -152,24 +160,20 @@ public class Bourse {
 		
 		Bourse bourse = new Bourse();
 		ServerSocket serveurCourtier=null;
-		ServerSocket serveurClient=null;
 		int nport = Integer.parseInt(args[0]);
-		
+		BourseClient bourseclient = new BourseClient (nport+1,bourse.clients); 
+
 		try { 
 			serveurCourtier= new ServerSocket(nport); //Socket d'écoute
-			serveurClient= new ServerSocket(nport+1);
 		}
 		
 		catch (Exception e) {}
 
 		System.out.println("Le serveur courtier est à l'écoute sur le port "+nport);
-		System.out.println("Le serveur client est à l'écoute sur le port "+nport+1);
-
 		 while(true) {		
 
 		 		try{
 				Socket courtierConnecte = serveurCourtier.accept();	//Le courtier se connecte à  la socket de communication
-				Socket clientConnecte = serveurClient.accept();
 				System.out.println("Connexion acceptée");		
 				
 				ThreadCourtier tc=new ThreadCourtier(courtierConnecte);
