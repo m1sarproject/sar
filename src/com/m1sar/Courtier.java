@@ -32,7 +32,8 @@ public Courtier(String name) {
 /**
  * Send to all his cutomers the share prices that have been updated by the stock market 
  */
-public void sendUpdatedPrices() {
+public void sendUpdatedPrices() {//quand est ce que s'est fait? au début de la journée avant qu'un client ne soit déco ;il faut ajouter un 
+								//nombre pour représenter les jours
 	
 }
 
@@ -74,7 +75,6 @@ public void SendAccordInformation() {
 public double getTauxCommission() {
 	return tauxCommission;
 }
-
 
 
 }
