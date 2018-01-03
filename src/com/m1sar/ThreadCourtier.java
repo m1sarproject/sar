@@ -22,12 +22,12 @@ public class ThreadCourtier extends Thread {
 	BufferedReader in; PrintWriter out;
 	ObjectOutputStream outObject;ObjectInputStream inObject;
 	private String nomCourtier;
-	private static int timeLimit=3000;//le temps qu'un courtier attend avant de se deconnecter
+	private static int timeLimit=30000;//le temps qu'un courtier attend avant de se deconnecter
 	
 	
 	public ThreadCourtier(Bourse b) {
 		this.bourse=b;
-		start();//a revoir 
+		//a revoir 
 	}
 	
     @Override
@@ -35,24 +35,29 @@ public class ThreadCourtier extends Thread {
     	
     	while (true)//ici quand tout ou clients (pas sur) se dï¿½co on sort du while 
     	{
-       		//s'il y'a un client dans notre liste on commence par traiter ce client
+    		System.out.println("le courtier: je suis là aucun client");
+    		//s'il y'a un client dans notre liste on commence par traiter ce client
     		if(sClient.size()>0) {
     			currentClient=sClient.firstElement();
+    			System.out.println(currentClient);
     			OutputStream outS=null;
     			InputStream inS=null;
     			try {
-    			//inS=currentClient.getInputStream();
-    			//outS=currentClient.getOutputStream();
+    			inS=currentClient.getInputStream();
+    			outS=currentClient.getOutputStream();
     			in =new BufferedReader(new InputStreamReader(inS));
     			out=new PrintWriter(outS,true);
+    			System.out.println("client connecte a ce courtier");
     			String rep=in.readLine();
     			System.out.println("le client dit à "+nomCourtier+rep);
+    			break;
     			//outObject=new ObjectOutputStream(outS);
 				//inObject=new ObjectInputStream(inS);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+    			
     			/*try {
 					String rep=(String)inObject.readObject();//au premier échange le client envoie son nom
 					
@@ -88,7 +93,9 @@ public class ThreadCourtier extends Thread {
     //while(rep!=bye){prendre les ordres des clients ;les transmettre ï¿½ bourse.... les diffï¿½rents ï¿½chages}
     //dans ce cas cela ne sert ï¿½ rien d'avoir la socket courtier ;toutes les mï¿½thodes de courtiers on les implï¿½mente ici
     		}
-    		try {
+    		
+    		
+    		/*try {
 		    		if(nbCustomer==0) {
 						Thread.sleep(timeLimit);
 		    		}
@@ -96,8 +103,8 @@ public class ThreadCourtier extends Thread {
     		catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-    		if(nbCustomer==0) break;
+			}*/
+
     	}
     	//envoyer un message à bourse
     		
@@ -111,8 +118,9 @@ public class ThreadCourtier extends Thread {
 		return (nbCustomer<2);
 	}
 
-	public void addClient(Socket client) {
+	public void addClient(Socket client) throws IOException {
     	this.sClient.add(client);
+    	
     }
 	
 	void majClient() throws IOException {

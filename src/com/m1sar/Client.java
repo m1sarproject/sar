@@ -64,7 +64,7 @@ public class Client {
 			in =new BufferedReader(new InputStreamReader(sc.getInputStream()));
 			out=new PrintWriter(sc.getOutputStream(),true);
 			out.println("Client "+nameClient+" veut se connecter");
-			System.out.println("Client "+nameClient+" veut se connecter");
+			//System.out.println("Client "+nameClient+" veut se connecter");
 			/*String reponse;
 			reponse=in.readLine();
 			System.out.println("Courtier "+courtier+" repond "+reponse);*/
