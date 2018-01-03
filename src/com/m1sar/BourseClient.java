@@ -53,8 +53,10 @@ public class BourseClient extends Thread {
 			
 			try {
 				clientConnecte = serveurClient.accept();
-				System.out.println("Connexion client acceptée");		
-				getFreeCourtier().addClient(clientConnecte);
+				System.out.println("Connexion client acceptée");	
+				ThreadCourtier c=getFreeCourtier();
+				c.addClient(clientConnecte);
+				c.incNbClient();
 				
 			} catch (IOException e) {
 				e.printStackTrace();
