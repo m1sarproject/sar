@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Vector;
 
 public class BourseClient extends Thread {
 	
 	private int nport;
 	private ServerSocket serveurClient=null;
 	private Socket clientConnecte = null;
-	private List listcourtiers;
+	private Vector<ThreadCourtier> listcourtiers;
 
-	public BourseClient(int nport,List courtiers) {
+	public BourseClient(int nport,Vector<ThreadCourtier> courtiers) {
 		super();
 		this.nport = nport;
 		listcourtiers = courtiers;
@@ -22,10 +23,18 @@ public class BourseClient extends Thread {
 	
 	
 	
-	public int getFreeCourtier() {
-		
+	public ThreadCourtier getFreeCourtier() {
 	
-		return 0;
+		int index = -1;
+	
+		for (ThreadCourtier courtier : listcourtiers) {
+			
+			if (courtier.estDisp()) return courtier;
+			
+		}
+		
+		
+		return null;
 		
 	}
 	

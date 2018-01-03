@@ -3,6 +3,7 @@ package com.m1sar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Vector;
 
 
 /**@author Vitalina
@@ -168,6 +170,30 @@ public class Client {
 		return courtier;
 	}
 	
+	/**@author Vitalina
+     * 
+     * 
+     */
+	public Map<String,Double> readStateStocks(){
+		Map<String,Double> mapEntreprisePrix=new HashMap<>();
+		try {
+			ObjectInputStream obinput=new ObjectInputStream(sc.getInputStream());
+			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
+			//ObjectInputStream ois = new ObjectOutputStream(bis);
+			//recupère le vecteur eavec des entreprise de Bourse
+			Vector<Entreprise> entreprises = (Vector<Entreprise>) obinput.readObject();
+			
+		}catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mapEntreprisePrix;
+		
+	}
 	
 	
 
