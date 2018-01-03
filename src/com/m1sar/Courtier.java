@@ -1,4 +1,10 @@
 package com.m1sar;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 /**@author Ouerdia
  * 
  */
@@ -22,11 +28,18 @@ private int id;
 private int nbCustomer;
 public static double tauxCommission=0.1; //un taux de 10% pour tous les courtiers
 private double accountBalance=0.;
+private int port;
+private InetAddress hote;
+Socket sc;
+BufferedReader in; 
+PrintWriter out;
 
-public Courtier(String name) {
+public Courtier(String name,int port,InetAddress hte) {
 	
 	id=nb;
 	this.name=name+nb++;
+	this.port = port;
+	this.hote = hte;
 }
 
 /**
@@ -76,5 +89,20 @@ public double getTauxCommission() {
 	return tauxCommission;
 }
 
+public void connexion(){
+	
+	try {
+	sc= new Socket(hote,port);
+	}
+	catch (Exception e) {
+		
+	}
+}
+public static void main(String[] args) throws UnknownHostException {
+	int nport = Integer.parseInt(args[0]);
+	InetAddress hote = InetAddress.getByName(args[1]);
+	Courtier c=new Courtier("courtier",nport,hote);
+	c.connexion();
+}
 
 }

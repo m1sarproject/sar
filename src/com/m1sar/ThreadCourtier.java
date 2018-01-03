@@ -14,7 +14,7 @@ import java.util.Vector;
 public class ThreadCourtier extends Thread {
 
 //	private Socket sCourtier; //socket pour communiuqer avec courtier
-	private Vector<Socket> sClient;//socket de communication avec les clients
+	private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
 	private Socket currentClient;
 	private int nbCustomer=0;
 	private Bourse bourse;//la bourse qui a crï¿½ï¿½ le Threadcourtier 
@@ -41,17 +41,19 @@ public class ThreadCourtier extends Thread {
     			OutputStream outS=null;
     			InputStream inS=null;
     			try {
-    			inS=currentClient.getInputStream();
-    			outS=currentClient.getOutputStream();
-    			//in =new BufferedReader(new InputStreamReader(inS));
-    			//out=new PrintWriter(outS,true);
-    			outObject=new ObjectOutputStream(outS);
-				inObject=new ObjectInputStream(inS);
+    			//inS=currentClient.getInputStream();
+    			//outS=currentClient.getOutputStream();
+    			in =new BufferedReader(new InputStreamReader(inS));
+    			out=new PrintWriter(outS,true);
+    			String rep=in.readLine();
+    			System.out.println("le client dit à "+nomCourtier+rep);
+    			//outObject=new ObjectOutputStream(outS);
+				//inObject=new ObjectInputStream(inS);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-    			try {
+    			/*try {
 					String rep=(String)inObject.readObject();//au premier échange le client envoie son nom
 					
 					//donner au  client la liste des prix des entreprises
@@ -79,7 +81,7 @@ public class ThreadCourtier extends Thread {
     			catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
     			
     			
     //rï¿½cupï¿½rer les in et out du 1er client car on traite les clients sï¿½quentiellement et on supprime la socjet du sClient pour dire qu'on va travailer avec ce client
