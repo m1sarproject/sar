@@ -188,7 +188,6 @@ public class Bourse {
 		 		try{
 				Socket courtierConnecte = serveurCourtier.accept();	//Le courtier se connecte à  la socket de communication
 				System.out.println("Connexion acceptée");		
-				
 				ThreadCourtier tc=new ThreadCourtier(bourse);
 				bourse.addBroker(tc); //à compléter avec une méthode obtenant un client à affecter
 
