@@ -32,19 +32,22 @@ public class ThreadCourtier extends Thread {
 	
     @Override
     public void run() {
+
     	System.out.println("hello");
     	OutputStream outS;
 		InputStream inS;
 		String rep="",req="";
 		
-    	while (true)//ici quand tout ou clients (pas sur) se deco on sort du while 
+    	while (true)//ici quand tout ou clients (pas sur) se deco on sort du while  
     	{
+
     		System.out.println("le courtier: je suis la");
     		//s'il y'a un client dans notre liste on commence par traiter ce client
     		if(sClient.size()>0) {
     			currentClient=sClient.firstElement();
     			System.out.println(currentClient);
     
+    			//System.out.println(currentClient);
     			try {
 		    			inS=currentClient.getInputStream();
 		    			outS=currentClient.getOutputStream();
@@ -52,7 +55,7 @@ public class ThreadCourtier extends Thread {
 		    			out=new PrintWriter(outS,true);
 		    			System.out.println("client connecte a ce courtier");
 		    		    req=in.readLine();
-		    			System.out.println("le client dit à "+nomCourtier+req);
+		    			System.out.println("le client dit a "+nomCourtier+req);
 		    			out.println("bienvenu cher client,vous pouvez envoyez vos ordre"+req);
 		    			//envoie d'ordre
 		    			while (true)
@@ -64,9 +67,7 @@ public class ThreadCourtier extends Thread {
 		    					majClient();
 		    					break;
 		    				}
-		    			}
-		    			
-		    			
+		    			}	
     			}
     			catch (IOException e) {
 					// TODO Auto-generated catch block
