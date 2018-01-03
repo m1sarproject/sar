@@ -1,5 +1,6 @@
 package com.m1sar;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -152,7 +153,7 @@ public class Bourse {
 		return true;
 		
 	}	
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
 		
 		// Creation des entreprises ...
 		List<Entreprise> compagnies = new ArrayList<Entreprise>();
@@ -195,12 +196,15 @@ public class Bourse {
 
 				}
 
-				catch (Exception e) {}
-			}		
+				catch (Exception e) {serveurCourtier.close();}
+		 		
+	
+					
 		 }	
 
 		
 	
-	
+
+	}
 	
 }

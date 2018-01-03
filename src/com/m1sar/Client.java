@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,13 +40,16 @@ public class Client {
 	
 	private boolean yesOuNon;
 	
-	public Client(String nameClient, double solde) {
+	public Client(String nameClient, double solde,int port,InetAddress hte) {
 		
 		this.nameClient = nameClient+idClient;
 		this.solde = solde;
 		portefeuille=new HashMap<>();
 		ordres =new ArrayList<>(); //Inutile de le changer en vector, la liste des ordres est propre au client, donc pas d'accès concurrent à cet attribut
 		idClient=cpt++;
+		this.port = port;
+		this.hote = hte;
+		connexion();
 	}
 	
 	 /**@author Vitalina
@@ -62,10 +66,12 @@ public class Client {
 			out.println("Client "+nameClient+" veut se connecter");
 			System.out.println("Client "+nameClient+" veut se connecter");
 			String reponse;
-			reponse=in.readLine();
-			System.out.println("Courtier "+courtier+" repond "+reponse);
-			} catch (IOException e) {
-				e.printStackTrace();
+			//reponse=in.readLine();
+			//System.out.println("Courtier "+courtier+" repond "+reponse);
+			} 
+			
+			catch (Exception e) {
+				
 			}
 	}
 	
@@ -280,6 +286,19 @@ public class Client {
 		
 		
 	
+		
+	}
+	
+	
+	public static void main(String[] args) throws UnknownHostException{
+
+	
+		int nport = Integer.parseInt(args[0]);
+		InetAddress hote = InetAddress.getByName(args[1]);
+		
+		
+		Client client = new Client ("vitabébé",21d,nport,hote);
+		
 		
 	}
 	

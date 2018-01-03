@@ -1,6 +1,10 @@
 package com.m1sar;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
@@ -54,27 +58,41 @@ public class BourseClient extends Thread {
 			try {
 				clientConnecte = serveurClient.accept();
 				System.out.println("Connexion client acceptée");	
-				ThreadCourtier c=getFreeCourtier();
+				BufferedReader in =new BufferedReader(new InputStreamReader(clientConnecte.getInputStream()));
+				PrintWriter out=new PrintWriter(clientConnecte.getOutputStream(),true);
+			/*	ThreadCourtier c=getFreeCourtier();
 				c.addClient(clientConnecte);
-				c.incNbClient();
+				c.incNbClient();*/
 				
-			} catch (IOException e) {
+			} catch (Exception e ) {
+				
+				try {
+					serveurClient.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				e.printStackTrace();
-				} catch (CourtierNotFoundException e) {				
+				} 
+			
+
+
+			}
+			
+			
+			/*catch (CourtierNotFoundException e) {				
 					try {
 						clientConnecte.close();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						}					
-				}
+				}*/
 			
-		}
-		
-		
+	
+	
+
 	}
-
-
-
 
 	
 }
