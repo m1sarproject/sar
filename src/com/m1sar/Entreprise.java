@@ -28,6 +28,9 @@ public class Entreprise{
 	public void setNbActions(int n){
 		nbActions=n;
 	}
+	public String getName(){
+		return name;
+	}
 	
 	public void setPrixUnitaireAction(double n){
 		prixUnitaireAction=n;
