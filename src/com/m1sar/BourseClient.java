@@ -47,7 +47,7 @@ public class BourseClient extends Thread {
 		
 		try {
 			serveurClient = new ServerSocket(nport);
-			System.out.println("Le serveur client est à l'écoute sur le port "+nport);
+			System.out.println("Le serveur client est a l ecoute sur le port "+nport);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,14 +57,14 @@ public class BourseClient extends Thread {
 			
 			try {
 				clientConnecte = serveurClient.accept();
-				System.out.println("Connexion client acceptée");	
+				System.out.println("Connexion client accepter par BourseClient");	
 				/*BufferedReader in =new BufferedReader(new InputStreamReader(clientConnecte.getInputStream()));
 				PrintWriter out=new PrintWriter(clientConnecte.getOutputStream(),true);
 				out.println("vita mechancete");*/
 			   ThreadCourtier c=getFreeCourtier();
 				c.addClient(clientConnecte);
 				c.start();
-				System.out.println("Le courtier a re�u son client");
+				System.out.println("Le courtier a re�u son client par BourseClient");
 				c.incNbClient();
 				
 			} catch (Exception e ) {
