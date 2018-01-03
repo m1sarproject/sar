@@ -29,7 +29,7 @@ public class BourseClient extends Thread {
 	
 		for (ThreadCourtier courtier : listcourtiers) {
 			
-			if (courtier.estDisp()) return courtier;
+			if (courtier.estDispo()) return courtier;
 			
 		}
 		
