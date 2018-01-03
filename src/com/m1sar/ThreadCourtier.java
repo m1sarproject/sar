@@ -32,26 +32,29 @@ public class ThreadCourtier extends Thread {
 	
     @Override
     public void run() {
-    	
+    	OutputStream outS=null;
+		InputStream inS=null;
     	while (true)//ici quand tout ou clients (pas sur) se dï¿½co on sort du while 
     	{
-    		System.out.println("le courtier: je suis là aucun client");
+    		//System.out.println("le courtier: je suis là aucun client");
     		//s'il y'a un client dans notre liste on commence par traiter ce client
     		if(sClient.size()>0) {
     			currentClient=sClient.firstElement();
-    			System.out.println(currentClient);
-    			OutputStream outS=null;
-    			InputStream inS=null;
+    			//System.out.println(currentClient);
+    			
     			try {
     			inS=currentClient.getInputStream();
     			outS=currentClient.getOutputStream();
     			in =new BufferedReader(new InputStreamReader(inS));
     			out=new PrintWriter(outS,true);
-    			System.out.println("client connecte a ce courtier");
+    			System.out.println("client connecte a ce courtier dans ThreadCourtier");
     			String rep=in.readLine();
     			System.out.println("le client dit à "+nomCourtier+rep);
-    			break;
+    			out.println("hello Client je suis ton Courtier");
+    			//rep=in.readLine();
+    			
     			//outObject=new ObjectOutputStream(outS);
+    			break;
 				//inObject=new ObjectInputStream(inS);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

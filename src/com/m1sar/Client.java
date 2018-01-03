@@ -65,9 +65,9 @@ public class Client {
 			out=new PrintWriter(sc.getOutputStream(),true);
 			out.println("Client "+nameClient+" veut se connecter");
 			//System.out.println("Client "+nameClient+" veut se connecter");
-			/*String reponse;
+			String reponse;
 			reponse=in.readLine();
-			System.out.println("Courtier "+courtier+" repond "+reponse);*/
+			System.out.println("Courtier Courtier repond : "+reponse);
 			} 
 			
 			catch (Exception e) {
