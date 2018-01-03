@@ -189,7 +189,7 @@ public class Bourse {
 				System.out.println("Connexion acceptée");		
 				
 				ThreadCourtier tc=new ThreadCourtier(courtierConnecte);
-				bourse.addBroker(tc); //à compléter avec une méthode obtenant un client à affecter
+				bourse.addBroker(tc); 
 
 				}
 
