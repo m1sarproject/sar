@@ -9,14 +9,24 @@ public class BourseClient extends Thread {
 	
 	private int nport;
 	private ServerSocket serveurClient=null;
-	Socket clientConnecte = null;
-	List listclients;
+	private Socket clientConnecte = null;
+	private List listcourtiers;
 
-	public BourseClient(int nport,List clients) {
+	public BourseClient(int nport,List courtiers) {
 		super();
 		this.nport = nport;
-		List listclients = clients;
+		listcourtiers = courtiers;
 		start();
+	}
+	
+	
+	
+	
+	public int getFreeCourtier() {
+		
+	
+		return 0;
+		
 	}
 	
 	public void run () {
@@ -34,7 +44,7 @@ public class BourseClient extends Thread {
 			try {
 				clientConnecte = serveurClient.accept();
 				System.out.println("Connexion client acceptée");		
-				listclients.add(clientConnecte);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
