@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Vector;
 
 public class BourseClient extends Thread {
@@ -23,7 +24,7 @@ public class BourseClient extends Thread {
 	
 	
 	
-	public ThreadCourtier getFreeCourtier() {
+	public ThreadCourtier getFreeCourtier() throws CourtierNotFoundException {
 	
 		int index = -1;
 	
@@ -34,7 +35,7 @@ public class BourseClient extends Thread {
 		}
 		
 		
-		return null; //à gérer avec une exception plus tard, si exception declenchee = pas de courtier dispo => le client est deconnecte
+		throw new CourtierNotFoundException ("Aucun courtier n'est disponible");
 		
 	}
 	
@@ -57,7 +58,13 @@ public class BourseClient extends Thread {
 				
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+				} catch (CourtierNotFoundException e) {				
+					try {
+						clientConnecte.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+						}					
+				}
 			
 		}
 		

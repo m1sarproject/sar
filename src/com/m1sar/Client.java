@@ -78,6 +78,7 @@ public class Client {
 		solde-=(prixR+(prixR*courtier.getTauxCommission()));
 		Ordre r =new OrdreAchat(entreprise, this, prix);
 		ordres.add(r);
+		System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
 		
 	}
 	
@@ -186,6 +187,10 @@ public class Client {
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
 			entreprises = (Vector<Entreprise>) obinput.readObject();
+			System.out.println("Entreprises avec des prix recu par Client");
+			for(Entreprise e: entreprises) {
+				mapEntreprisePrix.put(e.getName(), e.getPrixUnitaireAction());
+			}
 			
 		}catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -195,13 +200,13 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(Entreprise e: entreprises) {
-			mapEntreprisePrix.put(e.getName(), e.getPrixUnitaireAction());
-		}
+		
 		
 		return mapEntreprisePrix;
 		
 	}
+	
+	
 	
 	
 
