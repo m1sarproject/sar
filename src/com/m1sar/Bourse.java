@@ -170,6 +170,7 @@ public class Bourse {
 		//Creation de la bourse ...
 		
 		Bourse bourse = new Bourse();
+		bourse.addAllCompanies(compagnies);
 		
 		ServerSocket serveurCourtier=null;
 		int nport = Integer.parseInt(args[0]);

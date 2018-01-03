@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Vector;
 
 
@@ -34,12 +34,14 @@ public class Client {
 	private Map<String,Integer> portefeuille;
 	private double solde;
 	private Courtier courtier;
-	private static Map<String,Integer> prixBoursePourEntreprise;
+	private Map<String,Double> prixBoursePourEntreprise;
 	private double depensesEventuelles;
+	
+	private boolean yesOuNon;
 	
 	public Client(String nameClient, double solde) {
 		
-		this.nameClient = nameClient;
+		this.nameClient = nameClient+idClient;
 		this.solde = solde;
 		portefeuille=new HashMap<>();
 		ordres =new ArrayList<>(); //Inutile de le changer en vector, la liste des ordres est propre au client, donc pas d'accès concurrent à cet attribut
@@ -73,12 +75,46 @@ public class Client {
      * 
      */
 	public void acheter (double prix, int quantite, String entreprise){
-		if (! achatLegal(entreprise,prix*quantite,quantite)) return;
+		if (! achatLegal(entreprise,prix*quantite,quantite)) {
+			System.out.println("cet Achat n est pas legal");
+			return;
+		}
 		double prixR=prix*quantite;
 		solde-=(prixR+(prixR*courtier.getTauxCommission()));
 		Ordre r =new OrdreAchat(entreprise, this, prix);
 		ordres.add(r);
+		
+		
 		System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
+		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(sc.getOutputStream());
+			oos.writeObject(r);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String reponse;
+		try {
+			reponse=in.readLine();
+			if(reponse.equals("y")) {
+				yesOuNon=true;
+				ordres.remove(r);
+				System.out.println("Ordre Achat est accepte par la Bourse");
+			}
+			else {
+				yesOuNon=false;
+				System.out.println("Ordre Achat est refuse par la Bourse");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		
 	}
 	
@@ -88,11 +124,43 @@ public class Client {
      * 
      */
 	public void vendre (double prix, int quantite, String entreprise){
-		if ( ! venteLegal(entreprise,quantite) ) return;
+		if ( ! venteLegal(entreprise,quantite) ) {
+			System.out.println("ce Vente n est pas legal");
+			return;
+		}
 		double prixR=prix*quantite;
 		solde+=(prixR-(prixR*courtier.getTauxCommission()));
 		Ordre r =new OrdreVente(entreprise, this, prix);
 		ordres.add(r);
+		System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
+		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(sc.getOutputStream());
+			oos.writeObject(r);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String reponse;
+		try {
+			reponse=in.readLine();
+			if(reponse.equals("y")) {
+				yesOuNon=true;
+				ordres.remove(r);
+				System.out.println("Ordre Vente est accepte par la Bourse");
+				
+			}
+			else {
+				yesOuNon=false;
+				System.out.println("Ordre Vente est refuse par la Bourse");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
@@ -121,14 +189,23 @@ public class Client {
      * 
      */
 	public void deconnexion(){
-		//a completer 
+		out.println("bye");
+		System.out.println("Client "+nameClient+" se deconnecte");
+		prixBoursePourEntreprise.clear();
+		try {
+			sc.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	/**@author Vitalina
      * 
      * 
      */
 	public void majPortefeuilleAchat(String entreprise, int quantite){
-		if(true){//si ok pour aquis de reception
+		if(yesOuNon){//si ok pour aquis de reception
 			if(portefeuille.containsKey(entreprise)){
 				int i=portefeuille.get(entreprise);
 				portefeuille.replace(entreprise, quantite+i);
@@ -147,7 +224,7 @@ public class Client {
      * 
      */
 	public void majPortefeuilleVente(String entreprise, int quantite){
-		if(true){
+		if(yesOuNon){
 			if(!portefeuille.containsKey(entreprise))return;
 			int i=portefeuille.get(entreprise);
 			if(i==quantite)portefeuille.remove(entreprise);
@@ -176,8 +253,8 @@ public class Client {
      * 
      * 
      */
-	public Map<String,Double> readStateStocks(){
-		Map<String,Double> mapEntreprisePrix=new HashMap<>();
+	public void readStateStocks(){
+		
 		Vector<Entreprise> entreprises ;
 		try {
 			out.println("Client "+nameClient+" veut savoit l etat du marche");
@@ -189,7 +266,7 @@ public class Client {
 			entreprises = (Vector<Entreprise>) obinput.readObject();
 			System.out.println("Entreprises avec des prix recu par Client");
 			for(Entreprise e: entreprises) {
-				mapEntreprisePrix.put(e.getName(), e.getPrixUnitaireAction());
+				prixBoursePourEntreprise.put(e.getName(), e.getPrixUnitaireAction());
 			}
 			
 		}catch (ClassNotFoundException e) {
@@ -202,7 +279,7 @@ public class Client {
 		}
 		
 		
-		return mapEntreprisePrix;
+	
 		
 	}
 	
