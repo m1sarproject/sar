@@ -154,7 +154,23 @@ public class Bourse {
 	}	
 	public static void main(String[] args){
 		
+		// Creation des entreprises ...
+		List<Entreprise> compagnies = new ArrayList<Entreprise>();
+		
+		Entreprise e1 = new Entreprise("Kerima Moda", 10,2);
+		Entreprise e2 = new Entreprise("Microsoft", 20,10);
+		Entreprise e3 = new Entreprise("Apple", 20,15);
+		Entreprise e4 = new Entreprise("Ubisoft", 15, 6);
+		
+		compagnies.add(e1);
+		compagnies.add(e2);
+		compagnies.add(e3);
+		compagnies.add(e4);
+		
+		//Creation de la bourse ...
+		
 		Bourse bourse = new Bourse();
+		
 		ServerSocket serveurCourtier=null;
 		int nport = Integer.parseInt(args[0]);
 		
