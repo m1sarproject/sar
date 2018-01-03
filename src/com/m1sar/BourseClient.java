@@ -44,7 +44,7 @@ public class BourseClient extends Thread {
 			try {
 				clientConnecte = serveurClient.accept();
 				System.out.println("Connexion client acceptÃ©e");		
-				
+				//incrémenter nbCustumers qu'il y'a dans ThreadCourtier au moment de l'affectation du client
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
