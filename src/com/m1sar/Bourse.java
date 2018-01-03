@@ -182,13 +182,13 @@ public class Bourse {
 		
 		catch (Exception e) {}
 
-		System.out.println("Le serveur courtier est à l'écoute sur le port "+nport);
+		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
 		BourseClient bourseclient = new BourseClient (nport+1,bourse.courtiers); 
 		 while(true) {		
 
 		 		try{
 				Socket courtierConnecte = serveurCourtier.accept();	//Le courtier se connecte à  la socket de communication
-				System.out.println("Connexion acceptée");		
+				System.out.println("Connexion acceptee");		
 				ThreadCourtier tc=new ThreadCourtier(bourse);
 				bourse.addBroker(tc); //à compléter avec une méthode obtenant un client à affecter
 

@@ -32,83 +32,68 @@ public class ThreadCourtier extends Thread {
 	
     @Override
     public void run() {
-    	
-    	while (true)//ici quand tout ou clients (pas sur) se dï¿½co on sort du while 
+    	System.out.println("hello");
+    	OutputStream outS;
+		InputStream inS;
+		String rep="",req="";
+		
+    	while (true)//ici quand tout ou clients (pas sur) se deco on sort du while 
     	{
-    		System.out.println("le courtier: je suis là aucun client");
+    		System.out.println("le courtier: je suis la");
     		//s'il y'a un client dans notre liste on commence par traiter ce client
     		if(sClient.size()>0) {
     			currentClient=sClient.firstElement();
     			System.out.println(currentClient);
-    			OutputStream outS=null;
-    			InputStream inS=null;
+    
     			try {
-    			inS=currentClient.getInputStream();
-    			outS=currentClient.getOutputStream();
-    			in =new BufferedReader(new InputStreamReader(inS));
-    			out=new PrintWriter(outS,true);
-    			System.out.println("client connecte a ce courtier");
-    			String rep=in.readLine();
-    			System.out.println("le client dit à "+nomCourtier+rep);
-    			break;
-    			//outObject=new ObjectOutputStream(outS);
-				//inObject=new ObjectInputStream(inS);
-				} catch (IOException e) {
+		    			inS=currentClient.getInputStream();
+		    			outS=currentClient.getOutputStream();
+		    			in =new BufferedReader(new InputStreamReader(inS));
+		    			out=new PrintWriter(outS,true);
+		    			System.out.println("client connecte a ce courtier");
+		    		    req=in.readLine();
+		    			System.out.println("le client dit à "+nomCourtier+req);
+		    			out.println("bienvenu cher client,vous pouvez envoyez vos ordre"+req);
+		    			//envoie d'ordre
+		    			while (true)
+		    			{
+							req=in.readLine();
+		    				System.out.println("le client me dit (courtier)"+req);
+		    				if(req.equals("bye")) {
+		    				//supprimer le client et fermer sa socket et decremente nbcustumer
+		    					majClient();
+		    					break;
+		    				}
+		    			}
+		    			
+		    			
+    			}
+    			catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
     			
-    			/*try {
-					String rep=(String)inObject.readObject();//au premier échange le client envoie son nom
-					
-					//donner au  client la liste des prix des entreprises
-					while (true)
-					{ 
-						//récuperer un ordre du client 
-						Object o=inObject.readObject();
-						if(o instanceof String) {
-							rep=(String)o;
-							if(rep.equals("bye")) break;
-						}
-						//envoyer a la bourse l'ordre
-						//on attend
-						//l'accord se transmet quand au client?
-						//transmission des prix?
-					}
-					majClient();
-				
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}//récupérer le nom du client 
     			
-    			catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-    			
-    			
-    //rï¿½cupï¿½rer les in et out du 1er client car on traite les clients sï¿½quentiellement et on supprime la socjet du sClient pour dire qu'on va travailer avec ce client
-    //while(rep!=bye){prendre les ordres des clients ;les transmettre ï¿½ bourse.... les diffï¿½rents ï¿½chages}
-    //dans ce cas cela ne sert ï¿½ rien d'avoir la socket courtier ;toutes les mï¿½thodes de courtiers on les implï¿½mente ici
-    		}
     		
-    		
-    		/*try {
-		    		if(nbCustomer==0) {
-						Thread.sleep(timeLimit);
-		    		}
-			} 
-    		catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-
     	}
-    	//envoyer un message à bourse
-    		
+    		if(nbCustomer==0) {
+	    		try {
+						Thread.sleep(timeLimit);
+					} 
+	    		catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
+		    
+				if(nbCustomer==0) {
+					System.out.println("j'ai fini y'a pas de clients");
+					break;//sortir du while(true)
+					
+				}
     }
+    	//envoyer un message à bourse
+}
 	
     	
     public void incNbClient() {
