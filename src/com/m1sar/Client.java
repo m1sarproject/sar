@@ -58,6 +58,7 @@ public class Client {
 			in =new BufferedReader(new InputStreamReader(sc.getInputStream()));
 			out=new PrintWriter(sc.getOutputStream(),true);
 			out.println("Client "+nameClient+" veut se connecter");
+			System.out.println("Client "+nameClient+" veut se connecter");
 			String reponse;
 			reponse=in.readLine();
 			System.out.println("Courtier "+courtier+" repond "+reponse);
@@ -176,12 +177,15 @@ public class Client {
      */
 	public Map<String,Double> readStateStocks(){
 		Map<String,Double> mapEntreprisePrix=new HashMap<>();
+		Vector<Entreprise> entreprises ;
 		try {
+			out.println("Client "+nameClient+" veut savoit l etat du marche");
+			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
 			ObjectInputStream obinput=new ObjectInputStream(sc.getInputStream());
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
-			Vector<Entreprise> entreprises = (Vector<Entreprise>) obinput.readObject();
+			entreprises = (Vector<Entreprise>) obinput.readObject();
 			
 		}catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -191,6 +195,10 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		for(Entreprise e: entreprises) {
+			mapEntreprisePrix.put(e.getName(), e.getPrixUnitaireAction());
+		}
+		
 		return mapEntreprisePrix;
 		
 	}

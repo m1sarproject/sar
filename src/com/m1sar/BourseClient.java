@@ -34,7 +34,7 @@ public class BourseClient extends Thread {
 		}
 		
 		
-		return null;
+		return null; //à gérer avec une exception plus tard, si exception declenchee = pas de courtier dispo => le client est deconnecte
 		
 	}
 	
@@ -53,7 +53,8 @@ public class BourseClient extends Thread {
 			try {
 				clientConnecte = serveurClient.accept();
 				System.out.println("Connexion client acceptée");		
-				//incrémenter nbCustumers qu'il y'a dans ThreadCourtier au moment de l'affectation du client
+				getFreeCourtier().addClient(clientConnecte);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
