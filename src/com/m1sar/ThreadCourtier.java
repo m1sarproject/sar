@@ -99,15 +99,15 @@ public class ThreadCourtier extends Thread {
 	    		catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+    		}
 	    		
-	    			
+    		if(nbCustomer==0) {	
 	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me déconnecte de la bourse");
 	    			bourse.removeBroker(this);
 	    			break;//sortir du while(true)
+    		}
 	    		
-	    		}
-		    
-					
+	    							
 			nb++;		
 				
     }
