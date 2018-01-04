@@ -30,16 +30,11 @@ public class BourseClient extends Thread {
 	
 	public ThreadCourtier getFreeCourtier() throws CourtierNotFoundException {
 	
-	
 		for (ThreadCourtier courtier : listcourtiers) {
-			
-			if (courtier.estDispo()) return courtier;
-			
+			if (courtier.estDispo()) return courtier;	
 		}
 		
-		
-		throw new CourtierNotFoundException ("Aucun courtier n'est disponible");
-		
+		throw new CourtierNotFoundException ("Aucun courtier n'est disponible");	
 	}
 	
 	public void run () {

@@ -27,8 +27,9 @@ public class ThreadCourtier extends Thread {
 	private static int timeLimit=30000;//le temps qu'un courtier attend avant de se deconnecter
 	
 	
-	public ThreadCourtier(Bourse b) {
+	public ThreadCourtier(Bourse b,String nom) {
 		this.bourse=b;
+		this.nomCourtier=nom;
 		start();
 		//a revoir 
 	}
@@ -39,12 +40,11 @@ public class ThreadCourtier extends Thread {
     	OutputStream outS;
 		InputStream inS;
 		String rep="",req="";
+		int nb = 1;
 		
-    	while (true)//ici quand tout ou clients (pas sur) se deco on sort du while  
-    	{
-
-    		//s'il y'a un client dans notre liste on commence par traiter ce client
-    		if(sClient.size()>0) {
+    	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
+   
+    		if(sClient.size()>0) { //s'il y'a un client dans notre liste on commence par traiter ce client
     			
     			currentClient=sClient.firstElement();
     			System.out.println(currentClient);
@@ -54,14 +54,15 @@ public class ThreadCourtier extends Thread {
 		    			outS=currentClient.getOutputStream();
 		    			out=new PrintWriter(outS,true);
 		    			in =new BufferedReader(new InputStreamReader(inS));
-		    			System.out.println("client connecte a ce courtier");
+		    			System.out.println("client numéro "+nb+" connecte a ce courtier");
 		    		    
 		    			req=in.readLine();
-		    			System.out.println("le client dit a "+nomCourtier+req);
-		    			out.println("bienvenu cher client,vous pouvez envoyez vos ordre"+req);
-		    			//envoie d'ordre
+		    			System.out.println("Je suis "+nomCourtier+" le client me demande "+ req);
+		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
 		    			System.out.println("h1");
-		    			while (true)
+		    			
+		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
+
 		    			{
 		    				System.out.println("h2");
 							req=in.readLine();
@@ -87,25 +88,27 @@ public class ThreadCourtier extends Thread {
     	}
     		if(nbCustomer==0) {
 	    		try {
-	    			    System.out.println("Je n'ai aucun client, J'attend si un client me contacte");
-						Thread.sleep(timeLimit);
+	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
+						Thread.sleep(timeLimit); //Le sleep a des défauts : si un client se connecte pendant le sleep, il ne le réveille pas du sleep; à revoir
 					} 
 	    		catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 	    		
 	    			
-	    			System.out.println("Je n'ai plus de clients, je me déconnecte de la bourse");
+	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me déconnecte de la bourse");
 	    			bourse.removeBroker(this);
 	    			break;//sortir du while(true)
 	    		
 	    		}
 		    
 					
-					
+			nb++;		
 				
     }
     	//envoyer un message a la bourse
+    	
+    	System.out.println(prefixe() + "Le threadCourtier sort du while");
 }
 	
     	
@@ -124,6 +127,11 @@ public class ThreadCourtier extends Thread {
     	
     }
 	
+	
+	public String prefixe() {
+		return nomCourtier+" : ";
+	}
+
 	void majClient() throws IOException {
 		
 		currentClient.close();

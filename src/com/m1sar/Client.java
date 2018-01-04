@@ -65,13 +65,14 @@ public class Client {
 			out=new PrintWriter(sc.getOutputStream(),true);
 			out.println("Client "+nameClient+" veut se connecter");
 			cpt=0;
-			//System.out.println("Client "+nameClient+" veut se connecter");
+			System.out.println("Client "+nameClient+" veut se connecter");
 			String reponse,req;
 			reponse=in.readLine();
 			System.out.println("Courtier  repond : "+reponse);
 			 Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
+			
 			 while(cpt <3) {
 				    System.out.println("Donnez le msg pour courtier: ");
 				    req=lect.nextLine();
@@ -79,8 +80,9 @@ public class Client {
 				    /*reponse=in.readLine();
 				    System.out.println("le courtier a repondu "+reponse);*/
 				    cpt++;
-				    //in.readLine();
-				    }
+				    //in.readLine();				   
+			 	}
+			 
 			  out.println("bye");//mettre fin aux echanges
 			  
 			} 

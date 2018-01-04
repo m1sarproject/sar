@@ -1,6 +1,8 @@
 package com.m1sar;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -37,7 +39,8 @@ PrintWriter out;
 public Courtier(String name,int port,InetAddress hte) {
 	
 	id=nb;
-	this.name=name+nb++;
+	this.name=name;
+	this.id = nb++;
 	this.port = port;
 	this.hote = hte;
 }
@@ -93,17 +96,36 @@ public void connexion(){
 	
 	try {
 	sc= new Socket(hote,port);
+	inscription(sc);
 	}
 	catch (Exception e) {
 		System.out.println("Erreur de connexion");
 	}
 }
+
+
+//Permet simplement de s'inscrire auprès de la bourse en donnant son nom
+public void inscription(Socket sc) throws IOException {
+	
+	OutputStream outS=sc.getOutputStream();
+	out=new PrintWriter(outS,true);
+	out.println(name);
+	
+}
+
 public static void main(String[] args) throws UnknownHostException {
 	
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
-	Courtier c=new Courtier("courtier",nport,hote);
-	c.connexion();
+	
+	Courtier b=new Courtier("George Soros",nport,hote);
+	b.connexion();
+	
+	System.out.println("Le courtier s'est connecté à la bourse");
+	
+	/*Courtier c=new Courtier("Warren Buffet",nport,hote);
+	c.connexion();*/
+
 }
 
 }

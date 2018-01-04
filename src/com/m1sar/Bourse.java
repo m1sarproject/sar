@@ -1,6 +1,8 @@
 package com.m1sar;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -197,8 +199,14 @@ public class Bourse {
 		 		System.out.println("La bourse attend un courtier");
 				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte à  la socket de communication
 				
-				System.out.println("Connexion Courtier acceptée par Bourse");		
-				ThreadCourtier tc=new ThreadCourtier(bourse);
+				System.out.println("Connexion Courtier acceptée par Bourse");	
+				
+				BufferedReader in =new BufferedReader(new InputStreamReader(courtierConnecte.getInputStream()));
+				String nomcourtier = in.readLine();
+				
+				System.out.println("Le nom du courtier est : "+nomcourtier);
+				
+				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier);
 				bourse.addBroker(tc);	
 
 				}
