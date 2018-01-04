@@ -42,9 +42,6 @@ public class BourseClient extends Thread {
 		try {
 			serveurClient = new ServerSocket(nport);
 			System.out.println("Le serveur client est à l'ecoute sur le port "+nport);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		
 		while (true) {
@@ -61,17 +58,27 @@ public class BourseClient extends Thread {
 				System.out.println("Le courtier a reçu son client par BourseClient");
 				
 			} 
-			catch (CourtierNotFoundException | IOException e ) {
-				System.out.println(e.getMessage());				
-				try {
-					serveurClient.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+			
+			catch (CourtierNotFoundException e ) {
+				System.out.println(e.getMessage());
+				clientConnecte.close();
 			}
 			
 
+		}
+		}
+		catch( IOException e) {
+			e.getMessage();
+			
+		}
+		finally {
+			try {
+				serveurClient.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		}
 			
 			
 			/*catch (CourtierNotFoundException e) {				

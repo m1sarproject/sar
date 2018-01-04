@@ -211,7 +211,10 @@ public class Bourse {
 
 				}
 
-				catch (Exception e) {serveurCourtier.close();}
+				catch (Exception e) {
+					System.out.println("Socket ferme dans Bourse de serveurCourtier");
+					serveurCourtier.close();
+					}
 		 	
 					
 		 }	
