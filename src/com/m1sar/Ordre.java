@@ -24,6 +24,7 @@ public abstract class Ordre implements Serializable {
 		
 	}
 
+
 	public String getEntreprise() {
 		return entreprise;
 	}
@@ -31,6 +32,16 @@ public abstract class Ordre implements Serializable {
 	public void setEntreprise(String entreprise) {
 		this.entreprise = entreprise;
 	}
+	
+
+	public String getEntrepriseName() {
+		return entreprise;
+	}
+
+	public double getPrix_Propose_par_Client() {
+		return prix_Propose_par_Client;
+	}
+	
 	
 	 
 

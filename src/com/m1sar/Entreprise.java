@@ -39,4 +39,12 @@ public class Entreprise{
 		return "Entreprise : "+ name +" a mis à disposition : "+ nbActions + " d'actions sur le marché au prix unitaire suivant :"+prixUnitaireAction;
 	}
 	
+	
+	public void addOrder(Ordre o) {
+		
+		ordres.add(o);
+	}
+	
+
+	
 }

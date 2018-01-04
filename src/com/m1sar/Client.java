@@ -116,7 +116,6 @@ public class Client {
 	public void inscription() {
 		
 		out.println(nameClient);
-
 		
 	}
 	

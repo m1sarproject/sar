@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Vector;
 
 public class Bourse {
@@ -30,6 +31,31 @@ public class Bourse {
 	void updatePrice() {
 		
 		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
+	}
+	
+	public Entreprise getByName(String name) {
+		
+		
+		for (Entreprise entreprise : entreprises) {
+			
+			if (entreprise.getName().equals(name)) return entreprise;
+		}
+		
+		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
+	}
+	
+	public boolean agreeOrNot(Ordre o) {
+
+		Entreprise concerned = this.getByName(o.getEntrepriseName());
+		concerned.addOrder(o);
+		double suggestedprice = o.getPrix_Propose_par_Client();
+		
+		
+		if (o instanceof OrdreAchat)
+			return (concerned.getPrixUnitaireAction() > suggestedprice);
+	
+		return false;
+	
 	}
 
     /**@author Lyes
