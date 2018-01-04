@@ -63,12 +63,16 @@ public class BourseClient extends Thread {
 				out.println("vita mechancete");*/
 			   ThreadCourtier c=getFreeCourtier();
 				c.addClient(clientConnecte);
-				System.out.println("hello");
-				c.start();
+				//c.start();
 				System.out.println("Le courtier a reçu son client par BourseClient");
 				c.incNbClient();
 				
-			} catch (Exception e ) {
+			} 
+			catch (CourtierNotFoundException e ) {
+				//repondre au client aulieu d'afficher ce msg 
+				System.out.println(e.getMessage());
+			}
+			catch (Exception e ) {
 				
 				try {
 					serveurClient.close();

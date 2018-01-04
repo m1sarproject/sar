@@ -37,7 +37,6 @@ public class Bourse {
      * @return <tt>true</tt> 
      */
 	boolean addBroker(ThreadCourtier c) {
-		
 		if ( courtiers.contains(c) ) throw new IllegalArgumentException("The Broker is already in the list.");
 
 		courtiers.add(c);
@@ -186,11 +185,12 @@ public class Bourse {
 		 while(true) {		
 
 		 		try{
+		 		System.out.println("j'att courtier");
 				Socket courtierConnecte = serveurCourtier.accept();	//Le courtier se connecte à  la socket de communication
-
 				System.out.println("Connexion Courtier accepte par Bourse");		
 				ThreadCourtier tc=new ThreadCourtier(bourse);
 				bourse.addBroker(tc); //à compléter avec une méthode obtenant un client à affecter
+				System.out.println("apres addbroker");
 
 				
 
