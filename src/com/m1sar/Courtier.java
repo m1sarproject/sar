@@ -45,8 +45,8 @@ public Courtier(String name,int port,InetAddress hte) {
 /**
  * Send to all his cutomers the share prices that have been updated by the stock market 
  */
-public void sendUpdatedPrices() {//quand est ce que s'est fait? au début de la journée avant qu'un client ne soit déco ;il faut ajouter un 
-								//nombre pour représenter les jours
+public void sendUpdatedPrices() {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
+								//nombre pour reprï¿½senter les jours
 	
 }
 
@@ -95,10 +95,11 @@ public void connexion(){
 	sc= new Socket(hote,port);
 	}
 	catch (Exception e) {
-		
+		System.out.println("Erreur de connexion");
 	}
 }
 public static void main(String[] args) throws UnknownHostException {
+	
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
 	Courtier c=new Courtier("courtier",nport,hote);

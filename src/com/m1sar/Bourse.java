@@ -152,25 +152,31 @@ public class Bourse {
 		return true;
 		
 	}	
-	public static void main(String[] args) throws IOException{
+	
+	
+	public void initCompanies() {
 		
 		// Creation des entreprises ...
-		List<Entreprise> compagnies = new ArrayList<Entreprise>();
+		List<Entreprise> companies = new ArrayList<Entreprise>();
 		
 		Entreprise e1 = new Entreprise("Kerima Moda", 10,2);
 		Entreprise e2 = new Entreprise("Microsoft", 20,10);
 		Entreprise e3 = new Entreprise("Apple", 20,15);
 		Entreprise e4 = new Entreprise("Ubisoft", 15, 6);
 		
-		compagnies.add(e1);
-		compagnies.add(e2);
-		compagnies.add(e3);
-		compagnies.add(e4);
+		companies.add(e1);
+		companies.add(e2);
+		companies.add(e3);
+		companies.add(e4);
 		
-		//Creation de la bourse ...
+		this.addAllCompanies(companies);
+	}
+	
+	public static void main(String[] args) throws IOException{
+		
 		
 		Bourse bourse = new Bourse();
-		bourse.addAllCompanies(compagnies);
+		bourse.initCompanies();
 		
 		ServerSocket serveurCourtier=null;
 		int nport = Integer.parseInt(args[0]);
@@ -179,31 +185,28 @@ public class Bourse {
 			serveurCourtier= new ServerSocket(nport); //Socket d'écoute
 		}
 		
-		catch (Exception e) {}
+		catch (Exception e) {System.err.println("La création du serveur d'écoute a échoué");}
+		
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
 		BourseClient bourseclient = new BourseClient (nport+1,bourse.courtiers); 
-		 while(true) {		
+		 
+		while(true) {		
 
 		 		try{
-		 		System.out.println("j'att courtier");
-				Socket courtierConnecte = serveurCourtier.accept();	//Le courtier se connecte à  la socket de communication
-				System.out.println("Connexion Courtier accepte par Bourse");		
-				ThreadCourtier tc=new ThreadCourtier(bourse);
-				bourse.addBroker(tc); //à compléter avec une méthode obtenant un client à affecter
-				System.out.println("apres addbroker");
-
+		 		
+		 		System.out.println("La bourse attend un courtier");
+				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte à  la socket de communication
 				
+				System.out.println("Connexion Courtier acceptée par Bourse");		
+				ThreadCourtier tc=new ThreadCourtier(bourse);
+				bourse.addBroker(tc);	
 
 				}
 
 				catch (Exception e) {serveurCourtier.close();}
-		 		
-	
+		 	
 					
 		 }	
-
-		
-	
 
 	}
 	

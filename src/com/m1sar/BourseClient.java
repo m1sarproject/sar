@@ -30,7 +30,6 @@ public class BourseClient extends Thread {
 	
 	public ThreadCourtier getFreeCourtier() throws CourtierNotFoundException {
 	
-		int index = -1;
 	
 		for (ThreadCourtier courtier : listcourtiers) {
 			
@@ -47,7 +46,7 @@ public class BourseClient extends Thread {
 		
 		try {
 			serveurClient = new ServerSocket(nport);
-			System.out.println("Le serveur client est a l ecoute sur le port "+nport);
+			System.out.println("Le serveur client est à l'ecoute sur le port "+nport);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +63,7 @@ public class BourseClient extends Thread {
 			   ThreadCourtier c=getFreeCourtier();
 				c.addClient(clientConnecte);
 				//c.start();
-				System.out.println("Le courtier a re�u son client par BourseClient");
+				System.out.println("Le courtier a reçu son client par BourseClient");
 				c.incNbClient();
 				
 			} 
@@ -77,7 +76,6 @@ public class BourseClient extends Thread {
 				try {
 					serveurClient.close();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
