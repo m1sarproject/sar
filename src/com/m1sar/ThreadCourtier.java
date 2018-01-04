@@ -90,6 +90,7 @@ public class ThreadCourtier extends Thread {
     			
     		
     	}
+    		System.out.println("nbClinet = "+nbCustomer);
     		if(nbCustomer==0) {
 	    		try {
 	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
