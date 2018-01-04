@@ -5,6 +5,10 @@ import java.io.Serializable;
 public abstract class Ordre implements Serializable {
 	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5874466353411594169L;
 	private String entreprise;
 	private Client client;
 	private double prix_Propose_par_Client;
