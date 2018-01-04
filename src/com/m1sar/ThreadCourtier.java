@@ -19,8 +19,10 @@ public class ThreadCourtier extends Thread {
 	private int nbCustomer=0;
 	private Bourse bourse;//la bourse qui a crï¿½ï¿½ le Threadcourtier 
 	private boolean dispo=true;
-	BufferedReader in; PrintWriter out;
-	ObjectOutputStream outObject;ObjectInputStream inObject;
+	private BufferedReader in; 
+	private PrintWriter out;
+	private ObjectOutputStream outObject;
+	private ObjectInputStream inObject;
 	private String nomCourtier;
 	private static int timeLimit=30000;//le temps qu'un courtier attend avant de se deconnecter
 	
@@ -99,12 +101,14 @@ public class ThreadCourtier extends Thread {
 				}
 				
     }
-    	//envoyer un message à bourse
+    	//envoyer un message ï¿½ bourse
 }
 	
     	
     public void incNbClient() {
-    	nbCustomer++;
+    	if (estDispo()) nbCustomer++;
+    
+    	throw new UnsupportedOperationException("Le courtier a dÃ©ja deux clients en charge");
     }
     public boolean estDispo() {
 		return (nbCustomer<2);
@@ -112,6 +116,7 @@ public class ThreadCourtier extends Thread {
 
 	public void addClient(Socket client) throws IOException {
     	this.sClient.add(client);
+    	incNbClient();
     	
     }
 	

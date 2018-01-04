@@ -130,7 +130,6 @@ public class Client {
 				System.out.println("Ordre Achat est refuse par la Bourse");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -160,7 +159,6 @@ public class Client {
 			oos = new ObjectOutputStream(sc.getOutputStream());
 			oos.writeObject(r);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -291,11 +289,9 @@ public class Client {
 			}
 			
 		}catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

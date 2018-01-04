@@ -11,7 +11,6 @@ public class CourtierNotFoundException extends Exception {
 	}
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return msg;
 	}
 	
