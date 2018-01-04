@@ -9,12 +9,15 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class ThreadCourtier extends Thread {
 
 //	private Socket sCourtier; //socket pour communiuqer avec courtier
 	private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
+	private List<String> clients= new ArrayList<String>();
 	private Socket currentClient;
 	private int nbCustomer=0;
 	private Bourse bourse;//la bourse qui a cr�� le Threadcourtier 
@@ -39,7 +42,7 @@ public class ThreadCourtier extends Thread {
 
     	OutputStream outS;
 		InputStream inS;
-		String rep="",req="";
+		String rep="",req="",nomclient="";
 		int nb = 1;
 		
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
@@ -56,8 +59,9 @@ public class ThreadCourtier extends Thread {
 		    			in =new BufferedReader(new InputStreamReader(inS));
 		    			System.out.println("client numéro "+nb+" connecte a ce courtier");
 		    		    
-		    			req=in.readLine();
-		    			System.out.println("Je suis "+nomCourtier+" le client me demande "+ req);
+		    			nomclient=in.readLine(); //Le premier message doit etre le nom du client
+		    			clients.add(nomclient);
+		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
 		    			System.out.println("h1");
 		    			

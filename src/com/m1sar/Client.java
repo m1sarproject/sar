@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -62,8 +63,9 @@ public class Client {
 			try {
 			sc= new Socket(hote,port);
 			in =new BufferedReader(new InputStreamReader(sc.getInputStream()));
-			out=new PrintWriter(sc.getOutputStream(),true);
-			out.println("Client "+nameClient+" veut se connecter");
+			out=new PrintWriter(sc.getOutputStream(),true);		
+			inscription(); //Envoi son nom au courtier
+			
 			cpt=0;
 			System.out.println("Client "+nameClient+" veut se connecter");
 			String reponse,req;
@@ -90,6 +92,15 @@ public class Client {
 			catch (Exception e) {
 				
 			}
+	}
+	
+	
+	
+	public void inscription() {
+		
+		out.println(nameClient);
+
+		
 	}
 	
 	

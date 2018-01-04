@@ -1,6 +1,8 @@
 package com.m1sar;
 
-public abstract class Ordre{
+import java.io.Serializable;
+
+public abstract class Ordre implements Serializable {
 	
 
 	private String entreprise;
