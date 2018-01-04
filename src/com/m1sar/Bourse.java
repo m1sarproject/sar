@@ -46,7 +46,7 @@ public class Bourse {
 	
 	public boolean agreeOrNot(Ordre o) {
 
-		Entreprise concerned = this.getByName(o.getEntreprise());
+		Entreprise concerned = this.getByName(o.getEntrepriseName());
 		concerned.addOrder(o);
 		double suggestedprice = o.getPrix_Propose_par_Client();
 		

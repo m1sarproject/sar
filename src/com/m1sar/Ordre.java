@@ -24,7 +24,7 @@ public abstract class Ordre implements Serializable {
 		
 	}
 
-	public String getEntreprise() {
+	public String getEntrepriseName() {
 		return entreprise;
 	}
 
