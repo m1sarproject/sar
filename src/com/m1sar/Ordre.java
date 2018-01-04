@@ -23,6 +23,16 @@ public abstract class Ordre implements Serializable {
 		
 		
 	}
+
+	public String getEntreprise() {
+		return entreprise;
+	}
+
+	public double getPrix_Propose_par_Client() {
+		return prix_Propose_par_Client;
+	}
+	
+	
 	 
 
 }
