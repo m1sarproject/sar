@@ -117,7 +117,7 @@ public class ThreadCourtier extends Thread {
 	
     	
     public void incNbClient() {
-    	if (estDispo()) nbCustomer++;
+    	if (estDispo()) {nbCustomer++; return;}
     
     	throw new UnsupportedOperationException("Le courtier a déja deux clients en charge");
     }
