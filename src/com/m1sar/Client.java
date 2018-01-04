@@ -2,6 +2,7 @@ package com.m1sar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,6 +32,10 @@ public class Client {
 	
 	BufferedReader in; 
 	PrintWriter out;
+	OutputStream outS;
+	InputStream inS;
+	private ObjectOutputStream outObject;
+	private ObjectInputStream inObject;
 	private String nameClient;
 	private int idClient;
 	private List<Ordre> ordres;
@@ -62,8 +67,12 @@ public class Client {
 		
 			try {
 			sc= new Socket(hote,port);
-			in =new BufferedReader(new InputStreamReader(sc.getInputStream()));
-			out=new PrintWriter(sc.getOutputStream(),true);		
+			 outS=sc.getOutputStream();
+			 inS=sc.getInputStream();
+			 in =new BufferedReader(new InputStreamReader(inS));
+			 out=new PrintWriter(outS,true);		
+			
+			
 			inscription(); //Envoi son nom au courtier
 			
 			cpt=0;
@@ -71,7 +80,15 @@ public class Client {
 			String reponse,req;
 			reponse=in.readLine();
 			System.out.println("Courtier  repond : "+reponse);
-			 Scanner lect = new Scanner(System.in);
+			Ordre d=new OrdreAchat("Apple", nameClient, 10);
+			outObject= new ObjectOutputStream(outS);
+			
+			System.out.println("J'envoi");
+			outObject.writeObject(d);  //l'envoi des objets se fait ici, l'objet doit etre serializable
+			outObject.flush();
+			outObject.close();
+			System.out.println("j'ai envoyé");
+			 /*Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
 			
@@ -80,13 +97,13 @@ public class Client {
 				    req=lect.nextLine();
 					out.println(req);
 				    /*reponse=in.readLine();
-				    System.out.println("le courtier a repondu "+reponse);*/
+				    System.out.println("le courtier a repondu "+reponse);
 				    cpt++;
 				    //in.readLine();				   
 			 	}
 			 
 			  out.println("bye");//mettre fin aux echanges
-			  
+			 */
 			} 
 			
 			catch (Exception e) {
@@ -115,7 +132,7 @@ public class Client {
 		}
 		double prixR=prix*quantite;
 		solde-=(prixR+(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreAchat(entreprise, this, prix);
+		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix);
 		ordres.add(r);
 		
 		
@@ -163,7 +180,7 @@ public class Client {
 		}
 		double prixR=prix*quantite;
 		solde+=(prixR-(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreVente(entreprise, this, prix);
+		Ordre r =new OrdreVente(entreprise, this.nameClient, prix);
 		ordres.add(r);
 		System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
 		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
