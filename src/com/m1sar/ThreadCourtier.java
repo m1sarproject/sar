@@ -45,29 +45,32 @@ public class ThreadCourtier extends Thread {
 
     		//s'il y'a un client dans notre liste on commence par traiter ce client
     		if(sClient.size()>0) {
+    			
     			currentClient=sClient.firstElement();
     			System.out.println(currentClient);
     
-    			//System.out.println(currentClient);
     			try {
 		    			inS=currentClient.getInputStream();
 		    			outS=currentClient.getOutputStream();
 		    			out=new PrintWriter(outS,true);
 		    			in =new BufferedReader(new InputStreamReader(inS));
 		    			System.out.println("client connecte a ce courtier");
-		    		    req=in.readLine();
+		    		    
+		    			req=in.readLine();
 		    			System.out.println("le client dit a "+nomCourtier+req);
 		    			out.println("bienvenu cher client,vous pouvez envoyez vos ordre"+req);
 		    			//envoie d'ordre
 		    			System.out.println("h1");
 		    			while (true)
-		    			{System.out.println("h2");
+		    			{
+		    				System.out.println("h2");
 							req=in.readLine();
 							System.out.println("h3");
 		    				System.out.println("le client me dit (courtier)"+req);
+		    				
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
-		    					System.out.println("je susi dans le if du bye");
+		    					System.out.println("je suis dans le if du bye");
 		    					majClient();
 		    					break;
 		    				}
@@ -75,8 +78,8 @@ public class ThreadCourtier extends Thread {
 		    			
     			}
     			catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+    				e.printStackTrace();
 				}
     			
     			
@@ -84,24 +87,25 @@ public class ThreadCourtier extends Thread {
     	}
     		if(nbCustomer==0) {
 	    		try {
-	    			    System.out.println("j'attend qu'un client se connect");
+	    			    System.out.println("Je n'ai aucun client, J'attend si un client me contacte");
 						Thread.sleep(timeLimit);
 					} 
 	    		catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+	    		
+	    			
+	    			System.out.println("Je n'ai plus de clients, je me déconnecte de la bourse");
+	    			bourse.removeBroker(this);
+	    			break;//sortir du while(true)
+	    		
 	    		}
 		    
-				if(nbCustomer==0) {
-					System.out.println("j'ai fini y'a pas de clients");
-					bourse.removeBroker(this);
-					break;//sortir du while(true)
 					
-				}
+					
 				
     }
-    	//envoyer un message � bourse
+    	//envoyer un message a la bourse
 }
 	
     	
