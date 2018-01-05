@@ -9,6 +9,10 @@ public class CourtierNotFoundException extends Exception {
 		super();
 		this.msg = msg;
 	}
+	@Override
+	public String getMessage() {
+		return msg;
+	}
 	
 	
 	

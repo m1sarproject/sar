@@ -2,9 +2,11 @@ package com.m1sar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Vector;
 
 
@@ -29,16 +32,20 @@ public class Client {
 	
 	BufferedReader in; 
 	PrintWriter out;
+	OutputStream outS;
+	InputStream inS;
+	private ObjectOutputStream outObject;
+	private ObjectInputStream inObject;
 	private String nameClient;
 	private int idClient;
 	private List<Ordre> ordres;
 	private Map<String,Integer> portefeuille;
 	private double solde;
-	private Courtier courtier;
+	private double tauxDeComission=0.1;
 	private Map<String,Double> prixBoursePourEntreprise;
 	private double depensesEventuelles;
-	
-	private boolean yesOuNon;
+	private int quantiteEventuelleVendu;
+
 	
 	public Client(String nameClient, double solde,int port,InetAddress hte) {
 		
@@ -50,6 +57,8 @@ public class Client {
 		this.port = port;
 		this.hote = hte;
 		connexion();
+		readStateStocks();
+		echangeOrdresClientCourtier();
 	}
 	
 	 /**@author Vitalina
@@ -59,20 +68,74 @@ public class Client {
 	public void connexion(){
 		
 			try {
-				sc= new Socket(hote,port);
 			
-			in =new BufferedReader(new InputStreamReader(sc.getInputStream()));
-			out=new PrintWriter(sc.getOutputStream(),true);
-			out.println("Client "+nameClient+" veut se connecter");
-			//System.out.println("Client "+nameClient+" veut se connecter");
-			String reponse;
-			reponse=in.readLine();
-			System.out.println("Courtier Courtier repond : "+reponse);
-			} 
+			sc= new Socket(hote,port);
+			outS=sc.getOutputStream();
+			inS=sc.getInputStream();
+			//in =new BufferedReader(new InputStreamReader(inS));
+			//out=new PrintWriter(outS,true);
+			outObject= new ObjectOutputStream(outS);
+			inObject= new ObjectInputStream(inS);
+			inscription(); //Envoi son nom au courtier
+			cpt=0;
+			System.out.println("Client "+nameClient+" veut se connecter");
+			String reponse,req;
+			reponse=(String) inObject.readObject();
+			
+			System.out.println("Courtier  repond : "+reponse);
+			//Scanner lect = new Scanner(System.in);
+			}
+			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
+			 //essaye de lire ce qu'on voit le client
+			 /*
+			 while(cpt <3) {
+				 System.out.println("Envoyer Ordre au Courtier ou bye : ");
+				 	reponse=lect.nextLine();
+				 	out.println(reponse);
+				    System.out.println("Donnez l'ordre a creer a ou v: ");
+				    req=lect.nextLine();
+					//out.println(req);
+				    outObject= new ObjectOutputStream(outS);
+				    if(req.equals("a")) {
+				    	System.out.println("Donnez le nom de l Entreprise");
+				    	req=lect.nextLine();
+				    	outObject.writeObject(new OrdreAchat(req, this.nameClient, 12.0, 50));
+				    	outObject.flush();
+				    	
+				    }
+				    if(req.equals("v")) {
+				    	System.out.println("Donnez le nom de l Entreprise");
+				    	req=lect.nextLine();
+				    	outObject.writeObject(new OrdreVente(req, this.nameClient, 12.0, 50));
+				    	outObject.flush();
+				    }
+				    reponse=in.readLine();
+				    System.out.println("le courtier a repondu "+reponse);
+				    cpt++;
+				    //in.readLine();				   
+			 	}
+			 
+			  out.println("bye");//mettre fin aux echanges
+			 
+			} */
 			
 			catch (Exception e) {
 				
 			}
+	}
+	
+	
+	
+	public void inscription() {
+		
+		try {
+			outObject.writeObject(nameClient);
+			outObject.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+		
 	}
 	
 	
@@ -85,9 +148,9 @@ public class Client {
 			System.out.println("cet Achat n est pas legal");
 			return;
 		}
-		double prixR=prix*quantite;
-		solde-=(prixR+(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreAchat(entreprise, this, prix);
+		
+		depensesEventuelles+=(prix*quantite);
+		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix,quantite);
 		ordres.add(r);
 		
 		
@@ -95,33 +158,14 @@ public class Client {
 		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
 		ObjectOutputStream oos;
 		try {
-			oos = new ObjectOutputStream(sc.getOutputStream());
-			oos.writeObject(r);
+			outObject.writeObject(r);
+			outObject.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		String reponse;
-		try {
-			reponse=in.readLine();
-			if(reponse.equals("y")) {
-				yesOuNon=true;
-				ordres.remove(r);
-				System.out.println("Ordre Achat est accepte par la Bourse");
-			}
-			else {
-				yesOuNon=false;
-				System.out.println("Ordre Achat est refuse par la Bourse");
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		
+
 	}
 	
 	
@@ -130,45 +174,49 @@ public class Client {
      * 
      */
 	public void vendre (double prix, int quantite, String entreprise){
+		if(portefeuille.size()==0)return;
 		if ( ! venteLegal(entreprise,quantite) ) {
 			System.out.println("ce Vente n est pas legal");
 			return;
 		}
-		double prixR=prix*quantite;
-		solde+=(prixR-(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreVente(entreprise, this, prix);
+		
+		quantiteEventuelleVendu+=quantite;
+		Ordre r =new OrdreVente(entreprise, this.nameClient, prix,quantite);
 		ordres.add(r);
 		System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
 		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
-		ObjectOutputStream oos;
+		
 		try {
-			oos = new ObjectOutputStream(sc.getOutputStream());
-			oos.writeObject(r);
+			outObject.writeObject(r);
+			outObject.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		String reponse;
+		
+	}
+	
+	
+	
+	public void echangeOrdresClientCourtier() {
+		Scanner lect = new Scanner(System.in);
+		
 		try {
-			reponse=in.readLine();
-			if(reponse.equals("y")) {
-				yesOuNon=true;
-				ordres.remove(r);
-				System.out.println("Ordre Vente est accepte par la Bourse");
-				
-			}
-			else {
-				yesOuNon=false;
-				System.out.println("Ordre Vente est refuse par la Bourse");
-			}
+			System.out.println("Hello mon Courtier je vais t envoyer des ORDRES");
+			
+			
+			
+			acheter(10.0, 5, "Apple");
+			System.out.println("OrdreAchat bien envoyer");
+			
+			vendre(7.0, 10, "Apple");
+			System.out.println("OrdreVente bien envoyer");
+			outObject.writeObject(new String("bye"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-	
 	
 	/**@author Vitalina
      * 
@@ -176,7 +224,7 @@ public class Client {
      */
 	public boolean venteLegal(String entreprise,int quantite){
 		if(!portefeuille.containsKey(entreprise))return false;
-		return portefeuille.get(entreprise)<quantite;
+		return (portefeuille.get(entreprise)-quantiteEventuelleVendu)<quantite;
 	}
 	
 	/**@author Vitalina
@@ -184,10 +232,14 @@ public class Client {
      * 
      */
 	public boolean achatLegal(String entreprise,double prix,int quantite){
-		double prixReel = prix + courtier.getTauxCommission() * prix ;
+		
+		double prixReel = prix + tauxDeComission * prix ;
+		//System.out.println("PrixdeApple = "+prixBoursePourEntreprise.get(entreprise));
 		boolean cond1=solde - depensesEventuelles  > prixReel;
-		boolean cond2=prixReel>(quantite*prixBoursePourEntreprise.get(entreprise));
-		return cond1 &&cond2;
+		//System.out.println("solde-depenses = "+(solde - depensesEventuelles));
+		//boolean cond2=prixReel>(quantite*prixBoursePourEntreprise.get(entreprise));
+		//System.out.println("prixrplus garend de E = "+(quantite*prixBoursePourEntreprise.get(entreprise)));
+		return cond1 ;//&&cond2;
 	}
 	
 	/**@author Vitalina
@@ -210,16 +262,54 @@ public class Client {
      * 
      * 
      */
-	public void majPortefeuilleAchat(String entreprise, int quantite){
-		if(yesOuNon){//si ok pour aquis de reception
-			if(portefeuille.containsKey(entreprise)){
-				int i=portefeuille.get(entreprise);
-				portefeuille.replace(entreprise, quantite+i);
+	
+	
+	public Ordre getOrderById(int id) {
+		Ordre res=null;
+		for(Ordre t : ordres) {
+			if(t.getId()==id)res=t;
+		}
+		return res;
+	}
+	
+	public void getReponseBource(int idOrdre, boolean yesOuNon) {
+		Ordre r=getOrderById(idOrdre);
+		if(yesOuNon) {
+			if(r instanceof OrdreAchat) {
+				majPortefeuilleAchat(r);
+				depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantite());
+				
 			}
-			else{
-				portefeuille.put(entreprise, quantite);
+			if(r instanceof OrdreVente) {
+				majPortefeuilleVente(r);
+				quantiteEventuelleVendu-=r.getQuantite();
 			}
 		}
+		if(r instanceof OrdreAchat) {
+			depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantite());
+		}
+		if(r instanceof OrdreVente) {
+			quantiteEventuelleVendu-=r.getQuantite();
+		}
+		ordres.remove(r);
+		
+		
+	}
+	
+	
+	
+	public void majPortefeuilleAchat(Ordre r){
+			double prixR=r.getPrixUnitaire()*r.getQuantite();
+			solde-=(prixR+(prixR*tauxDeComission));
+			
+			if(portefeuille.containsKey(r.getEntrepriseName())){
+				int i=portefeuille.get(r.getEntrepriseName());
+				portefeuille.replace(r.getEntrepriseName(), r.getQuantite()+i);
+			}
+			else{
+				portefeuille.put(r.getEntrepriseName(), r.getQuantite());
+			}
+		
 	}
 		
 	
@@ -229,31 +319,21 @@ public class Client {
      * 
      * 
      */
-	public void majPortefeuilleVente(String entreprise, int quantite){
-		if(yesOuNon){
-			if(!portefeuille.containsKey(entreprise))return;
-			int i=portefeuille.get(entreprise);
-			if(i==quantite)portefeuille.remove(entreprise);
-			else{
-			portefeuille.replace(entreprise, i-quantite);
-			}
+	public void majPortefeuilleVente(Ordre r){
+		
+		if(!portefeuille.containsKey(r.getEntrepriseName()))return;
+		double prixR=r.getPrixUnitaire()*r.getQuantite();
+		solde+=(prixR-(prixR*tauxDeComission));
+		int i=portefeuille.get(r.getEntrepriseName());
+		if(i==r.getQuantite())portefeuille.remove(r.getEntrepriseName());
+			
+		else{
+			portefeuille.replace(r.getEntrepriseName(), i-r.getQuantite());
 		}
 		
+		
 	}
-	/**@author Vitalina
-     * 
-     * 
-     */
-	public void setCourtier(Courtier c){
-		courtier=c;
-	}
-	/**@author Vitalina
-     * 
-     * 
-     */
-	public Courtier getCourtier(){
-		return courtier;
-	}
+	
 	
 	/**@author Vitalina
      * 
@@ -261,26 +341,22 @@ public class Client {
      */
 	public void readStateStocks(){
 		
-		Vector<Entreprise> entreprises ;
+		
 		try {
-			out.println("Client "+nameClient+" veut savoit l etat du marche");
+			
+			inObject=new ObjectInputStream(inS);
 			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
-			ObjectInputStream obinput=new ObjectInputStream(sc.getInputStream());
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
-			entreprises = (Vector<Entreprise>) obinput.readObject();
-			System.out.println("Entreprises avec des prix recu par Client");
-			for(Entreprise e: entreprises) {
-				prixBoursePourEntreprise.put(e.getName(), e.getPrixUnitaireAction());
-			}
+			prixBoursePourEntreprise =   (Map<String, Double>) inObject.readObject();
+			System.out.println("Voila l etat du marche : ");
+			System.out.println(prixBoursePourEntreprise);
 			
 		}catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -295,7 +371,7 @@ public class Client {
 	
 		int nport = Integer.parseInt(args[0]);
 		InetAddress hote = InetAddress.getByName(args[1]);
-		Client client = new Client ("vitalinka",21d,nport,hote);
+		Client client = new Client ("vitalinka",210.0,nport,hote);
 		
 		
 	}

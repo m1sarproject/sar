@@ -1,7 +1,9 @@
 package com.m1sar;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -38,7 +40,8 @@ PrintWriter out;
 public Courtier(String name,int port,InetAddress hte) {
 	
 	id=nb;
-	this.name=name+nb++;
+	this.name=name;
+	this.id = nb++;
 	this.port = port;
 	this.hote = hte;
 }
@@ -46,8 +49,7 @@ public Courtier(String name,int port,InetAddress hte) {
 /**
  * Send to all his cutomers the share prices that have been updated by the stock market 
  */
-public void sendUpdatedPrices() {//quand est ce que s'est fait? au début de la journée avant qu'un client ne soit déco ;il faut ajouter un 
-								//nombre pour représenter les jours
+public void sendUpdatedPrices() {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
 	
 }
 
@@ -55,7 +57,7 @@ public void sendUpdatedPrices() {//quand est ce que s'est fait? au début de la j
 /**
  * the brocker sends to his customers the information about the share parices of each company in the stock market  
  */
-public void sendInfoCompanies() {
+public void sendPriceCompanies() {
 	
 }
 /**
@@ -92,28 +94,39 @@ public double getTauxCommission() {
 }
 
 public void connexion(){
-	ObjectOutputStream oos;;
+	
 	try {
 	sc= new Socket(hote,port);
-	System.out.println("Courtier "+name+" bien connecte a la Bourse");
-	oos = new ObjectOutputStream(sc.getOutputStream());
-	oos.writeObject(new String("Courtier"));
+	inscription(sc);
 	}
 	catch (Exception e) {
-		
+		System.out.println("Erreur de connexion");
 	}
 }
 
 
+//Permet simplement de s'inscrire auprès de la bourse en donnant son nom
+public void inscription(Socket sc) throws IOException {
+	
+	OutputStream outS=sc.getOutputStream();
+	out=new PrintWriter(outS,true);
+	out.println(name);
+	
+}
+
 public static void main(String[] args) throws UnknownHostException {
+	
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
-	Courtier c=new Courtier("courtier",nport,hote);
-	Courtier c1=new Courtier("courtier",nport,hote);
-	Courtier c2=new Courtier("courtier",nport,hote);
-	c.connexion();
-	c1.connexion();
-	c2.connexion();
-}
+	
+	Courtier b=new Courtier("George Soros",nport,hote);
+	b.connexion();
+	
+	System.out.println("Le courtier s'est connecté à la bourse");
+	
+	/*Courtier c=new Courtier("Warren Buffet",nport,hote);
+	c.connexion();*/
+
+	}
 
 }

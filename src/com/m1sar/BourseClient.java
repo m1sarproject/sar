@@ -32,27 +32,18 @@ public class BourseClient extends Thread {
 	
 	public ThreadCourtier getFreeCourtier() throws CourtierNotFoundException {
 	
-		int index = -1;
-	
 		for (ThreadCourtier courtier : listcourtiers) {
-			
-			if (courtier.estDispo()) return courtier;
-			
+			if (courtier.estDispo()) return courtier;	
 		}
 		
-		
-		throw new CourtierNotFoundException ("Aucun courtier n'est disponible");
-		
+		throw new CourtierNotFoundException ("Aucun courtier n'est disponible");	
 	}
 	
 	public void run () {
 		
 		try {
 			serveurClient = new ServerSocket(nport);
-			System.out.println("Le serveur client est a l ecoute sur le port "+nport);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			System.out.println("Le serveur client est à l'ecoute sur le port "+nport);
 		
 		
 		while (true) {
@@ -63,27 +54,33 @@ public class BourseClient extends Thread {
 				/*BufferedReader in =new BufferedReader(new InputStreamReader(clientConnecte.getInputStream()));
 				PrintWriter out=new PrintWriter(clientConnecte.getOutputStream(),true);
 				out.println("vita mechancete");*/
-			   ThreadCourtier c=getFreeCourtier();
-				c.addClient(clientConnecte);
-				c.start();
-				System.out.println("Le courtier a re�u son client par BourseClient");
-				c.incNbClient();
+			    ThreadCourtier courtier=getFreeCourtier();
+			    courtier.addClient(clientConnecte);
+				//c.start();
+				System.out.println("Le courtier a reçu son client par BourseClient");
 				
-			} catch (Exception e ) {
-				
-				try {
-					serveurClient.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				e.printStackTrace();
-				} 
+			} 
+			
+			catch (CourtierNotFoundException e ) {
+				System.out.println(e.getMessage());
+				clientConnecte.close();
+			}
 			
 
-
+		}
+		}
+		catch( IOException e) {
+			e.getMessage();
+			
+		}
+		finally {
+			try {
+				serveurClient.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		}
 			
 			
 			/*catch (CourtierNotFoundException e) {				
