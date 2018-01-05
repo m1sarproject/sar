@@ -357,7 +357,8 @@ public class Client {
 		
 		try {
 			
-			out.println("Client "+nameClient+" veut savoit l etat du marche");
+			outObject.writeObject("Client "+nameClient+" veut savoit l etat du marche");
+			outObject.flush();
 			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
