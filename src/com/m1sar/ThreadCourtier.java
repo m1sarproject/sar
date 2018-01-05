@@ -50,12 +50,11 @@ public class ThreadCourtier extends Thread {
 
 		String rep="",req="",nomclient="";
 		int nb = 1;
-<<<<<<< HEAD
+
 		ArrayList<Ordre> lordre=new ArrayList<>();
-		//récuperer la liste des prix 
-=======
 		//rï¿½cuperer la liste des prix 
->>>>>>> 235587c3fe55c578c9d991b86af6d6f5e9d55892
+
+		
 		prixParEntreprise=bourse.getPrixParEntreprise();
 		
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
@@ -75,22 +74,14 @@ public class ThreadCourtier extends Thread {
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-<<<<<<< HEAD
+
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
 		    			
-		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
-=======
-		    			outObject=new ObjectOutputStream(outS);
-		    			outObject.writeObject(prixParEntreprise);
-		    			outObject.flush();
-		    			break;
-		    			//envoyer la liste des prix u client
-		    			
-		    		
 
-		    			/*while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
->>>>>>> 235587c3fe55c578c9d991b86af6d6f5e9d55892
+
+		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
+
 
 		    			{
 		    				in =new BufferedReader(new InputStreamReader(inS));
@@ -98,7 +89,7 @@ public class ThreadCourtier extends Thread {
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
 		    					System.out.println("je suis dans le if du bye");
-		    					//a modifier mettre le put quand le courtier reçoit un accord pas ici
+		    					//a modifier mettre le put quand le courtier reï¿½oit un accord pas ici
 		    					listeOrdre.put(nomclient, lordre);
 		    					majClient();
 		    					break;

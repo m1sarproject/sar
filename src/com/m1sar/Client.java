@@ -58,6 +58,7 @@ public class Client {
 		this.hote = hte;
 		connexion();
 		readStateStocks();
+		echangeOrdresClientCourtier();
 	}
 	
 	 /**@author Vitalina
@@ -206,6 +207,7 @@ public class Client {
 			
 			vendre(7.0, 10, "Apple");
 			System.out.println("OrdreVente bien envoyer");
+			outObject.writeObject(new String("bye"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
