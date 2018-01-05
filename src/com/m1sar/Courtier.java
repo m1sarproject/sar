@@ -88,6 +88,7 @@ public void SendAccordInformation() {
 }
 
 
+
 public double getTauxCommission() {
 	return tauxCommission;
 }
@@ -104,7 +105,7 @@ public void connexion(){
 }
 
 
-//Permet simplement de s'inscrire auprÃ¨s de la bourse en donnant son nom
+//Permet simplement de s'inscrire auprès de la bourse en donnant son nom
 public void inscription(Socket sc) throws IOException {
 	
 	OutputStream outS=sc.getOutputStream();
@@ -121,7 +122,7 @@ public static void main(String[] args) throws UnknownHostException {
 	Courtier b=new Courtier("George Soros",nport,hote);
 	b.connexion();
 	
-	System.out.println("Le courtier s'est connectÃ© Ã  la bourse");
+	System.out.println("Le courtier s'est connecté à la bourse");
 	
 	/*Courtier c=new Courtier("Warren Buffet",nport,hote);
 	c.connexion();*/

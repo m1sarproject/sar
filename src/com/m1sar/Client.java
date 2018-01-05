@@ -41,7 +41,7 @@ public class Client {
 	private List<Ordre> ordres;
 	private Map<String,Integer> portefeuille;
 	private double solde;
-	private Courtier courtier;// nom du courtier
+	private double tauxDeComission=0.1;
 	private Map<String,Double> prixBoursePourEntreprise;
 	private double depensesEventuelles;
 	private int quantiteEventuelleVendu;
@@ -202,20 +202,26 @@ public class Client {
 		Scanner lect = new Scanner(System.in);
 		
 		try {
-			outObject.writeObject(new String("Hello mon Courtier je vais t envoyer des ORDRES"));
-			outObject.flush();
-			System.out.println("Donnez la quantite a acheter");
-			int q=lect.nextInt();
-			System.out.println("Donnez le prix");
-			double p=lect.nextDouble();
-			System.out.println("Donnez l entreprise");
-			String e=lect.nextLine();
-			acheter(p, q, e);
-			System.out.println("OrdreAchat bien envoyer");
-			
-			vendre(7.0, 10, "Apple");
-			System.out.println("OrdreVente bien envoyer");
+			System.out.println("Hello mon Courtier je vais t envoyer des ORDRES");
+			System.out.print("Donnez le nbOrdres a creer : ");
+			int nbOrdre=lect.nextInt();
+			lect.nextLine();
+			for(int i=0; i<nbOrdre;i++){
+				System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
+				String r=lect.nextLine();
+				if(r.equals("a")){
+					acheter(5.0, 5, "Apple");
+					System.out.println("OrdreAchat bien envoyer");
+				}
+				if(r.equals("v")){
+					vendre(7.0, 10, "Apple");
+					//retourner dans vendre un boolean pour voir si l'ordre est envoye ou pas
+					System.out.println("OrdreVente bien envoyer");
+				}
+				
+			}
 			outObject.writeObject(new String("bye"));
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -236,10 +242,14 @@ public class Client {
      * 
      */
 	public boolean achatLegal(String entreprise,double prix,int quantite){
-		double prixReel = prix + courtier.getTauxCommission() * prix ;
+		
+		double prixReel = prix + tauxDeComission * prix ;
+		//System.out.println("PrixdeApple = "+prixBoursePourEntreprise.get(entreprise));
 		boolean cond1=solde - depensesEventuelles  > prixReel;
-		boolean cond2=prixReel>(quantite*prixBoursePourEntreprise.get(entreprise));
-		return cond1 &&cond2;
+		//System.out.println("solde-depenses = "+(solde - depensesEventuelles));
+		//boolean cond2=prixReel>(quantite*prixBoursePourEntreprise.get(entreprise));
+		//System.out.println("prixrplus garend de E = "+(quantite*prixBoursePourEntreprise.get(entreprise)));
+		return cond1 ;//&&cond2;
 	}
 	
 	/**@author Vitalina
@@ -300,7 +310,7 @@ public class Client {
 	
 	public void majPortefeuilleAchat(Ordre r){
 			double prixR=r.getPrixUnitaire()*r.getQuantite();
-			solde-=(prixR+(prixR*courtier.getTauxCommission()));
+			solde-=(prixR+(prixR*tauxDeComission));
 			
 			if(portefeuille.containsKey(r.getEntrepriseName())){
 				int i=portefeuille.get(r.getEntrepriseName());
@@ -323,7 +333,7 @@ public class Client {
 		
 		if(!portefeuille.containsKey(r.getEntrepriseName()))return;
 		double prixR=r.getPrixUnitaire()*r.getQuantite();
-		solde+=(prixR-(prixR*courtier.getTauxCommission()));
+		solde+=(prixR-(prixR*tauxDeComission));
 		int i=portefeuille.get(r.getEntrepriseName());
 		if(i==r.getQuantite())portefeuille.remove(r.getEntrepriseName());
 			
@@ -333,20 +343,7 @@ public class Client {
 		
 		
 	}
-	/**@author Vitalina
-     * 
-     * 
-     */
-	public void setCourtier(Courtier c){
-		courtier=c;
-	}
-	/**@author Vitalina
-     * 
-     * 
-     */
-	public Courtier getCourtier(){
-		return courtier;
-	}
+	
 	
 	/**@author Vitalina
      * 
@@ -357,8 +354,7 @@ public class Client {
 		
 		try {
 			
-			outObject.writeObject("Client "+nameClient+" veut savoit l etat du marche");
-			outObject.flush();
+			inObject=new ObjectInputStream(inS);
 			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
@@ -385,7 +381,7 @@ public class Client {
 	
 		int nport = Integer.parseInt(args[0]);
 		InetAddress hote = InetAddress.getByName(args[1]);
-		Client client = new Client ("vitalinka",210d,nport,hote);
+		Client client = new Client ("vitalinka",210.0,nport,hote);
 		
 		
 	}

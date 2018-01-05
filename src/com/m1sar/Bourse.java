@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+
+
 public class Bourse {
 
 	
@@ -336,10 +338,10 @@ public class Bourse {
 		ServerSocket serveurCourtier=null;
 		
 		try { 
-			serveurCourtier= new ServerSocket(nport); //Socket d'Ã©coute
+			serveurCourtier= new ServerSocket(nport); //Socket d'écoute
 		}
 		
-		catch (Exception e) {System.err.println("La crÃ©ation du serveur d'Ã©coute a Ã©chouÃ©");}
+		catch (Exception e) {System.err.println("La création du serveur d'écoute a échoué");}
 		
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
 		BourseClient bourseclient = new BourseClient (nport+1,bourse.courtiers); 
@@ -349,16 +351,16 @@ public class Bourse {
 		 		try{
 		 		
 		 		System.out.println("La bourse attend un courtier");
-				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte Ã Â  la socket de communication
+				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte à  la socket de communication
 				
-				System.out.println("Connexion Courtier acceptÃ©e par Bourse");	
+				System.out.println("Connexion Courtier acceptée par Bourse");	
 				
 				BufferedReader in =new BufferedReader(new InputStreamReader(courtierConnecte.getInputStream()));
 				String nomcourtier = in.readLine();
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier); //Passer la map des prix en paramÃ¨tre au courtier
+				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier); //Passer la map des prix en paramètre au courtier
 				bourse.addBroker(tc);	
 
 				}

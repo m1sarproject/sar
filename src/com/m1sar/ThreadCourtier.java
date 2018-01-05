@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+
+
+
 public class ThreadCourtier extends Thread {
 
 //	private Socket sCourtier; //socket pour communiuqer avec courtier
@@ -28,8 +31,8 @@ public class ThreadCourtier extends Thread {
 	private double accountBalance=0.;
 	private Bourse bourse;//la bourse qui a cr�� le Threadcourtier 
 	private boolean dispo=true;
-	private BufferedReader in; 
-	private PrintWriter out;
+	//private BufferedReader in; 
+	//private PrintWriter out;
 	private OutputStream outS;
 	private InputStream inS;
 	private ObjectOutputStream outObject;
@@ -48,7 +51,7 @@ public class ThreadCourtier extends Thread {
     @Override
     public void run() {
 
-		String rep="",req="",nomclient="";
+		String nomclient="";
 		int nb = 1;
 
 		ArrayList<Ordre> lordre=new ArrayList<>();
@@ -77,7 +80,7 @@ public class ThreadCourtier extends Thread {
 		    			outObject.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
 		    			outObject.flush();
 
-		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
+		    			//out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
 
@@ -85,23 +88,29 @@ public class ThreadCourtier extends Thread {
 		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
 		    			{
 		    				
-		    				req=(String)inObject.readObject();
-		    				if(req.equals("bye")) {
-		    				//supprimer le client et fermer sa socket et decremente nbcustumer
-		    					System.out.println("je suis dans le if du bye");
-		    					//a modifier mettre le put quand le courtier re�oit un accord pas ici
-		    					listeOrdre.put(nomclient, lordre);
-		    					majClient();
-		    					break;
+		    				
+		    				System.out.println("JE SUIS DANS 2 VAL");
+		    				Object req=inObject.readObject(); 
+		    				if(req instanceof String) {
+		    					String rep=(String)req;
+		    					if(rep.equals("bye")) {
+				    				//supprimer le client et fermer sa socket et decremente nbcustumer
+				    					System.out.println("je suis dans le if du bye");
+				    					//a modifier mettre le put quand le courtier re�oit un accord pas ici
+				    					listeOrdre.put(nomclient, lordre);
+				    					majClient();
+				    					break;
+				    				}
 		    				}
-
+		    				
 		    				else {
-		    				Ordre ordre = (Ordre) inObject.readObject(); //Le serveur doit connaitre la classe, et doit faire un cast
+		    				Ordre ordre = (Ordre) req; 
 			    			System.out.println("Object received = " + ordre.getEntrepriseName());
 			    			transmettreOrdreABourse(ordre);
 			    			lordre.add(ordre);
 			    			//enregistrer l'ordre pour ce client
 		    				}
+		    				//req=(String)inObject.readObject();
 							
 
 		    			}
@@ -161,7 +170,6 @@ public class ThreadCourtier extends Thread {
     public void transmettreOrdreABourse(Ordre ordre) {
     	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
 		e.addOrder(ordre);//ajouter l'ordre dans entreprise
-		out.println("Votre ordre a bien ete transmis a l'entreprise :  "+ordre.getEntrepriseName());
     }
     
     /**
