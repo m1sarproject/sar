@@ -15,7 +15,7 @@ public class Bourse {
 	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
-	
+	 
 	
 	public Bourse() {
 		

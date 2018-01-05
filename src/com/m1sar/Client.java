@@ -80,22 +80,30 @@ public class Client {
 			String reponse,req;
 			reponse=in.readLine();
 			System.out.println("Courtier  repond : "+reponse);
-			Ordre d=new OrdreAchat("Apple", nameClient, 10,5);
 			outObject= new ObjectOutputStream(outS);
 			inObject= new ObjectInputStream(inS);
-			System.out.println("J'envoi");
-			outObject.writeObject(d);  //l'envoi des objets se fait ici, l'objet doit etre serializable
-			outObject.flush();
-			//outObject.close();
-			System.out.println("j'ai envoy�");
+			
 			 Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
 			
 			 while(cpt <3) {
-				    System.out.println("Donnez le msg pour courtier: ");
+				 System.out.println("Envoyer Ordre au Courtier ou bye : ");
+				 	reponse=lect.nextLine();
+				 	out.println(reponse);
+				    System.out.println("Donnez l'ordre a creer a ou v: ");
 				    req=lect.nextLine();
-					out.println(req);
+					//out.println(req);
+				    if(req.equals("a")) {
+				    	System.out.println("Donnez le nom de l Entreprise");
+				    	req=lect.nextLine();
+				    	outObject.writeObject(new OrdreAchat(req, this.nameClient, 12.0, 50));
+				    }
+				    if(req.equals("v")) {
+				    	System.out.println("Donnez le nom de l Entreprise");
+				    	req=lect.nextLine();
+				    	outObject.writeObject(new OrdreVente(req, this.nameClient, 12.0, 50));
+				    }
 				    reponse=in.readLine();
 				    System.out.println("le courtier a repondu "+reponse);
 				    cpt++;
@@ -309,7 +317,7 @@ public class Client {
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
-			entreprises = (Vector<Entreprise>) inObject.readObject();
+			entreprises =  (Vector<Entreprise>) inObject.readObject();
 			System.out.println("Entreprises avec des prix recu par Client");
 			for(Entreprise e: entreprises) {
 				prixBoursePourEntreprise.put(e.getName(), e.getPrixUnitaireAction());

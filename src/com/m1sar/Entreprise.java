@@ -2,14 +2,31 @@ package com.m1sar;
 
 import java.util.ArrayList;
 
-public class Entreprise{
+public class Entreprise {
 
 	private String name;
 	private int nbActions;
 	private ArrayList<Ordre> ordres;
 	private double prixUnitaireAction;
-	
+	private int nbDemandesAchats;
+	private int nbDemandeVentes;
 	 
+	public int getNbDemandesAchats() {
+		return nbDemandesAchats;
+	}
+
+	public void setNbDemandesAchats(int nbDemandesAchats) {
+		this.nbDemandesAchats = nbDemandesAchats;
+	}
+
+	public int getNbDemandeVentes() {
+		return nbDemandeVentes;
+	}
+
+	public void setNbDemandeVentes(int nbDemandeVentes) {
+		this.nbDemandeVentes = nbDemandeVentes;
+	}
+
 	public Entreprise(String name, int nbActions,double prixUnitaireAction){
 		this.name=name;
 		this.nbActions=nbActions;
