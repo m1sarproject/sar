@@ -52,7 +52,7 @@ public class Bourse {
 		
 		
 		if (o instanceof OrdreAchat)
-			return (concerned.getPrixUnitaireAction() > suggestedprice);
+			return (concerned.getPrixUnitaireAction() > suggestedprice );
 	
 		return false;
 	

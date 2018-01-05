@@ -71,8 +71,8 @@ public class ThreadCourtier extends Thread {
 		    			//socket.close();
 		    			
 		    			System.out.println("h1");
-		    			break;
-		    			/*while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
+		    			
+		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
 
 		    			{
 		    				System.out.println("h2");
@@ -86,7 +86,7 @@ public class ThreadCourtier extends Thread {
 		    					majClient();
 		    					break;
 		    				}
-		    			}*/
+		    			}
 		    			
     			}
     			catch (IOException e) {

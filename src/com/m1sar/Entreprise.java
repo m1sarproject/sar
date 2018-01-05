@@ -45,6 +45,11 @@ public class Entreprise{
 		ordres.add(o);
 	}
 	
+	public void decreaseNbAction(int n) {
+		
+		nbActions -= n;
+	}
+	
 
 	
 }

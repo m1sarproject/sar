@@ -82,11 +82,11 @@ public class Client {
 			System.out.println("Courtier  repond : "+reponse);
 			Ordre d=new OrdreAchat("Apple", nameClient, 10,5);
 			outObject= new ObjectOutputStream(outS);
-			
+			inObject= new ObjectInputStream(inS);
 			System.out.println("J'envoi");
 			outObject.writeObject(d);  //l'envoi des objets se fait ici, l'objet doit etre serializable
 			outObject.flush();
-			outObject.close();
+			//outObject.close();
 			System.out.println("j'ai envoy�");
 			 /*Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
@@ -306,11 +306,10 @@ public class Client {
 		try {
 			out.println("Client "+nameClient+" veut savoit l etat du marche");
 			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
-			ObjectInputStream obinput=new ObjectInputStream(sc.getInputStream());
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
-			entreprises = (Vector<Entreprise>) obinput.readObject();
+			entreprises = (Vector<Entreprise>) inObject.readObject();
 			System.out.println("Entreprises avec des prix recu par Client");
 			for(Entreprise e: entreprises) {
 				prixBoursePourEntreprise.put(e.getName(), e.getPrixUnitaireAction());
