@@ -208,7 +208,7 @@ public class Client {
 			System.out.println("OrdreAchat bien envoyer");
 			
 			vendre(7.0, 10, "Apple");
-			
+			System.out.println("OrdreVente bien envoyer");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
