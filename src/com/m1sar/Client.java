@@ -83,7 +83,7 @@ public class Client {
 			reponse=in.readLine();
 			System.out.println("Courtier  repond : "+reponse);
 			System.out.println("AVANT while ");
-			 Scanner lect = new Scanner(System.in);
+			Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
 			 

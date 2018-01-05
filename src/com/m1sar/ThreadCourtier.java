@@ -58,7 +58,6 @@ public class ThreadCourtier extends Thread {
 		    			out=new PrintWriter(outS,true);
 		    			in =new BufferedReader(new InputStreamReader(inS));
 		    			System.out.println("client numéro "+nb+" connecte a ce courtier");
-		    		    
 		    			nomclient=in.readLine(); //Le premier message doit etre le nom du client
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
