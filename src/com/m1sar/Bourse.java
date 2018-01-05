@@ -45,17 +45,60 @@ public class Bourse {
 	}
 	
 	public boolean agreeOrNot(Ordre o) {
-
+		
 		Entreprise concerned = this.getByName(o.getEntrepriseName());
-		concerned.addOrder(o);
-		double suggestedprice = o.getPrix_Propose_par_Client();
+
+		if (o instanceof OrdreVente) {
+			
+			
+			concerned.addOrder(o);
+			
+		}
+
+		
+		if (o instanceof OrdreAchat) {
+			
+		int nbActionsDispo = concerned.getNbActions();
+		int nbActionsVoulus = o.getQuantite();
+		
+		double prixEntreprise = concerned.getPrixUnitaireAction();
+		double prixPropose = o.getPrixUnitaire();
+		
+		if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
+			
+			o.setEstFini();
+			concerned.DecreaseNbActions(nbActionsVoulus);
+			concerned.addOrder(o); //Je stoque l'ordre dans l'entreprise
+			return true;		
+	
+		}
 		
 		
-		if (o instanceof OrdreAchat)
-			return (concerned.getPrixUnitaireAction() > suggestedprice);
+		for (  Ordre ordre : concerned.getOrdres()) {	//si c'est un ordre de vente :
+			
+			if (ordre instanceof OrdreVente && ordre.estFini==false) {
+				
+				if (matching(o,ordre)) return true;
+				
+			}
+		
+		
+		}
+				
+	 }
+		
+
+
+	return false;
 	
-		return false;
+	}
 	
+	
+	public boolean matching(Ordre achat,Ordre vente) {
+		
+		
+		return achat.getQuantite() >= vente.getQuantite() && achat.getPrixUnitaire() >= vente.getPrixUnitaire();
+				
 	}
 
     /**@author Lyes

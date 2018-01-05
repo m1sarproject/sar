@@ -45,6 +45,18 @@ public class Entreprise{
 		ordres.add(o);
 	}
 	
+	public void DecreaseNbActions(int n) {
+		
+		nbActions -= n;
+		
+	}
+
+	public ArrayList<Ordre> getOrdres() {
+		return ordres;
+	}
+	
+	
+	
 
 	
 }
