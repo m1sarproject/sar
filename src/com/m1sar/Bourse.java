@@ -1,11 +1,15 @@
 package com.m1sar;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+
 
 public class Bourse {
 
@@ -172,7 +176,7 @@ public class Bourse {
 		
 		Bourse bourse = new Bourse();
 		bourse.addAllCompanies(compagnies);
-		
+		ObjectInputStream oos;
 		ServerSocket serveurCourtier=null;
 		int nport = Integer.parseInt(args[0]);
 		
@@ -181,14 +185,16 @@ public class Bourse {
 		}
 		
 		catch (Exception e) {}
-
+		
 		System.out.println("Le serveur courtier est a l ecoute sur le port "+nport);
 		BourseClient bourseclient = new BourseClient (nport+1,bourse.courtiers); 
 		 while(true) {		
-
+			 String nomCourtier=null;
 		 		try{
 				Socket courtierConnecte = serveurCourtier.accept();	//Le courtier se connecte à  la socket de communication
-				System.out.println("Connexion Courtier accepte par Bourse");		
+				//oos=new ObjectInputStream(courtierConnecte.getInputStream());
+				//nomCourtier=(String)oos.readObject();
+				System.out.println("Connexion de "+nomCourtier+" accepte par Bourse");		
 				ThreadCourtier tc=new ThreadCourtier(bourse);
 				bourse.addBroker(tc); //à compléter avec une méthode obtenant un client à affecter
 

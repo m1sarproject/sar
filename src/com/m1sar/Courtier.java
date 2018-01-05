@@ -1,6 +1,7 @@
 package com.m1sar;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -85,24 +86,34 @@ public void SendAccordInformation() {
 }
 
 
+
 public double getTauxCommission() {
 	return tauxCommission;
 }
 
 public void connexion(){
-	
+	ObjectOutputStream oos;;
 	try {
 	sc= new Socket(hote,port);
+	System.out.println("Courtier "+name+" bien connecte a la Bourse");
+	oos = new ObjectOutputStream(sc.getOutputStream());
+	oos.writeObject(new String("Courtier"));
 	}
 	catch (Exception e) {
 		
 	}
 }
+
+
 public static void main(String[] args) throws UnknownHostException {
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
 	Courtier c=new Courtier("courtier",nport,hote);
+	Courtier c1=new Courtier("courtier",nport,hote);
+	Courtier c2=new Courtier("courtier",nport,hote);
 	c.connexion();
+	c1.connexion();
+	c2.connexion();
 }
 
 }
