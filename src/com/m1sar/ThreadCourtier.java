@@ -76,9 +76,9 @@ public class ThreadCourtier extends Thread {
 
 		    			{
 		    				System.out.println("h2");
-							req=in.readLine();
+							//req=in.readLine();
 							System.out.println("h3");
-		    				System.out.println("le client me dit (courtier)"+req);
+		    				//System.out.println("le client me dit (courtier)"+req);
 		    				
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
