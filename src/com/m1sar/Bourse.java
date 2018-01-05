@@ -1,8 +1,12 @@
 package com.m1sar;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,7 +20,8 @@ public class Bourse {
 	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
-	 
+	private HashMap<String,Double> prixParEntreprise;
+	private int dayid; 
 	
 	public Bourse() {
 		
@@ -31,7 +36,7 @@ public class Bourse {
 	
 	public HashMap<String,Double> updatePrice() {
 		
-			HashMap<String,Double> prixParEntreprise = new HashMap<String,Double> (); //Je recrée à chaque fois cette map, donc inutile  
+			prixParEntreprise = new HashMap<String,Double> (); //Je recrée à chaque fois cette map, donc inutile  
 																					  // d'appeller Replace () pour ma map
 			for (Entreprise entreprise : entreprises) {
 				
@@ -43,11 +48,49 @@ public class Bourse {
 			}
 		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
 	
-		
+			
+			
+			dayid++;
+			writeToFile(prixParEntreprise);
 			return prixParEntreprise;
 			
 	}
 	
+	
+	public void writeToFile(HashMap informations) {
+	
+		try {
+	           FileOutputStream fos = new FileOutputStream("jour"+dayid);
+	           ObjectOutputStream oos = new ObjectOutputStream(fos);
+	           oos.writeObject(informations);
+	           oos.close();
+	           fos.close();
+	           System.out.printf("Les informations de la journée ont bien été sauvegardées");
+	     }catch(IOException ioe) {
+	           ioe.printStackTrace();
+	     }
+  }
+	
+	
+	public HashMap<String,Double> readFromFile(String filename) {
+		
+		HashMap<String,Double> informations = null;
+	      try {
+	         FileInputStream fis = new FileInputStream(filename);
+	         ObjectInputStream ois = new ObjectInputStream(fis);
+	         informations = (HashMap<String,Double>) ois.readObject();
+	         ois.close();
+	         fis.close();
+	      }catch(IOException ioe) {
+	         ioe.printStackTrace();
+	      }catch(ClassNotFoundException c) {
+	         System.out.println("Class not found");
+	         c.printStackTrace();
+	      }
+	      
+	      return informations;
+		
+	}
 	
 	
 	public Entreprise getByName(String name) {
@@ -296,7 +339,7 @@ public class Bourse {
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier);
+				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier); //Passer la map des prix en paramètre au courtier
 				bourse.addBroker(tc);	
 
 				}
@@ -304,8 +347,7 @@ public class Bourse {
 				catch (Exception e) {
 					System.out.println("Socket ferme dans Bourse de serveurCourtier");
 					serveurCourtier.close();
-					}
-		 	
+					}		 	
 					
 		 }	
 
