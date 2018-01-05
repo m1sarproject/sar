@@ -51,7 +51,7 @@ public class ThreadCourtier extends Thread {
     @Override
     public void run() {
 
-		String rep="",req="",nomclient="";
+		String nomclient="";
 		int nb = 1;
 
 		ArrayList<Ordre> lordre=new ArrayList<>();
@@ -90,17 +90,21 @@ public class ThreadCourtier extends Thread {
 		    				
 		    				
 		    				System.out.println("JE SUIS DANS 2 VAL");
-		    				if(req.equals("bye")) {
-		    				//supprimer le client et fermer sa socket et decremente nbcustumer
-		    					System.out.println("je suis dans le if du bye");
-		    					//a modifier mettre le put quand le courtier re�oit un accord pas ici
-		    					listeOrdre.put(nomclient, lordre);
-		    					majClient();
-		    					break;
+		    				Object req=inObject.readObject(); 
+		    				if(req instanceof String) {
+		    					String rep=(String)req;
+		    					if(rep.equals("bye")) {
+				    				//supprimer le client et fermer sa socket et decremente nbcustumer
+				    					System.out.println("je suis dans le if du bye");
+				    					//a modifier mettre le put quand le courtier re�oit un accord pas ici
+				    					listeOrdre.put(nomclient, lordre);
+				    					majClient();
+				    					break;
+				    				}
 		    				}
-
+		    				
 		    				else {
-		    				Ordre ordre = (Ordre) inObject.readObject(); //Le serveur doit connaitre la classe, et doit faire un cast
+		    				Ordre ordre = (Ordre) req; 
 			    			System.out.println("Object received = " + ordre.getEntrepriseName());
 			    			transmettreOrdreABourse(ordre);
 			    			lordre.add(ordre);

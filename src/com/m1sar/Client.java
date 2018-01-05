@@ -205,7 +205,7 @@ public class Client {
 			System.out.println("Hello mon Courtier je vais t envoyer des ORDRES");
 			System.out.print("Donnez le nbOrdres a creer : ");
 			int nbOrdre=lect.nextInt();
-			System.out.println();
+			lect.nextLine();
 			for(int i=0; i<nbOrdre;i++){
 				System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 				String r=lect.nextLine();
@@ -215,6 +215,7 @@ public class Client {
 				}
 				if(r.equals("v")){
 					vendre(7.0, 10, "Apple");
+					//retourner dans vendre un boolean pour voir si l'ordre est envoye ou pas
 					System.out.println("OrdreVente bien envoyer");
 				}
 				
