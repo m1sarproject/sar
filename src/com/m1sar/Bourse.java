@@ -33,6 +33,8 @@ public class Bourse {
 		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
 	}
 	
+	
+	
 	public Entreprise getByName(String name) {
 		
 		
@@ -44,6 +46,9 @@ public class Bourse {
 		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
 	}
 	
+	
+	
+	
 	public boolean agreeOrNot(Ordre o) {
 		
 		Entreprise concerned = this.getByName(o.getEntrepriseName());
@@ -52,12 +57,14 @@ public class Bourse {
 			
 			
 			concerned.addOrder(o);
-			
+			concerned.incDemandesVentes();
 		}
 
 		
 		if (o instanceof OrdreAchat) {
-			
+		
+		concerned.incDemandesAchat();
+		
 		int nbActionsDispo = concerned.getNbActions();
 		int nbActionsVoulus = o.getQuantite();
 		
@@ -74,14 +81,13 @@ public class Bourse {
 		}
 		
 		
-		for (  Ordre ordre : concerned.getOrdres()) {	//si c'est un ordre de vente :
+		for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
 			
 			if (ordre instanceof OrdreVente && ordre.estFini==false) {
 				
 				if (matching(o,ordre)) return true;
 				
-			}
-		
+			}	
 		
 		}
 				

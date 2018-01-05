@@ -9,7 +9,7 @@ public class Entreprise {
 	private ArrayList<Ordre> ordres;
 	private double prixUnitaireAction;
 	private int nbDemandesAchats;
-	private int nbDemandeVentes;
+	private int nbDemandesVentes;
 	 
 	public int getNbDemandesAchats() {
 		return nbDemandesAchats;
@@ -20,11 +20,11 @@ public class Entreprise {
 	}
 
 	public int getNbDemandeVentes() {
-		return nbDemandeVentes;
+		return nbDemandesVentes;
 	}
 
 	public void setNbDemandeVentes(int nbDemandeVentes) {
-		this.nbDemandeVentes = nbDemandeVentes;
+		this.nbDemandesVentes = nbDemandeVentes;
 	}
 
 	public Entreprise(String name, int nbActions,double prixUnitaireAction){
@@ -79,6 +79,27 @@ public class Entreprise {
 		nbActions -= n;
 	}
 	
+	public void incDemandesAchat() {
+		
+		nbDemandesAchats++;
+		
+	}
 
+	public void decDemandesAchat() {
+		
+		nbDemandesAchats--;
+	}
+	
+	
+	public void incDemandesVentes() {
+		
+		nbDemandesVentes++;
+		
+	}
+
+	public void decDemandesVentes() {
+		
+		nbDemandesVentes--;
+	}
 	
 }
