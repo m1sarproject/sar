@@ -80,14 +80,14 @@ public class Client {
 			String reponse,req;
 			reponse=in.readLine();
 			System.out.println("Courtier  repond : "+reponse);
-			Ordre d=new OrdreAchat("Apple", nameClient, 10);
+			Ordre d=new OrdreAchat("Apple", nameClient, 10,5);
 			outObject= new ObjectOutputStream(outS);
 			
 			System.out.println("J'envoi");
 			outObject.writeObject(d);  //l'envoi des objets se fait ici, l'objet doit etre serializable
 			outObject.flush();
 			outObject.close();
-			System.out.println("j'ai envoyé");
+			System.out.println("j'ai envoyï¿½");
 			 /*Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
@@ -131,7 +131,7 @@ public class Client {
 		}
 		double prixR=prix*quantite;
 		solde-=(prixR+(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix);
+		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix,quantite);
 		ordres.add(r);
 		
 		
@@ -139,8 +139,8 @@ public class Client {
 		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
 		ObjectOutputStream oos;
 		try {
-			oos = new ObjectOutputStream(sc.getOutputStream());
-			oos.writeObject(r);
+			outObject.writeObject(r);
+			outObject.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -179,7 +179,7 @@ public class Client {
 		}
 		double prixR=prix*quantite;
 		solde+=(prixR-(prixR*courtier.getTauxCommission()));
-		Ordre r =new OrdreVente(entreprise, this.nameClient, prix);
+		Ordre r =new OrdreVente(entreprise, this.nameClient, prix,quantite);
 		ordres.add(r);
 		System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
 		//ByteArrayOutputStream bao = new ByteArrayOutputStream();

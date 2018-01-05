@@ -16,7 +16,7 @@ public abstract class Ordre implements Serializable {
 	private int id;
 	private static int nb=0;
 	
-	public Ordre(String entreprise, String client, double prix_Propose_par_Client){
+	public Ordre(String entreprise, String client, double prix_Propose_par_Client,int quantite){
 		this.prix_Propose_par_Client=prix_Propose_par_Client;
 		this.entreprise = entreprise;
 		id=++nb;
