@@ -52,8 +52,8 @@ public class ThreadCourtier extends Thread {
 		int nb = 1;
 
 		ArrayList<Ordre> lordre=new ArrayList<>();
-		//récuperer la liste des prix 
 
+		//récuperer la liste des prix 
 		prixParEntreprise=bourse.getPrixParEntreprise();
 		
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
@@ -76,17 +76,20 @@ public class ThreadCourtier extends Thread {
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			outObject.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
 		    			outObject.flush();
+
+		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
-		    					    		
-		  	    	while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
+
+		    				    		
+		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
 		    			{
 		    				
 		    				req=(String)inObject.readObject();
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
 		    					System.out.println("je suis dans le if du bye");
-		    					//a modifier mettre le put quand le courtier reçoit un accord pas ici
+		    					//a modifier mettre le put quand le courtier reï¿½oit un accord pas ici
 		    					listeOrdre.put(nomclient, lordre);
 		    					majClient();
 		    					break;
