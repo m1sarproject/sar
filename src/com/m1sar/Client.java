@@ -203,15 +203,24 @@ public class Client {
 		
 		try {
 			System.out.println("Hello mon Courtier je vais t envoyer des ORDRES");
-			
-			
-			
-			acheter(10.0, 5, "Apple");
-			System.out.println("OrdreAchat bien envoyer");
-			
-			vendre(7.0, 10, "Apple");
-			System.out.println("OrdreVente bien envoyer");
+			System.out.print("Donnez le nbOrdres a creer : ");
+			int nbOrdre=lect.nextInt();
+			System.out.println();
+			for(int i=0; i<nbOrdre;i++){
+				System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
+				String r=lect.nextLine();
+				if(r.equals("a")){
+					acheter(5.0, 5, "Apple");
+					System.out.println("OrdreAchat bien envoyer");
+				}
+				if(r.equals("v")){
+					vendre(7.0, 10, "Apple");
+					System.out.println("OrdreVente bien envoyer");
+				}
+				
+			}
 			outObject.writeObject(new String("bye"));
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

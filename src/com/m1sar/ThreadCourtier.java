@@ -106,7 +106,7 @@ public class ThreadCourtier extends Thread {
 			    			lordre.add(ordre);
 			    			//enregistrer l'ordre pour ce client
 		    				}
-		    				req=(String)inObject.readObject();
+		    				//req=(String)inObject.readObject();
 							
 
 		    			}
