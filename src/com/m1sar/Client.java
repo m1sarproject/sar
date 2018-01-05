@@ -88,7 +88,7 @@ public class Client {
 			outObject.flush();
 			//outObject.close();
 			System.out.println("j'ai envoy�");
-			 /*Scanner lect = new Scanner(System.in);
+			 Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
 			
@@ -96,14 +96,14 @@ public class Client {
 				    System.out.println("Donnez le msg pour courtier: ");
 				    req=lect.nextLine();
 					out.println(req);
-				    /*reponse=in.readLine();
+				    reponse=in.readLine();
 				    System.out.println("le courtier a repondu "+reponse);
 				    cpt++;
 				    //in.readLine();				   
 			 	}
 			 
 			  out.println("bye");//mettre fin aux echanges
-			 */
+			 
 			} 
 			
 			catch (Exception e) {

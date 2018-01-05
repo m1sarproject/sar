@@ -12,5 +12,5 @@ public class OrdreVente extends Ordre{
 		
 		super(entreprise,client, prix_Propose_par_Client,  quantite);
 	}
-	
+	 
 }
