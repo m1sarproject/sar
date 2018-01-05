@@ -323,11 +323,17 @@ public class Bourse {
 	
 	public static void main(String[] args) throws IOException{
 		
+		int nport=0;
+		Fenetre mine = new Fenetre (); 
+
+		while (nport==0) {
+			
+			nport=mine.getPortnb();
+		}
 		
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
 		ServerSocket serveurCourtier=null;
-		int nport = Integer.parseInt(args[0]);
 		
 		try { 
 			serveurCourtier= new ServerSocket(nport); //Socket d'écoute
@@ -360,7 +366,7 @@ public class Bourse {
 				catch (Exception e) {
 					System.out.println("Socket ferme dans Bourse de serveurCourtier");
 					serveurCourtier.close();
-					}		 	
+				}		 	
 					
 		 }	
 
