@@ -27,7 +27,7 @@ public class ThreadCourtier extends Thread {
 	private ObjectOutputStream outObject;
 	private ObjectInputStream inObject;
 	private String nomCourtier;
-	private static int timeLimit=30000;//le temps qu'un courtier attend avant de se deconnecter
+	private static int timeLimit=15000;//le temps qu'un courtier attend avant de se deconnecter
 	
 	
 	public ThreadCourtier(Bourse b,String nom) {
@@ -63,10 +63,12 @@ public class ThreadCourtier extends Thread {
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-		    			inObject = new ObjectInputStream(inS);    			
+		    			inObject = new ObjectInputStream(inS);
+		    			break;
+		    			//outObject=new ObjectOutputStream(outS);
 		    		
 
-		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
+		    			/*while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
 
 		    			{
 
@@ -87,16 +89,17 @@ public class ThreadCourtier extends Thread {
 		    				}
 							
 
-		    			}
+		    			}*/
 		    			
     			}
     			catch (IOException e) {
 
     				e.printStackTrace();
-				} catch (ClassNotFoundException e) {
+				} 
+    			/*catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
     			
     			
     		

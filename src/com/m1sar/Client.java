@@ -70,8 +70,10 @@ public class Client {
 			 outS=sc.getOutputStream();
 			 inS=sc.getInputStream();
 			 in =new BufferedReader(new InputStreamReader(inS));
-			 out=new PrintWriter(outS,true);		
-			
+			 out=new PrintWriter(outS,true);
+			 outObject= new ObjectOutputStream(outS);
+			 //inObject= new ObjectInputStream(inS);
+				
 			
 			inscription(); //Envoi son nom au courtier
 			
@@ -80,13 +82,11 @@ public class Client {
 			String reponse,req;
 			reponse=in.readLine();
 			System.out.println("Courtier  repond : "+reponse);
-			outObject= new ObjectOutputStream(outS);
-			inObject= new ObjectInputStream(inS);
-			
+			System.out.println("AVANT while ");
 			 Scanner lect = new Scanner(System.in);
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
-			
+			 
 			 while(cpt <3) {
 				 System.out.println("Envoyer Ordre au Courtier ou bye : ");
 				 	reponse=lect.nextLine();
