@@ -1,11 +1,16 @@
 package com.m1sar;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -15,7 +20,8 @@ public class Bourse {
 	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
-	 
+	private HashMap<String,Double> prixParEntreprise;
+	private int dayid; 
 	
 	public Bourse() {
 		
@@ -28,10 +34,64 @@ public class Bourse {
      * where delta = (number of purchase orders -  number of sale orders ) / number of buisness actions
      */
 	
-	void updatePrice() {
+	public HashMap<String,Double> updatePrice() {
 		
+			prixParEntreprise = new HashMap<String,Double> (); //Je recrée à chaque fois cette map, donc inutile  
+																					  // d'appeller Replace () pour ma map
+			for (Entreprise entreprise : entreprises) {
+				
+				int delta = ( entreprise.getNbDemandesAchats() - entreprise.getNbDemandeVentes() ) / entreprise.getNbActions(); 
+				Double nouveauPrix =  entreprise.getPrixUnitaireAction()+delta;
+				
+				prixParEntreprise.put(entreprise.getName(),nouveauPrix);
+				
+			}
 		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
+	
+			
+			
+			dayid++;
+			writeToFile(prixParEntreprise);
+			return prixParEntreprise;
+			
 	}
+	
+	
+	public void writeToFile(HashMap informations) {
+	
+		try {
+	           FileOutputStream fos = new FileOutputStream("jour"+dayid);
+	           ObjectOutputStream oos = new ObjectOutputStream(fos);
+	           oos.writeObject(informations);
+	           oos.close();
+	           fos.close();
+	           System.out.printf("Les informations de la journée ont bien été sauvegardées");
+	     }catch(IOException ioe) {
+	           ioe.printStackTrace();
+	     }
+  }
+	
+	
+	public HashMap<String,Double> readFromFile(String filename) {
+		
+		HashMap<String,Double> informations = null;
+	      try {
+	         FileInputStream fis = new FileInputStream(filename);
+	         ObjectInputStream ois = new ObjectInputStream(fis);
+	         informations = (HashMap<String,Double>) ois.readObject();
+	         ois.close();
+	         fis.close();
+	      }catch(IOException ioe) {
+	         ioe.printStackTrace();
+	      }catch(ClassNotFoundException c) {
+	         System.out.println("Class not found");
+	         c.printStackTrace();
+	      }
+	      
+	      return informations;
+		
+	}
+	
 	
 	public Entreprise getByName(String name) {
 		
@@ -44,6 +104,9 @@ public class Bourse {
 		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
 	}
 	
+	
+	
+	
 	public boolean agreeOrNot(Ordre o) {
 		
 		Entreprise concerned = this.getByName(o.getEntrepriseName());
@@ -52,12 +115,14 @@ public class Bourse {
 			
 			
 			concerned.addOrder(o);
-			
+			concerned.incDemandesVentes();
 		}
 
 		
 		if (o instanceof OrdreAchat) {
-			
+		
+		concerned.incDemandesAchat();
+		
 		int nbActionsDispo = concerned.getNbActions();
 		int nbActionsVoulus = o.getQuantite();
 		
@@ -74,14 +139,13 @@ public class Bourse {
 		}
 		
 		
-		for (  Ordre ordre : concerned.getOrdres()) {	//si c'est un ordre de vente :
+		for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
 			
 			if (ordre instanceof OrdreVente && ordre.estFini==false) {
 				
 				if (matching(o,ordre)) return true;
 				
-			}
-		
+			}	
 		
 		}
 				
@@ -275,7 +339,7 @@ public class Bourse {
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier);
+				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier); //Passer la map des prix en paramètre au courtier
 				bourse.addBroker(tc);	
 
 				}
@@ -283,8 +347,7 @@ public class Bourse {
 				catch (Exception e) {
 					System.out.println("Socket ferme dans Bourse de serveurCourtier");
 					serveurCourtier.close();
-					}
-		 	
+					}		 	
 					
 		 }	
 
