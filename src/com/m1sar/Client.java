@@ -72,15 +72,16 @@ public class Client {
 			sc= new Socket(hote,port);
 			outS=sc.getOutputStream();
 			inS=sc.getInputStream();
-			in =new BufferedReader(new InputStreamReader(inS));
-			out=new PrintWriter(outS,true);
-		
+			//in =new BufferedReader(new InputStreamReader(inS));
+			//out=new PrintWriter(outS,true);
+			outObject= new ObjectOutputStream(outS);
+			inObject= new ObjectInputStream(inS);
 			inscription(); //Envoi son nom au courtier
 			cpt=0;
 			System.out.println("Client "+nameClient+" veut se connecter");
 			String reponse,req;
-			reponse=in.readLine();
-			outObject= new ObjectOutputStream(outS);
+			reponse=(String) inObject.readObject();
+			
 			System.out.println("Courtier  repond : "+reponse);
 			//Scanner lect = new Scanner(System.in);
 			}
@@ -127,7 +128,13 @@ public class Client {
 	
 	public void inscription() {
 		
-		out.println(nameClient);
+		try {
+			outObject.writeObject(nameClient);
+			outObject.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 		
 	}
 	
@@ -181,6 +188,7 @@ public class Client {
 		
 		try {
 			outObject.writeObject(r);
+			outObject.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -348,7 +356,7 @@ public class Client {
 		
 		
 		try {
-			inObject= new ObjectInputStream(inS);
+			
 			out.println("Client "+nameClient+" veut savoit l etat du marche");
 			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
