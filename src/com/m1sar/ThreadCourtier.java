@@ -50,12 +50,10 @@ public class ThreadCourtier extends Thread {
 
 		String rep="",req="",nomclient="";
 		int nb = 1;
-<<<<<<< HEAD
+
 		ArrayList<Ordre> lordre=new ArrayList<>();
 		//r�cuperer la liste des prix 
-=======
-		//r�cuperer la liste des prix 
->>>>>>> 235587c3fe55c578c9d991b86af6d6f5e9d55892
+
 		prixParEntreprise=bourse.getPrixParEntreprise();
 		
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
@@ -68,33 +66,23 @@ public class ThreadCourtier extends Thread {
     			try {
 		    			inS=currentClient.getInputStream();
 		    			outS=currentClient.getOutputStream();
-		    			out=new PrintWriter(outS,true);
-		    			in =new BufferedReader(new InputStreamReader(inS));
+		    			inObject = new ObjectInputStream(inS);
+		    			outObject = new ObjectOutputStream(outS);
+		    			//out=new PrintWriter(outS,true);
+		    			//in =new BufferedReader(new InputStreamReader(inS));
 		    			System.out.println("client numéro "+nb+" connecte a ce courtier");
-		    			nomclient=in.readLine(); //Le premier message doit etre le nom du client
+		    			nomclient=(String)inObject.readObject(); //Le premier message doit etre le nom du client
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
-		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-<<<<<<< HEAD
+		    			outObject.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
+		    			outObject.flush();
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
-		    			
-		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
-=======
-		    			outObject=new ObjectOutputStream(outS);
-		    			outObject.writeObject(prixParEntreprise);
-		    			outObject.flush();
-		    			break;
-		    			//envoyer la liste des prix u client
-		    			
-		    		
-
-		    			/*while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
->>>>>>> 235587c3fe55c578c9d991b86af6d6f5e9d55892
-
+		    					    		
+		  	    	while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
 		    			{
-		    				in =new BufferedReader(new InputStreamReader(inS));
-		    				req=in.readLine();
+		    				
+		    				req=(String)inObject.readObject();
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
 		    					System.out.println("je suis dans le if du bye");
@@ -105,7 +93,6 @@ public class ThreadCourtier extends Thread {
 		    				}
 
 		    				else {
-		    				inObject = new ObjectInputStream(inS);
 		    				Ordre ordre = (Ordre) inObject.readObject(); //Le serveur doit connaitre la classe, et doit faire un cast
 			    			System.out.println("Object received = " + ordre.getEntrepriseName());
 			    			transmettreOrdreABourse(ordre);
