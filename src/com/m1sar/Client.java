@@ -45,8 +45,7 @@ public class Client {
 	private Map<String,Double> prixBoursePourEntreprise;
 	private double depensesEventuelles;
 	private int quantiteEventuelleVendu;
-	
-	private boolean yesOuNon;
+
 	
 	public Client(String nameClient, double solde,int port,InetAddress hte) {
 		
@@ -58,6 +57,7 @@ public class Client {
 		this.port = port;
 		this.hote = hte;
 		connexion();
+		readStateStocks();
 	}
 	
 	 /**@author Vitalina
@@ -72,7 +72,7 @@ public class Client {
 			 inS=sc.getInputStream();
 			 in =new BufferedReader(new InputStreamReader(inS));
 			 out=new PrintWriter(outS,true);
-			 //inObject= new ObjectInputStream(inS);
+			 //
 				
 			
 			inscription(); //Envoi son nom au courtier
@@ -81,13 +81,13 @@ public class Client {
 			System.out.println("Client "+nameClient+" veut se connecter");
 			String reponse,req;
 			reponse=in.readLine();
+			outObject= new ObjectOutputStream(outS);
 			System.out.println("Courtier  repond : "+reponse);
-			System.out.println("AVANT while ");
-			 Scanner lect = new Scanner(System.in);
-		
+			Scanner lect = new Scanner(System.in);
+			}
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
-			 
+			 /*
 			 while(cpt <3) {
 				 System.out.println("Envoyer Ordre au Courtier ou bye : ");
 				 	reponse=lect.nextLine();
@@ -117,7 +117,7 @@ public class Client {
 			 
 			  out.println("bye");//mettre fin aux echanges
 			 
-			} 
+			} */
 			
 			catch (Exception e) {
 				
@@ -319,14 +319,15 @@ public class Client {
 		
 		
 		try {
+			inObject= new ObjectInputStream(inS);
 			out.println("Client "+nameClient+" veut savoit l etat du marche");
 			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
 			prixBoursePourEntreprise =   (Map<String, Double>) inObject.readObject();
-			System.out.println("Entreprises avec des prix recu par Client");
-			
+			System.out.println("Voila l etat du marche : ");
+			System.out.println(prixBoursePourEntreprise);
 			
 		}catch (ClassNotFoundException e) {
 				e.printStackTrace();
