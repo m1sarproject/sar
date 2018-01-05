@@ -146,7 +146,7 @@ public class Bourse {
 		
 		for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
 			
-			if (ordre instanceof OrdreVente && ordre.estFini==false) {
+			if (ordre instanceof OrdreVente && ordre.estAccepte==false) {
 				
 				if (matching(o,ordre)) return true;
 				

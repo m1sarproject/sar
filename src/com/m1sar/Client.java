@@ -69,15 +69,12 @@ public class Client {
 			try {
 			
 			sc= new Socket(hote,port);
-			 outS=sc.getOutputStream();
-			 inS=sc.getInputStream();
-			 in =new BufferedReader(new InputStreamReader(inS));
-			 out=new PrintWriter(outS,true);
-			 //
-				
-			
+			outS=sc.getOutputStream();
+			inS=sc.getInputStream();
+			in =new BufferedReader(new InputStreamReader(inS));
+			out=new PrintWriter(outS,true);
+		
 			inscription(); //Envoi son nom au courtier
-			
 			cpt=0;
 			System.out.println("Client "+nameClient+" veut se connecter");
 			String reponse,req;

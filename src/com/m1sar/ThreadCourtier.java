@@ -17,15 +17,21 @@ import java.util.Vector;
 public class ThreadCourtier extends Thread {
 
 //	private Socket sCourtier; //socket pour communiuqer avec courtier
+	//contient la liste d'ordre en attente des differents clients
+	private HashMap<String,ArrayList<Ordre>> listeOrdre=new HashMap<>();
 	private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
 	private List<String> clients= new ArrayList<String>();
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>();
 	private Socket currentClient;
 	private int nbCustomer=0;
+	public static double tauxCommission=0.1; //un taux de 10% pour tous les courtiers
+	private double accountBalance=0.;
 	private Bourse bourse;//la bourse qui a crï¿½ï¿½ le Threadcourtier 
 	private boolean dispo=true;
 	private BufferedReader in; 
 	private PrintWriter out;
+	private OutputStream outS;
+	private InputStream inS;
 	private ObjectOutputStream outObject;
 	private ObjectInputStream inObject;
 	private String nomCourtier;
@@ -42,10 +48,9 @@ public class ThreadCourtier extends Thread {
     @Override
     public void run() {
 
-    	OutputStream outS;
-		InputStream inS;
 		String rep="",req="",nomclient="";
 		int nb = 1;
+		ArrayList<Ordre> lordre=new ArrayList<>();
 		//récuperer la liste des prix 
 		prixParEntreprise=bourse.getPrixParEntreprise();
 		
@@ -66,14 +71,10 @@ public class ThreadCourtier extends Thread {
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-		    			outObject=new ObjectOutputStream(outS);
-		    			outObject.writeObject(prixParEntreprise);
-		    			outObject.flush();
 		    			//envoyer la liste des prix au client
+		    			sendPriceCompanies();
 		    			
-		    		
-
-		    			/*while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
+		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
 
 		    			{
 		    				in =new BufferedReader(new InputStreamReader(inS));
@@ -81,6 +82,8 @@ public class ThreadCourtier extends Thread {
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
 		    					System.out.println("je suis dans le if du bye");
+		    					//a modifier mettre le put quand le courtier reçoit un accord pas ici
+		    					listeOrdre.put(nomclient, lordre);
 		    					majClient();
 		    					break;
 		    				}
@@ -89,23 +92,23 @@ public class ThreadCourtier extends Thread {
 		    				inObject = new ObjectInputStream(inS);
 		    				Ordre ordre = (Ordre) inObject.readObject(); //Le serveur doit connaitre la classe, et doit faire un cast
 			    			System.out.println("Object received = " + ordre.getEntrepriseName());
-			    			Entreprise e=bourse.getByName(ordre.getEntrepriseName());
-			    			e.addOrder(ordre);//ajouter l'ordre dans entreprise
-			    			out.println("Votre ordre a bien ete transmis a l'entreprise :  "+ordre.getEntrepriseName());
+			    			transmettreOrdreABourse(ordre);
+			    			lordre.add(ordre);
+			    			//enregistrer l'ordre pour ce client
 		    				}
 							
 
-		    			}*/
+		    			}
 		    		
     			}
     			catch (IOException e) {
 
     				e.printStackTrace();
 				} 
-    			/*catch (ClassNotFoundException e) {
+    			catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
     			
     			
     		
@@ -136,8 +139,37 @@ public class ThreadCourtier extends Thread {
     	
     	System.out.println(prefixe() + "Le threadCourtier sort du while");
 }
-	
+    /**
+     * the brocker sends to his customers the information about the share parices of each company in the stock market  
+     */
+    public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
+    	outObject=new ObjectOutputStream(outS);
+    	outObject.writeObject(prixParEntreprise);
+    	outObject.flush();						//nombre pour reprï¿½senter les jours
     	
+    }
+    /**
+     * @param ordre the order passed by  the  customer 
+     * send to the stock market the order  
+     */
+    public void transmettreOrdreABourse(Ordre ordre) {
+    	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
+		e.addOrder(ordre);//ajouter l'ordre dans entreprise
+		out.println("Votre ordre a bien ete transmis a l'entreprise :  "+ordre.getEntrepriseName());
+    }
+    
+    /**
+     * Calcule la commission 
+     */
+    public void CalculCommission(String nomClient) {
+    	ArrayList<Ordre>l=listeOrdre.get(nomClient);
+    	for(Ordre o:l) {
+    		if(o.estAccepte) {
+    		accountBalance+=o.getPrixUnitaire()*o.getQuantite()*tauxCommission;
+    		}
+    	}
+    }
+    
     public void incNbClient() {
     	if (estDispo()) {nbCustomer++; return;}
     

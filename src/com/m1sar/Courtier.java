@@ -2,6 +2,7 @@ package com.m1sar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -49,7 +50,6 @@ public Courtier(String name,int port,InetAddress hte) {
  * Send to all his cutomers the share prices that have been updated by the stock market 
  */
 public void sendUpdatedPrices() {//quand est ce que s'est fait? au d�but de la journ�e avant qu'un client ne soit d�co ;il faut ajouter un 
-								//nombre pour repr�senter les jours
 	
 }
 
@@ -57,7 +57,7 @@ public void sendUpdatedPrices() {//quand est ce que s'est fait? au d�but de la
 /**
  * the brocker sends to his customers the information about the share parices of each company in the stock market  
  */
-public void sendInfoCompanies() {
+public void sendPriceCompanies() {
 	
 }
 /**
