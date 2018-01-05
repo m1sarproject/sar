@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -18,6 +19,7 @@ public class ThreadCourtier extends Thread {
 //	private Socket sCourtier; //socket pour communiuqer avec courtier
 	private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
 	private List<String> clients= new ArrayList<String>();
+	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>();
 	private Socket currentClient;
 	private int nbCustomer=0;
 	private Bourse bourse;//la bourse qui a cr�� le Threadcourtier 
@@ -44,6 +46,8 @@ public class ThreadCourtier extends Thread {
 		InputStream inS;
 		String rep="",req="",nomclient="";
 		int nb = 1;
+		//r�cuperer la liste des prix 
+		prixParEntreprise=bourse.getPrixParEntreprise();
 		
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
    
@@ -62,12 +66,14 @@ public class ThreadCourtier extends Thread {
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
+		    			outObject=new ObjectOutputStream(outS);
+		    			outObject.writeObject(prixParEntreprise);
+		    			outObject.flush();
+		    			//envoyer la liste des prix au client
 		    			
-		    	
-		    			//outObject=new ObjectOutputStream(outS);
 		    		
 
-		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
+		    			/*while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
 
 		    			{
 		    				in =new BufferedReader(new InputStreamReader(inS));
@@ -85,21 +91,21 @@ public class ThreadCourtier extends Thread {
 			    			System.out.println("Object received = " + ordre.getEntrepriseName());
 			    			Entreprise e=bourse.getByName(ordre.getEntrepriseName());
 			    			e.addOrder(ordre);//ajouter l'ordre dans entreprise
-			    			out.println("Votre ordre a bien �t� transmis a l'entreprise :  "+ordre.getEntrepriseName());
+			    			out.println("Votre ordre a bien ete transmis a l'entreprise :  "+ordre.getEntrepriseName());
 		    				}
 							
 
-		    			}
+		    			}*/
 		    		
     			}
     			catch (IOException e) {
 
     				e.printStackTrace();
 				} 
-    			catch (ClassNotFoundException e) {
+    			/*catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
     			
     			
     		

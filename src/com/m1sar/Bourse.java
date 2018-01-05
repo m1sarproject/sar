@@ -20,7 +20,8 @@ public class Bourse {
 	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
-	private HashMap<String,Double> prixParEntreprise;
+	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
+	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
 	private int dayid; 
 	
 	public Bourse() {
@@ -49,7 +50,7 @@ public class Bourse {
 		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
 	
 			
-			
+			listeGraphe.add(prixParEntreprise);
 			dayid++;
 			writeToFile(prixParEntreprise);
 			return prixParEntreprise;
@@ -107,6 +108,10 @@ public class Bourse {
 	
 	
 	
+	public HashMap<String, Double> getPrixParEntreprise() {
+		return prixParEntreprise;
+	}
+
 	public boolean agreeOrNot(Ordre o) {
 		
 		Entreprise concerned = this.getByName(o.getEntrepriseName());
@@ -305,6 +310,15 @@ public class Bourse {
 		companies.add(e4);
 		
 		this.addAllCompanies(companies);
+		initPrixParEntreprise();
+		
+	}
+	//remplit la liste des prix initiaux des entreprises
+	public void initPrixParEntreprise() {
+		for(Entreprise e:entreprises) {
+			prixParEntreprise.put(e.getName(),e.getPrixUnitaireAction());
+		}
+		listeGraphe.add(prixParEntreprise);
 	}
 	
 	public static void main(String[] args) throws IOException{
@@ -312,7 +326,6 @@ public class Bourse {
 		
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
-		
 		ServerSocket serveurCourtier=null;
 		int nport = Integer.parseInt(args[0]);
 		
