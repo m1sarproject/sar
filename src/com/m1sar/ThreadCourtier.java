@@ -63,15 +63,15 @@ public class ThreadCourtier extends Thread {
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-		    			inObject = new ObjectInputStream(inS);
-		    			break;
+		    			
+		    	
 		    			//outObject=new ObjectOutputStream(outS);
 		    		
 
-		    			/*while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
+		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
 
 		    			{
-
+		    				in =new BufferedReader(new InputStreamReader(inS));
 		    				req=in.readLine();
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
@@ -81,6 +81,7 @@ public class ThreadCourtier extends Thread {
 		    				}
 
 		    				else {
+		    				inObject = new ObjectInputStream(inS);
 		    				Ordre ordre = (Ordre) inObject.readObject(); //Le serveur doit connaitre la classe, et doit faire un cast
 			    			System.out.println("Object received = " + ordre.getEntrepriseName());
 			    			Entreprise e=bourse.getByName(ordre.getEntrepriseName());
@@ -89,17 +90,17 @@ public class ThreadCourtier extends Thread {
 		    				}
 							
 
-		    			}*/
-		    			
+		    			}
+		    		
     			}
     			catch (IOException e) {
 
     				e.printStackTrace();
 				} 
-    			/*catch (ClassNotFoundException e) {
+    			catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
     			
     			
     		
