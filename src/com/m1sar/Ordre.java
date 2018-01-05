@@ -19,7 +19,7 @@ public abstract class Ordre implements Serializable {
 
 
 	private int id;
-	public boolean estFini=false;
+	public boolean estAccepte=false;
 	private static int nb=0;
 	
 
@@ -48,7 +48,7 @@ public abstract class Ordre implements Serializable {
 	
 	
 	public void setEstFini() {
-		this.estFini = true;
+		this.estAccepte= true;
 	}
 
 	public int getId() {
