@@ -185,8 +185,7 @@ public class Client {
 		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
 		ObjectOutputStream oos;
 		try {
-			oos = new ObjectOutputStream(sc.getOutputStream());
-			oos.writeObject(r);
+			outObject.writeObject(r);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
