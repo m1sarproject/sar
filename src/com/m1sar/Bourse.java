@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -28,9 +29,23 @@ public class Bourse {
      * where delta = (number of purchase orders -  number of sale orders ) / number of buisness actions
      */
 	
-	void updatePrice() {
+	public HashMap<String,Double> updatePrice() {
 		
+			HashMap<String,Double> prixParEntreprise = new HashMap<String,Double> (); //Je recrée à chaque fois cette map, donc inutile  
+																					  // d'appeller Replace () pour ma map
+			for (Entreprise entreprise : entreprises) {
+				
+				int delta = ( entreprise.getNbDemandesAchats() - entreprise.getNbDemandeVentes() ) / entreprise.getNbActions(); 
+				Double nouveauPrix =  entreprise.getPrixUnitaireAction()+delta;
+				
+				prixParEntreprise.put(entreprise.getName(),nouveauPrix);
+				
+			}
 		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
+	
+		
+			return prixParEntreprise;
+			
 	}
 	
 	
