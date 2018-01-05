@@ -92,7 +92,7 @@ public class Bourse {
 	return false;
 	
 	}
-	
+		
 	
 	public boolean matching(Ordre achat,Ordre vente) {
 		

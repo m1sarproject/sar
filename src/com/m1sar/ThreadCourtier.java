@@ -63,30 +63,31 @@ public class ThreadCourtier extends Thread {
 		    			clients.add(nomclient);
 		    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
 		    			out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-		    			inObject = new ObjectInputStream(inS);
-		    			//outputStream = new ObjectOutputStream(socket.getOutputStream());
-		    			Ordre student = (OrdreAchat) inObject.readObject(); //Le serveur doit connaitre la classe, et doit faire un cast
-		    			System.out.println("Object received = " + student.getEntreprise());
-		    			System.out.println("Je suis le serveur, j'ai reçu : "+student.toString());
-		    			//socket.close();
-		    			
-		    			System.out.println("h1");
-		    			break;
-		    			/*while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
+		    			inObject = new ObjectInputStream(inS);    			
+		    		
+
+		    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
 
 		    			{
-		    				System.out.println("h2");
-							req=in.readLine();
-							System.out.println("h3");
-		    				System.out.println("le client me dit (courtier)"+req);
-		    				
+
+		    				req=in.readLine();
 		    				if(req.equals("bye")) {
 		    				//supprimer le client et fermer sa socket et decremente nbcustumer
 		    					System.out.println("je suis dans le if du bye");
 		    					majClient();
 		    					break;
 		    				}
-		    			}*/
+
+		    				else {
+		    				Ordre ordre = (Ordre) inObject.readObject(); //Le serveur doit connaitre la classe, et doit faire un cast
+			    			System.out.println("Object received = " + ordre.getEntrepriseName());
+			    			Entreprise e=bourse.getByName(ordre.getEntrepriseName());
+			    			e.addOrder(ordre);//ajouter l'ordre dans entreprise
+			    			out.println("Votre ordre a bien �t� transmis a l'entreprise :  "+ordre.getEntrepriseName());
+		    				}
+							
+
+		    			}
 		    			
     			}
     			catch (IOException e) {

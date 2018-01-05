@@ -13,6 +13,9 @@ public abstract class Ordre implements Serializable {
 	private String client;
 	private double prixUnitaire; //prix proposé par le client
 	private int quantite;
+	private double prix_Propose_par_Client;
+	private int quantiteClient;
+	
 	private int id;
 	public boolean estFini=false;
 	private static int nb=0;
@@ -23,19 +26,10 @@ public abstract class Ordre implements Serializable {
 		this.entreprise = entreprise;
 		this.quantite = quantite;
 		id=++nb;
+		this.quantiteClient = quantite;
 		
 		
 	}
-
-
-	public String getEntreprise() {
-		return entreprise;
-	}
-
-	public void setEntreprise(String entreprise) {
-		this.entreprise = entreprise;
-	}
-	
 
 	public String getEntrepriseName() {
 		return entreprise;
