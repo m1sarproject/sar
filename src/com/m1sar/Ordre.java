@@ -15,7 +15,7 @@ public abstract class Ordre implements Serializable {
 	private int quantite;
 	private double prix_Propose_par_Client;
 	private int quantiteClient;
-	
+	// nom du courtier
 	private int id;
 	public boolean estFini=false;
 	private static int nb=0;
@@ -48,6 +48,16 @@ public abstract class Ordre implements Serializable {
 	public void setEstFini() {
 		this.estFini = true;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 	
 	 
 
