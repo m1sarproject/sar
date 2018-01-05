@@ -67,6 +67,7 @@ public class Client {
 	public void connexion(){
 		
 			try {
+			
 			sc= new Socket(hote,port);
 			 outS=sc.getOutputStream();
 			 inS=sc.getInputStream();
