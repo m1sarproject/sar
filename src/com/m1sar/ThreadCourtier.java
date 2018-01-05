@@ -46,7 +46,7 @@ public class ThreadCourtier extends Thread {
 		InputStream inS;
 		String rep="",req="",nomclient="";
 		int nb = 1;
-		//récuperer la liste des prix 
+		//rï¿½cuperer la liste des prix 
 		prixParEntreprise=bourse.getPrixParEntreprise();
 		
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
@@ -69,7 +69,8 @@ public class ThreadCourtier extends Thread {
 		    			outObject=new ObjectOutputStream(outS);
 		    			outObject.writeObject(prixParEntreprise);
 		    			outObject.flush();
-		    			//envoyer la liste des prix au client
+		    			break;
+		    			//envoyer la liste des prix u client
 		    			
 		    		
 

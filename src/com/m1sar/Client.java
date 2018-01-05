@@ -84,7 +84,7 @@ public class Client {
 			reponse=in.readLine();
 			outObject= new ObjectOutputStream(outS);
 			System.out.println("Courtier  repond : "+reponse);
-			Scanner lect = new Scanner(System.in);
+			//Scanner lect = new Scanner(System.in);
 			}
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
@@ -192,6 +192,29 @@ public class Client {
 	
 	
 	
+	public void echangeOrdresClientCourtier() {
+		Scanner lect = new Scanner(System.in);
+		
+		try {
+			outObject.writeObject(new String("Hello mon Courtier je vais t envoyer des ORDRES"));
+			outObject.flush();
+			System.out.println("Donnez la quantite a acheter");
+			int q=lect.nextInt();
+			System.out.println("Donnez le prix");
+			double p=lect.nextDouble();
+			System.out.println("Donnez l entreprise");
+			String e=lect.nextLine();
+			acheter(p, q, e);
+			System.out.println("OrdreAchat bien envoyer");
+			
+			vendre(7.0, 10, "Apple");
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**@author Vitalina
      * 
      * 
@@ -254,6 +277,12 @@ public class Client {
 				majPortefeuilleVente(r);
 				quantiteEventuelleVendu-=r.getQuantite();
 			}
+		}
+		if(r instanceof OrdreAchat) {
+			depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantite());
+		}
+		if(r instanceof OrdreVente) {
+			quantiteEventuelleVendu-=r.getQuantite();
 		}
 		ordres.remove(r);
 		
@@ -348,7 +377,7 @@ public class Client {
 	
 		int nport = Integer.parseInt(args[0]);
 		InetAddress hote = InetAddress.getByName(args[1]);
-		Client client = new Client ("vitalinka",21d,nport,hote);
+		Client client = new Client ("vitalinka",210d,nport,hote);
 		
 		
 	}
