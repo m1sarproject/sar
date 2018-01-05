@@ -31,8 +31,8 @@ public class ThreadCourtier extends Thread {
 	private double accountBalance=0.;
 	private Bourse bourse;//la bourse qui a cr�� le Threadcourtier 
 	private boolean dispo=true;
-	private BufferedReader in; 
-	private PrintWriter out;
+	//private BufferedReader in; 
+	//private PrintWriter out;
 	private OutputStream outS;
 	private InputStream inS;
 	private ObjectOutputStream outObject;
@@ -166,7 +166,6 @@ public class ThreadCourtier extends Thread {
     public void transmettreOrdreABourse(Ordre ordre) {
     	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
 		e.addOrder(ordre);//ajouter l'ordre dans entreprise
-		out.println("Votre ordre a bien ete transmis a l'entreprise :  "+ordre.getEntrepriseName());
     }
     
     /**
