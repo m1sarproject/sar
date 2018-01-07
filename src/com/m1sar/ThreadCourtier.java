@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.Vector;
 
 public class ThreadCourtier extends Thread {
 
-//	private Socket sCourtier; //socket pour communiuqer avec courtier
+    private Socket sCourtier; //socket pour communiuqer avec courtier
 	//contient la liste d'ordre en attente des differents clients
 	private HashMap<String,ArrayList<Ordre>> listeOrdre=new HashMap<>();
 	private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
@@ -38,6 +39,7 @@ public class ThreadCourtier extends Thread {
 	private ObjectOutputStream outObject;
 	private ObjectInputStream inObject;
 	private String nomCourtier;
+	private int nport;
 	private static int timeLimit=15000;//le temps qu'un courtier attend avant de se deconnecter
 	
 	
@@ -48,10 +50,27 @@ public class ThreadCourtier extends Thread {
 		//a revoir 
 	}
 	
+	  public ThreadCourtier(Socket sCourtier,int nport) {
+			super();
+			this.sCourtier = sCourtier;
+			this.nport=nport;
+			start();
+		}
     @Override
     public void run() {
+    	try {
+			outS=sCourtier.getOutputStream();
+			outObject = new ObjectOutputStream(outS);
+			System.out.println("j'envoi le numéro de port au courtier ");
+			outObject.writeInt(nport);
+			outObject.flush();
 
-		String nomclient="";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*String nomclient="";
 		int nb = 1;
 
 		ArrayList<Ordre> lordre=new ArrayList<>();
@@ -149,10 +168,10 @@ public class ThreadCourtier extends Thread {
 			nb++;	
 			
 				
-    }
+    }*/
     	//envoyer un message a la bourse
     	
-    	System.out.println(prefixe() + "Le threadCourtier sort du while");
+    	//System.out.println(prefixe() + "Le threadCourtier sort du while");
 }
     /**
      * the brocker sends to his customers the information about the share parices of each company in the stock market  
@@ -192,6 +211,13 @@ public class ThreadCourtier extends Thread {
     public boolean estDispo() {
 		return (nbCustomer<2);
 	}
+    public int getNport() {
+		return nport;
+	}
+    public InetAddress getInetAddress() {
+		return sCourtier.getInetAddress();
+	}
+	
 
 	public void addClient(Socket client) throws IOException {
     	this.sClient.add(client);

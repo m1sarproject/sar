@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,9 +32,13 @@ public class BourseClient extends Thread {
 	
 	
 	public ThreadCourtier getFreeCourtier() throws CourtierNotFoundException {
-	
+		
 		for (ThreadCourtier courtier : listcourtiers) {
-			if (courtier.estDispo()) return courtier;	
+			if (courtier.estDispo())  
+				{
+				courtier.incNbClient();//incrémenter nombre de client
+				return courtier;	
+				}
 		}
 		
 		throw new CourtierNotFoundException ("Aucun courtier n'est disponible");	
@@ -51,13 +56,15 @@ public class BourseClient extends Thread {
 			try {
 				clientConnecte = serveurClient.accept();
 				System.out.println("Connexion client accepter par BourseClient");	
-				/*BufferedReader in =new BufferedReader(new InputStreamReader(clientConnecte.getInputStream()));
-				PrintWriter out=new PrintWriter(clientConnecte.getOutputStream(),true);
-				out.println("vita mechancete");*/
 			    ThreadCourtier courtier=getFreeCourtier();
-			    courtier.addClient(clientConnecte);
-				//c.start();
-				System.out.println("Le courtier a reÃ§u son client par BourseClient");
+			    OutputStream outS=clientConnecte.getOutputStream();
+			    ObjectOutputStream outObject=new ObjectOutputStream(outS);
+			  //envoyer le numero de port et  @ip inetAddress du courtier au client
+			    outObject.writeObject(courtier.getInetAddress());
+			    outObject.flush();
+			    outObject.writeInt(courtier.getNport());
+			    outObject.flush();
+			    System.out.println("envoie des paramètres à client terminé");
 				
 			} 
 			

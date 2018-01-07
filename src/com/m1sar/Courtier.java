@@ -1,11 +1,14 @@
 package com.m1sar;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 /**@author Ouerdia
@@ -96,8 +99,24 @@ public double getTauxCommission() {
 public void connexion(){
 	
 	try {
-	sc= new Socket(hote,port);
-	inscription(sc);
+	    sc= new Socket(hote,port);
+	    inscription(sc);
+	//il écoute les clients sur un numéro de port 
+		//accepte les connexions et échange avec eux
+		System.out.println("j'essaye de récuperer le numéro de port surlequel j'écoute");
+		InputStream inSB=sc.getInputStream();
+		ObjectInputStream inObject = new ObjectInputStream(inSB);
+		int port=inObject.readInt();
+		ServerSocket ecouteClient= new ServerSocket(port);
+		System.out.println("j'ecoute sur le numéro de port "+port);
+		while (true) {
+		Socket sclient=ecouteClient.accept();
+		System.out.println("le client s'est connecté");
+		OutputStream outSC=sclient.getOutputStream();
+		ObjectOutputStream outObjectC = new ObjectOutputStream(outSC);
+		outObjectC.writeObject("salut client");
+		System.out.println("message envoyé au client");
+	    }
 	}
 	catch (Exception e) {
 		System.out.println("Erreur de connexion");

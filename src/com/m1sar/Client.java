@@ -57,8 +57,8 @@ public class Client {
 		this.port = port;
 		this.hote = hte;
 		connexion();
-		readStateStocks();
-		echangeOrdresClientCourtier();
+		//readStateStocks();
+		//echangeOrdresClientCourtier();
 	}
 	
 	 /**@author Vitalina
@@ -68,7 +68,7 @@ public class Client {
 	public void connexion(){
 		
 			try {
-			
+			//connexion à la bourse
 			sc= new Socket(hote,port);
 			outS=sc.getOutputStream();
 			inS=sc.getInputStream();
@@ -76,15 +76,26 @@ public class Client {
 			//out=new PrintWriter(outS,true);
 			outObject= new ObjectOutputStream(outS);
 			inObject= new ObjectInputStream(inS);
-			inscription(); //Envoi son nom au courtier
+			////recupere les numeros de port et @ip du courtier inetaddress et se connecte au courtier
+			InetAddress host=(InetAddress)inObject.readObject();
+			int portCourtier=inObject.readInt();
+			sc.close();
+			Socket connexionCourtier=new Socket(host, portCourtier);
+			System.out.println("conenxion au courtier reussi");
+			outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
+			inObject = new ObjectInputStream(connexionCourtier.getInputStream());
+			System.out.println("message du courtier"+(String)inObject.readObject());
+			//inscription(); a modifie ou pas 
 			cpt=0;
-			System.out.println("Client "+nameClient+" veut se connecter");
-			String reponse,req;
-			reponse=(String) inObject.readObject();
+			//System.out.println("Client "+nameClient+" veut se connecter");
+			//String reponse,req;
+			//reponse=(String) inObject.readObject();
 			
-			System.out.println("Courtier  repond : "+reponse);
+			//System.out.println("Courtier  repond : "+reponse);
 			//Scanner lect = new Scanner(System.in);
 			}
+			
+			
 			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
 			 //essaye de lire ce qu'on voit le client
 			 /*

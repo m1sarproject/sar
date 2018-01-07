@@ -326,12 +326,14 @@ public class Bourse {
 	public static void main(String[] args) throws IOException{
 		
 		int nport=0;
-		Fenetre mine = new Fenetre (); 
+		nport=Integer.parseInt(args[0]);
+		/*Fenetre mine = new Fenetre (); 
 
 		while (nport==0) {
 			
 			nport=mine.getPortnb();
-		}
+			
+		}*/
 		
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
@@ -344,7 +346,7 @@ public class Bourse {
 		catch (Exception e) {System.err.println("La création du serveur d'écoute a échoué");}
 		
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
-		BourseClient bourseclient = new BourseClient (nport+1,bourse.courtiers); 
+		BourseClient bourseclient = new BourseClient (++nport,bourse.courtiers); 
 		 
 		while(true) {		
 
@@ -360,8 +362,8 @@ public class Bourse {
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadCourtier tc=new ThreadCourtier(bourse,nomcourtier); //Passer la map des prix en paramètre au courtier
-				bourse.addBroker(tc);	
+				ThreadCourtier tc=new ThreadCourtier(courtierConnecte,++nport); //Passer la map des prix en paramètre au courtier
+				bourse.addBroker(tc);		
 
 				}
 
