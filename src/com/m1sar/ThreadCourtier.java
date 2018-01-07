@@ -21,26 +21,16 @@ import java.util.Vector;
 public class ThreadCourtier extends Thread {
 
     private Socket sCourtier; //socket pour communiuqer avec courtier
-	//contient la liste d'ordre en attente des differents clients
-	private HashMap<String,ArrayList<Ordre>> listeOrdre=new HashMap<>();
-	private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
-	private List<String> clients= new ArrayList<String>();
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>();
-	private Socket currentClient;
 	private int nbCustomer=0;
-	public static double tauxCommission=0.1; //un taux de 10% pour tous les courtiers
-	private double accountBalance=0.;
 	private Bourse bourse;//la bourse qui a crï¿½ï¿½ le Threadcourtier 
-	private boolean dispo=true;
-	//private BufferedReader in; 
-	//private PrintWriter out;
 	private OutputStream outS;
 	private InputStream inS;
 	private ObjectOutputStream outObject;
 	private ObjectInputStream inObject;
 	private String nomCourtier;
 	private int nport;
-	private static int timeLimit=15000;//le temps qu'un courtier attend avant de se deconnecter
+	//le temps qu'un courtier attend avant de se deconnecter
 	
 	
 	public ThreadCourtier(Bourse b,String nom) {
@@ -59,6 +49,8 @@ public class ThreadCourtier extends Thread {
     @Override
     public void run() {
     	try {
+    		inS=sCourtier.getInputStream();
+    		inObject=new ObjectInputStream(inS);
 			outS=sCourtier.getOutputStream();
 			outObject = new ObjectOutputStream(outS);
 			System.out.println("j'envoi le numéro de port au courtier ");
@@ -186,27 +178,12 @@ public class ThreadCourtier extends Thread {
      * @param ordre the order passed by  the  customer 
      * send to the stock market the order  
      */
-    public void transmettreOrdreABourse(Ordre ordre) {
-    	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
-		e.addOrder(ordre);//ajouter l'ordre dans entreprise
-    }
     
-    /**
-     * Calcule la commission 
-     */
-    public void CalculCommission(String nomClient) {
-    	ArrayList<Ordre>l=listeOrdre.get(nomClient);
-    	for(Ordre o:l) {
-    		if(o.estAccepte) {
-    		accountBalance+=o.getPrixUnitaire()*o.getQuantite()*tauxCommission;
-    		}
-    	}
-    }
-    
+     
     public void incNbClient() {
     	if (estDispo()) {nbCustomer++; return;}
     
-    	throw new UnsupportedOperationException("Le courtier a dÃ©ja deux clients en charge");
+    	throw new UnsupportedOperationException("Le courtier a deja deux clients en charge");
     }
     public boolean estDispo() {
 		return (nbCustomer<2);
@@ -219,22 +196,14 @@ public class ThreadCourtier extends Thread {
 	}
 	
 
-	public void addClient(Socket client) throws IOException {
+	/*public void addClient(Socket client) throws IOException {
     	this.sClient.add(client);
     	incNbClient();
     	
-    }
+    }*/
 	
 	
-	public String prefixe() {
-		return nomCourtier+" : ";
-	}
+	
 
-	void majClient() throws IOException {
-		
-		currentClient.close();
-		sClient.remove(currentClient);
-		nbCustomer--;
-		
-	}
+	
 }

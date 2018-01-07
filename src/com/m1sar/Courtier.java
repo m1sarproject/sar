@@ -15,6 +15,8 @@ import java.net.UnknownHostException;
  * 
  */
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -35,8 +37,29 @@ private int nbCustomer;
 public static double tauxCommission=0.1; //un taux de 10% pour tous les courtiers
 private double accountBalance=0.;
 private int port;
+private int portecoute;//sur lequel il ecoute les clients
 private InetAddress hote;
-Socket sc;
+private Socket sc;
+private ServerSocket ecouteClient;
+//stream de com avec la bourse
+private InputStream inSB;
+private OutputStream outSB;
+private ObjectInputStream inObjectB;
+private ObjectOutputStream outObjectB;
+//stream de com avec le client
+private OutputStream outSC;
+private InputStream inSC;
+private ObjectInputStream inObjectC;
+private ObjectOutputStream outObjectC;
+private Socket currentClient;
+private static int timeLimit=15000;
+/**
+ * listeOrdre contient la liste d'ordre en attente du client courant
+ */
+private HashMap<String,ArrayList<Ordre>> listeOrdre=new HashMap<>();
+private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>();
+//private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
+private List<String> clients= new ArrayList<String>();
 BufferedReader in; 
 PrintWriter out;
 
@@ -47,44 +70,12 @@ public Courtier(String name,int port,InetAddress hte) {
 	this.id = nb++;
 	this.port = port;
 	this.hote = hte;
-}
-
-/**
- * Send to all his cutomers the share prices that have been updated by the stock market 
- */
-public void sendUpdatedPrices() {//quand est ce que s'est fait? au d�but de la journ�e avant qu'un client ne soit d�co ;il faut ajouter un 
-	
+	start();
 }
 
 
 /**
- * the brocker sends to his customers the information about the share parices of each company in the stock market  
- */
-public void sendPriceCompanies() {
-	
-}
-/**
- * @param sellOrder:the order passed by  the  customer 
- * send to the stock market the sell order  
- */
-public void sell() {
-	
-}
-/**
- * * @param buyOrder:the order passed by  the  customer
- * send to the stock market the buy order 
- */
-public void buy() {
-	
-}
-/**
- * Calcule la commission et l'envoi au client 
- */
-public void CalculCommission() {
-	
-}
-/**
- * informe le client de la transaction (accord) effectu�e pour qu'ils mettent � jours leurs portefeuilles
+ * informe le client de la transaction (accord) effectuï¿½e pour qu'ils mettent ï¿½ jours leurs portefeuilles
  */
 public void SendAccordInformation() {
 	
@@ -101,22 +92,16 @@ public void connexion(){
 	try {
 	    sc= new Socket(hote,port);
 	    inscription(sc);
-	//il �coute les clients sur un num�ro de port 
-		//accepte les connexions et �change avec eux
-		System.out.println("j'essaye de r�cuperer le num�ro de port surlequel j'�coute");
-		InputStream inSB=sc.getInputStream();
-		ObjectInputStream inObject = new ObjectInputStream(inSB);
-		int port=inObject.readInt();
-		ServerSocket ecouteClient= new ServerSocket(port);
-		System.out.println("j'ecoute sur le num�ro de port "+port);
-		while (true) {
-		Socket sclient=ecouteClient.accept();
-		System.out.println("le client s'est connect�");
-		OutputStream outSC=sclient.getOutputStream();
-		ObjectOutputStream outObjectC = new ObjectOutputStream(outSC);
-		outObjectC.writeObject("salut client");
-		System.out.println("message envoy� au client");
-	    }
+	    //il écoute les clients sur un numéro de port 
+		//accepte les connexions et échange avec eux
+		System.out.println("j'essaye de récuperer le numéro de port surlequel j'écoute");
+		outSB=sc.getOutputStream();
+		outObjectB= new ObjectOutputStream(outSB);
+		inSB=sc.getInputStream();//communication avec bourse
+		inObjectB = new ObjectInputStream(inSB);
+		this.portecoute=inObjectB.readInt();
+		
+		
 	}
 	catch (Exception e) {
 		System.out.println("Erreur de connexion");
@@ -124,7 +109,7 @@ public void connexion(){
 }
 
 
-//Permet simplement de s'inscrire aupr�s de la bourse en donnant son nom
+//Permet simplement de s'inscrire auprès de la bourse en donnant son nom
 public void inscription(Socket sc) throws IOException {
 	
 	OutputStream outS=sc.getOutputStream();
@@ -132,16 +117,160 @@ public void inscription(Socket sc) throws IOException {
 	out.println(name);
 	
 }
+public void run() {
+	connexion();//se connecte à la bourse et recupere al socket de client
+	Socket sclient;
+	try {
+		
+		String nomclient="";
+		int nb = 1;
+		//récuperer la liste des prix a partir de la bourse A FAIRE 
+	   //	prixParEntreprise=bourse.getPrixParEntreprise();
+    	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
+    		currentClient = ecouteClient.accept();
+    		ArrayList<Ordre> lordre=new ArrayList<>();
+    		System.out.println("le client s'est connecte");
+    	//pas la peine if(sClient.size()>0) { //s'il y'a un client dans notre liste on commence par traiter ce client
+    		//currentClient=sClient.firstElement();
+    		//System.out.println(currentClient);
+    			try {
+		    			inSC=currentClient.getInputStream();
+		    			outSC=currentClient.getOutputStream();
+		    			inObjectC = new ObjectInputStream(inSC);
+		    			outObjectC = new ObjectOutputStream(outSC);
+		    			//out=new PrintWriter(outS,true);
+		    			//in =new BufferedReader(new InputStreamReader(inS));
+		    			System.out.println("client numÃ©ro "+nb+" connecte a ce courtier");
+		    			nomclient=(String)inObjectC.readObject(); //Le premier message doit etre le nom du client
+		    			clients.add(nomclient);
+		    			System.out.println("Je suis "+name+" le client "+ nomclient+" vient de s'inscrire");
+		    			outObjectC.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
+		    			outObjectC.flush();
 
+		    			//out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
+		    			//envoyer la liste des prix au client
+		    			sendPriceCompanies();
+
+		    				    		
+		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
+		    			{	
+		    			
+		    				Object req=inObjectC.readObject(); 
+		    				if(req instanceof String) {
+		    					String rep=(String)req;
+		    					if(rep.equals("bye")) {
+				    				//supprimer le client et fermer sa socket et decremente nbcustumer
+				    					System.out.println("je suis dans le if du bye");
+				    					//a modifier mettre le put quand le courtier reï¿½oit un accord pas ici
+				    					transmettreOrdreABourse(lordre);
+				    					//	a revoir cela 
+				    					listeOrdre.put(nomclient, lordre);
+				    					majClient();
+				    					//est ce que c'est ici qu'on attend les réponses
+				    					break;
+				    				}
+		    				}
+		    				
+		    				else {
+		    				Ordre ordre = (Ordre) req; 
+			    			System.out.println("Object received = " + ordre.getEntrepriseName());
+			    			lordre.add(ordre);
+			    			//enregistrer l'ordre pour ce client
+		    				}
+		    				//req=(String)inObject.readObject();
+							
+
+		    			} 
+		    		
+    			}
+    			catch (IOException e) {
+
+    				e.printStackTrace();
+				} 
+    			catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			
+    			
+    		
+    	//} celui du if size
+    		System.out.println("nbClinet = "+nbCustomer);
+    		if(nbCustomer==0) {
+	    		try {
+	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
+						Thread.sleep(timeLimit); //Le sleep a des dÃ©fauts : si un client se connecte pendant le sleep, il ne le rÃ©veille pas du sleep; Ã  revoir
+					} 
+	    		catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+    		}
+	    		
+    		if(nbCustomer==0) {	
+	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse");
+	    			//envoyer à la bourse un message pour me deconnecter 
+	    			outObjectB.writeObject("deco");
+	    			break;//sortir du while(true)
+    		}
+	    		
+	    							
+			nb++;	
+			
+				
+    }
+    	//envoyer un message a la bourse
+    	
+    	//System.out.println(prefixe() + "Le threadCourtier sort du while");
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+}
+void majClient() throws IOException {
+	
+	currentClient.close();
+	nbCustomer--;
+	//avertir la bourse  que le nombre de client a été decrémenté 
+	//outObject.writeObject("nbclient");//faire un if dans threadCourtier pour qu'il decremente
+	//outObject.writeInt(nbCustomer);
+	
+}
+public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
+	outObjectC=new ObjectOutputStream(outSC);
+	outObjectC.writeObject(prixParEntreprise);
+	outObjectC.flush();						//nombre pour reprï¿½senter les jours
+	
+}
+/**
+ * Calcule la commission 
+ */
+//a revoir une fois qu'on a fait les acceptations
+public void CalculCommission(String nomClient) {
+	ArrayList<Ordre>l=listeOrdre.get(nomClient);
+	for(Ordre o:l) {
+		if(o.estAccepte) {
+		accountBalance+=o.getPrixUnitaire()*o.getQuantite()*tauxCommission;
+		}
+	}
+}
+
+public void transmettreOrdreABourse(ArrayList<Ordre> ordre) throws IOException {
+	outObjectB.writeObject(ordre);
+}
+
+public String prefixe() {
+	return name+" : ";
+}
 public static void main(String[] args) throws UnknownHostException {
 	
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
 	
 	Courtier b=new Courtier("George Soros",nport,hote);
-	b.connexion();
 	
-	System.out.println("Le courtier s'est connect� � la bourse");
+	System.out.println("Le courtier s'est connecté à la bourse");
 	
 	/*Courtier c=new Courtier("Warren Buffet",nport,hote);
 	c.connexion();*/
