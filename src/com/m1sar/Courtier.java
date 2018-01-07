@@ -118,10 +118,9 @@ public void inscription(Socket sc) throws IOException {
 	
 }
 public void run() {
-	connexion();//se connecte à la bourse et recupere al socket de client
-	Socket sclient;
+	connexion();//se connecte à la bourse et recupere le numero de port surlequel il ecoute
 	try {
-		
+		ecouteClient=new ServerSocket(portecoute);
 		String nomclient="";
 		int nb = 1;
 		//récuperer la liste des prix a partir de la bourse A FAIRE 
