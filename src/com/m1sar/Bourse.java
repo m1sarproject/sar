@@ -362,7 +362,7 @@ public class Bourse {
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadCourtier tc=new ThreadCourtier(courtierConnecte,++nport); //Passer la map des prix en paramètre au courtier
+				ThreadCourtier tc=new ThreadCourtier(courtierConnecte,++nport, bourse, nomcourtier); //Passer la map des prix en paramètre au courtier
 				bourse.addBroker(tc);		
 
 				}

@@ -33,42 +33,91 @@ public class ThreadCourtier extends Thread {
 	//le temps qu'un courtier attend avant de se deconnecter
 	
 	
-	public ThreadCourtier(Bourse b,String nom) {
-		this.bourse=b;
-		this.nomCourtier=nom;
-		start();
-		//a revoir 
-	}
 	
-	  public ThreadCourtier(Socket sCourtier,int nport) {
+	
+	  public ThreadCourtier(Socket sCourtier,int nport, Bourse b,String nom) {
 			super();
+			this.bourse=b;
+			this.nomCourtier=nom;
 			this.sCourtier = sCourtier;
 			this.nport=nport;
 			start();
 		}
+	  
+	  
+	  public void connexionCourtier(){
+		  try {
+				outS=sCourtier.getOutputStream();
+				outObject = new ObjectOutputStream(outS);
+				System.out.println("j'envoi le numéro de port au courtier ");
+				outObject.writeInt(nport);
+				outObject.flush();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	  }
     @Override
     public void run() {
+    	connexionCourtier();
+    	//récuperer la liste des prix 
+    	prixParEntreprise=bourse.getPrixParEntreprise();
+    	String repCourtier;
+    	ArrayList<Ordre> ordres_client= new ArrayList<>();
     	try {
+
     		inS=sCourtier.getInputStream();
     		inObject=new ObjectInputStream(inS);
 			outS=sCourtier.getOutputStream();
 			outObject = new ObjectOutputStream(outS);
 			System.out.println("j'envoi le numéro de port au courtier ");
 			outObject.writeInt(nport);
+			outObject.writeObject("Demande de service : etat du marche : 'm', envoyer ordres : 'e'" );
 			outObject.flush();
-
-		} catch (IOException e) {
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 		
-		/*String nomclient="";
-		int nb = 1;
-
+    	while(true){
+    		try {
+				
+				
+				
+				repCourtier =(String) inObject.readObject();
+				
+				if(repCourtier.equals("m")){
+					System.out.println("Client demande l etat du marche");
+					outObject.writeObject(bourse.getPrixParEntreprise());
+					outObject.flush();
+					
+					
+				}
+				if(repCourtier.equals("e")){
+					System.out.println("Bourse recoit des ordres");
+					ordres_client=(ArrayList<Ordre>) inObject.readObject();
+					System.out.println("List ordres : "+ordres_client);
+					for (Ordre r : ordres_client){
+						transmettreOrdreABourse(r);
+					}
+					
+				}
+    		} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+    	}
+		/*
 		ArrayList<Ordre> lordre=new ArrayList<>();
 
-		//récuperer la liste des prix 
-		prixParEntreprise=bourse.getPrixParEntreprise();
+		
 		
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
    
@@ -178,8 +227,25 @@ public class ThreadCourtier extends Thread {
      * @param ordre the order passed by  the  customer 
      * send to the stock market the order  
      */
+
+    public void transmettreOrdreABourse(Ordre ordre) {
+    	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
+		e.addOrder(ordre);//ajouter l'ordre dans entreprise
+    }
     
-     
+    /**
+     * Calcule la commission 
+     */
+   /* public void CalculCommission(String nomClient) {
+    	ArrayList<Ordre>l=listeOrdre.get(nomClient);
+    	for(Ordre o:l) {
+    		if(o.estAccepte) {
+    		accountBalance+=o.getPrixUnitaire()*o.getQuantite()*tauxCommission;
+    		}
+    	}
+    }
+    */
+
     public void incNbClient() {
     	if (estDispo()) {nbCustomer++; return;}
     
