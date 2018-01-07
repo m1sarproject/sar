@@ -146,8 +146,9 @@ public void run() {
 		    			System.out.println("Je suis "+name+" le client "+ nomclient+" vient de s'inscrire");
 		    			outObjectC.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
 		    			outObjectC.flush();
-		    			//transmettre au client qui s'est connecte les prix des entreprises
-		    			sendPriceCompanies();		    				    		
+		    			//envoyer la liste des prix au client
+		    			sendPriceCompanies();
+
 		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
 		    			{	
 		    			

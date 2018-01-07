@@ -84,9 +84,10 @@ public class Client {
 			System.out.println("conenxion au courtier reussi");
 			outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
 			inObject = new ObjectInputStream(connexionCourtier.getInputStream());
-			System.out.println("message du courtier"+(String)inObject.readObject());
 			inscription(); 
-			cpt=0;
+			System.out.println("message du courtier"+(String)inObject.readObject());
+			
+			//cpt=0;
 			//System.out.println("Client "+nameClient+" veut se connecter");
 			//String reponse,req;
 			//reponse=(String) inObject.readObject();
