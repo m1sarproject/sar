@@ -79,8 +79,6 @@ public class ThreadCourtier extends Thread {
     	while(true){
     		try {
 				
-				
-    			
 				repCourtier =(String) inObject.readObject();
 				
 				if(repCourtier.equals("e")){

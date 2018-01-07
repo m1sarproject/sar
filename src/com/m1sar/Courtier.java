@@ -124,6 +124,8 @@ public void run() {
 		ecouteClient=new ServerSocket(portecoute);
 		String nomclient="";
 		int nb = 1;
+		System.out.println((String)inObjectB.readObject());
+		outObjectB.writeObject("e");
 		//récuperer la liste des prix a partir de la bourse A FAIRE 
 	   //	prixParEntreprise=bourse.getPrixParEntreprise();
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
@@ -221,6 +223,9 @@ public void run() {
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
+	} catch (ClassNotFoundException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
 	}
 	
 	
