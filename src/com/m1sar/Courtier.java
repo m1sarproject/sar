@@ -100,6 +100,7 @@ public void connexion(){
 		inSB=sc.getInputStream();//communication avec bourse
 		inObjectB = new ObjectInputStream(inSB);
 		this.portecoute=inObjectB.readInt();
+		prixParEntreprise=(HashMap<String,Double>)inObjectB.readObject();
 		
 		
 	}
@@ -145,12 +146,8 @@ public void run() {
 		    			System.out.println("Je suis "+name+" le client "+ nomclient+" vient de s'inscrire");
 		    			outObjectC.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
 		    			outObjectC.flush();
-
-		    			//out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-		    			//envoyer la liste des prix au client
-		    			sendPriceCompanies();
-
-		    				    		
+		    			//transmettre au client qui s'est connecte les prix des entreprises
+		    			sendPriceCompanies();		    				    		
 		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
 		    			{	
 		    			

@@ -57,7 +57,7 @@ public class Client {
 		this.port = port;
 		this.hote = hte;
 		connexion();
-		//readStateStocks();
+		readStateStocks();
 		//echangeOrdresClientCourtier();
 	}
 	
@@ -370,7 +370,7 @@ public class Client {
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
-			prixBoursePourEntreprise =   (Map<String, Double>) inObject.readObject();
+			prixBoursePourEntreprise =  (Map<String, Double>) inObject.readObject();
 			System.out.println("Voila l etat du marche : ");
 			System.out.println(prixBoursePourEntreprise);
 			

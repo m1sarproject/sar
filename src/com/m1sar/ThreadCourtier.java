@@ -68,12 +68,6 @@ public class ThreadCourtier extends Thread {
     	ArrayList<Ordre> ordres_client= new ArrayList<>();
     	try {
 
-    		inS=sCourtier.getInputStream();
-    		inObject=new ObjectInputStream(inS);
-			outS=sCourtier.getOutputStream();
-			outObject = new ObjectOutputStream(outS);
-			System.out.println("j'envoi le numéro de port au courtier ");
-			outObject.writeInt(nport);
 			outObject.writeObject("Demande de service : etat du marche : 'm', envoyer ordres : 'e'" );
 			outObject.flush();
 		} catch (IOException e1) {
