@@ -153,29 +153,20 @@ public class Client {
 	
 /**@author Vitalina
      * 
-     * 
+     * envoie un ordre achat qui on vientr de creer
      */
-	public void acheter (double prix, int quantite, String entreprise){
+	public Ordre acheter (double prix, int quantite, String entreprise){
 		if (! achatLegal(entreprise,prix*quantite,quantite)) {
 			System.out.println("cet Achat n est pas legal");
-			return;
+			return null;
 		}
 		
 		depensesEventuelles+=(prix*quantite);
 		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix,quantite);
 		ordres.add(r);
+		return r;
 		
 		
-		System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
-		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
-		ObjectOutputStream oos;
-		try {
-			outObject.writeObject(r);
-			outObject.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 
 	}
@@ -183,60 +174,64 @@ public class Client {
 	
 	/**@author Vitalina
      * 
-     * 
+     * envoie un ordre vente qui on vientr de creer
      */
-	public void vendre (double prix, int quantite, String entreprise){
-		if(portefeuille.size()==0)return;
+	public Ordre vendre (double prix, int quantite, String entreprise){
+		if(portefeuille.size()==0)return null;
 		if ( ! venteLegal(entreprise,quantite) ) {
 			System.out.println("ce Vente n est pas legal");
-			return;
+			return null;
 		}
 		
 		quantiteEventuelleVendu+=quantite;
 		Ordre r =new OrdreVente(entreprise, this.nameClient, prix,quantite);
 		ordres.add(r);
-		System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
-		//ByteArrayOutputStream bao = new ByteArrayOutputStream();
-		
-		try {
-			outObject.writeObject(r);
-			outObject.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		return r;
 		
 	}
 	
-	
+	//changement ajout de Produit et le traitement des reponses de la bourse avec nb=3 max ordres a envoyer 
 	
 	public void echangeOrdresClientCourtier() {
 		Scanner lect = new Scanner(System.in);
-		
+		Ordre ordre;
 		try {
 			System.out.println("Hello mon Courtier je vais t envoyer des ORDRES");
 			System.out.print("Donnez le nbOrdres a creer : ");
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
 			for(int i=0; i<nbOrdre;i++){
-				System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
-				String r=lect.nextLine();
-				if(r.equals("a")){
-					acheter(5.0, 5, "Apple");
-					System.out.println("OrdreAchat bien envoyer");
+				if(i%3!=0){
+					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
+					String r=lect.nextLine();
+					if(r.equals("a")){
+						ordre=acheter(5.0, 5, "Apple");
+						Produir(ordre);
+						System.out.println("OrdreAchat bien envoyer");
+					}
+					if(r.equals("v")){
+						ordre=vendre(7.0, 10, "Apple");
+						Produir(ordre);
+						System.out.println("OrdreVente bien envoyer");
+					}
 				}
-				if(r.equals("v")){
-					vendre(7.0, 10, "Apple");
-					//retourner dans vendre un boolean pour voir si l'ordre est envoye ou pas
-					System.out.println("OrdreVente bien envoyer");
+				else{
+					System.out.println("J attends la reponse de la Bourse");
+					int idOrdre = (int) inObject.readObject();
+					boolean yesOuNon=(boolean) inObject.readObject();
+					getReponseBource(idOrdre,yesOuNon);
+					
 				}
 				
 			}
-			outObject.writeObject(new String("bye"));
-		
-		} catch (IOException e) {
+		outObject.writeObject(new String("bye"));
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 		}
 	}
 	
@@ -382,6 +377,35 @@ public class Client {
 		
 		
 	
+		
+	}
+	
+	//produir envoie des ordres qui on vient de creer
+	public void Produir(Ordre r){
+		if(r instanceof OrdreAchat ){
+			System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
+			//ByteArrayOutputStream bao = new ByteArrayOutputStream();
+			ObjectOutputStream oos;
+			try {
+				outObject.writeObject(r);
+				outObject.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(r instanceof OrdreVente){
+			System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
+			//ByteArrayOutputStream bao = new ByteArrayOutputStream();
+			
+			try {
+				outObject.writeObject(r);
+				outObject.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 		
 	}
 	
