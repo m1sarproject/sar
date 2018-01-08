@@ -68,14 +68,6 @@ public class ThreadCourtier extends Thread {
     	prixParEntreprise=bourse.getPrixParEntreprise();
     	String repCourtier;
     	ArrayList<Ordre> ordres_client= new ArrayList<>();
-    	try {
-			outObject.writeObject("Demande de service : etat du marche : 'm', envoyer ordres : 'e'" );
-			outObject.flush();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
     	while(true){
     		try {
 				

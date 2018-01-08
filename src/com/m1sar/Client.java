@@ -366,12 +366,12 @@ public class Client {
 		
 		try {
 			
-			inObject=new ObjectInputStream(inS);
+			//inObject=new ObjectInputStream(inS);
 			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
 			//ByteArrayInputStream bis = new ByteArrayInputStream(bytesFromSocket);
 			//ObjectInputStream ois = new ObjectOutputStream(bis);
 			//recupère le vecteur eavec des entreprise de Bourse
-			prixBoursePourEntreprise =  (Map<String, Double>) inObject.readObject();
+			prixBoursePourEntreprise =  (HashMap<String, Double>) inObject.readObject();
 			System.out.println("Voila l etat du marche : ");
 			System.out.println(prixBoursePourEntreprise);
 			

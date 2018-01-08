@@ -101,7 +101,7 @@ public void connexion(){
 		inObjectB = new ObjectInputStream(inSB);
 		this.portecoute=inObjectB.readInt();
 		prixParEntreprise=(HashMap<String,Double>)inObjectB.readObject();
-		
+		System.err.println(prixParEntreprise);
 		
 	}
 	catch (Exception e) {
@@ -120,16 +120,17 @@ public void inscription(Socket sc) throws IOException {
 }
 public void run() {
 	connexion();//se connecte à la bourse et recupere le numero de port surlequel il ecoute
+	
 	try {
+		
 		ecouteClient=new ServerSocket(portecoute);
 		String nomclient="";
 		int nb = 1;
-		System.out.println((String)inObjectB.readObject());
-		outObjectB.writeObject("e");
 		//récuperer la liste des prix a partir de la bourse A FAIRE 
 	   //	prixParEntreprise=bourse.getPrixParEntreprise();
-    	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
+    	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while 
     		currentClient = ecouteClient.accept();
+    		nbCustomer++;
     		ArrayList<Ordre> lordre=new ArrayList<>();
     		System.out.println("le client s'est connecte");
     	//pas la peine if(sClient.size()>0) { //s'il y'a un client dans notre liste on commence par traiter ce client
@@ -151,9 +152,8 @@ public void run() {
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
 
-		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
+		    			/*while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
 		    			{	
-		    			
 		    				Object req=inObjectC.readObject(); 
 		    				if(req instanceof String) {
 		    					String rep=(String)req;
@@ -179,7 +179,7 @@ public void run() {
 		    				//req=(String)inObject.readObject();
 							
 
-		    			} 
+		    			} */
 		    		
     			}
     			catch (IOException e) {
@@ -208,7 +208,7 @@ public void run() {
     		if(nbCustomer==0) {	
 	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse");
 	    			//envoyer à la bourse un message pour me deconnecter 
-	    			outObjectB.writeObject("deco");
+	    			//outObjectB.writeObject("deco");
 	    			break;//sortir du while(true)
     		}
 	    		
@@ -223,10 +223,7 @@ public void run() {
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-	} catch (ClassNotFoundException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
+	} 
 	
 	
 }
@@ -240,7 +237,6 @@ void majClient() throws IOException {
 	
 }
 public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
-	outObjectC=new ObjectOutputStream(outSC);
 	outObjectC.writeObject(prixParEntreprise);
 	outObjectC.flush();						//nombre pour reprï¿½senter les jours
 	
@@ -258,7 +254,7 @@ public void CalculCommission(String nomClient) {
 	}
 }
 
-public void transmettreOrdreABourse(ArrayList<Ordre> ordre) throws IOException {
+public void transmettreOrdreABourse(Ordre ordre) throws IOException {
 	outObjectB.writeObject(ordre);
 }
 
