@@ -255,6 +255,7 @@ public void CalculCommission(String nomClient) {
 
 public void transmettreOrdreABourse(ArrayList<Ordre> lordre) throws IOException {
 	outObjectB.writeObject(lordre);
+	outObjectB.flush();
 }
 
 public String prefixe() {
