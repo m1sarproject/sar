@@ -201,7 +201,7 @@ public class Client {
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
 			for(int i=1; i<=nbOrdre;i++){
-				if(i%3!=0){
+				if(i%4!=0){
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 					String r=lect.nextLine();
 					if(r.equals("a")){
@@ -217,9 +217,24 @@ public class Client {
 				}
 				else{
 					System.out.println("J attends la reponse de la Bourse");
-					int idOrdre = (int) inObject.readObject();
-					boolean yesOuNon=(boolean) inObject.readObject();
-					getReponseBource(idOrdre,yesOuNon);
+					for(int j=0;j<3;j++){
+						int idOrdre = (int) inObject.readObject();
+						boolean yesOuNon=(boolean) inObject.readObject();
+						getReponseBource(idOrdre,yesOuNon);
+						
+					}
+					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
+					String r=lect.nextLine();
+					if(r.equals("a")){
+						ordre=acheter(5.0, 5, "Apple");
+						Produir(ordre);
+						System.out.println("OrdreAchat bien envoyer");
+					}
+					if(r.equals("v")){
+						ordre=vendre(7.0, 10, "Apple");
+						Produir(ordre);
+						System.out.println("OrdreVente bien envoyer");
+					}
 					
 				}
 				
@@ -384,27 +399,17 @@ public class Client {
 	public void Produir(Ordre r){
 		if(r instanceof OrdreAchat ){
 			System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
-			//ByteArrayOutputStream bao = new ByteArrayOutputStream();
-			ObjectOutputStream oos;
-			try {
-				outObject.writeObject(r);
-				outObject.flush();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		if(r instanceof OrdreVente){
 			System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
-			//ByteArrayOutputStream bao = new ByteArrayOutputStream();
 			
-			try {
-				outObject.writeObject(r);
-				outObject.flush();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+		}
+		try {
+			outObject.writeObject(r);
+			outObject.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
