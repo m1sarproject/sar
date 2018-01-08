@@ -200,7 +200,7 @@ public class Client {
 			System.out.print("Donnez le nbOrdres a creer : ");
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
-			for(int i=0; i<nbOrdre;i++){
+			for(int i=1; i<=nbOrdre;i++){
 				if(i%3!=0){
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 					String r=lect.nextLine();
