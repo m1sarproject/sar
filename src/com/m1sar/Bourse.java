@@ -24,7 +24,7 @@ public class Bourse {
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
 	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
-	private ArrayList<Ordre> ordres;
+	private ArrayList<Ordre> ordres=new ArrayList<>();
 	//List d'ordres 
 	
 	//SRD :Stoque l'ordre dans la liste et les traite facteur
