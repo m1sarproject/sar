@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Bourse {
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
-	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
+	static ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
 	private ArrayList<Ordre> ordres;
 	//List d'ordres 
 	
@@ -311,6 +312,43 @@ public class Bourse {
 		companies.add(e3);
 		companies.add(e4);
 		
+		HashMap<String,Double> m1 = new HashMap<String,Double>();
+		HashMap<String,Double> m2 = new HashMap<String,Double>();
+		HashMap<String,Double> m3 = new HashMap<String,Double>();
+		HashMap<String,Double> m4 = new HashMap<String,Double>();
+
+
+
+		m1.put("Apple",250d);
+		m1.put("Microsoft",230d);
+		m1.put("Mercedes",164d);
+		m1.put("SpaceX",500d);
+
+
+		m2.put("Apple",280d);
+		m2.put("Microsoft",250d);
+		m2.put("Mercedes",264d);
+		m2.put("SpaceX",400d);
+
+
+
+		m3.put("Apple",350d);
+		m3.put("Microsoft",130d);
+		m3.put("Mercedes",364d);
+		m3.put("SpaceX",700d);
+
+
+		m4.put("Apple",750d);
+		m4.put("Microsoft",530d);
+		m4.put("Mercedes",464d);
+		m4.put("SpaceX",600d);
+
+
+		listeGraphe.add(m1);
+		listeGraphe.add(m2);
+		listeGraphe.add(m3);
+		listeGraphe.add(m4);
+		
 		this.addAllCompanies(companies);
 		initPrixParEntreprise();
 		
@@ -336,12 +374,48 @@ public class Bourse {
 	public void setOrdres(ArrayList<Ordre> ordres) {
 		this.ordres = ordres;
 	}
+	
 
 	public static void main(String[] args) throws IOException{
-		
+
+		HashMap<String,Double> m1 = new HashMap<String,Double>();
+		HashMap<String,Double> m2 = new HashMap<String,Double>();
+		HashMap<String,Double> m3 = new HashMap<String,Double>();
+		HashMap<String,Double> m4 = new HashMap<String,Double>();
+
+
+
+		m1.put("Apple",250d);
+		m1.put("Microsoft",230d);
+		m1.put("Mercedes",164d);
+		m1.put("SpaceX",500d);
+
+
+		m2.put("Apple",280d);
+		m2.put("Microsoft",250d);
+		m2.put("Mercedes",264d);
+		m2.put("SpaceX",400d);
+
+
+
+		m3.put("Apple",350d);
+		m3.put("Microsoft",130d);
+		m3.put("Mercedes",364d);
+		m3.put("SpaceX",700d);
+
+
+		m4.put("Apple",750d);
+		m4.put("Microsoft",530d);
+		m4.put("Mercedes",464d);
+		m4.put("SpaceX",600d);
+
+
+		listeGraphe.add(m1);
+		listeGraphe.add(m2);
+		listeGraphe.add(m3);
+		listeGraphe.add(m4);
 		int nport=0;
 		nport=Integer.parseInt(args[0]);
-		
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
 		ServerSocket serveurCourtier=null;
@@ -385,10 +459,6 @@ public class Bourse {
 		 			bourse.updatePrice();
 		 		}
 		 		
-		 		if (! bourse.ordres.isEmpty() ) {
-		 			
-		 			bourse.Consommer (bourse.ordres.get(0)); 		
-		 		}
 		 		
 		 	 }//end of while
 		 }
