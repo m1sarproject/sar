@@ -69,7 +69,7 @@ public class ThreadCourtier extends Thread {
     	connexionCourtier();
     	//recuperer la liste des prix 
     	prixParEntreprise=bourse.getPrixParEntreprise();
-    	String repCourtier="i";
+   
     	Ordre ordre_client;
     	try {
 			outObject.writeObject("Demande de service : etat du marche : 'm', envoyer ordres : 'e'" );
@@ -81,26 +81,22 @@ public class ThreadCourtier extends Thread {
     	while(true){
     		try {
 				
-    			System.out.println(inObject);
-				 repCourtier =(String) inObject.readObject();
-    			 System.out.println("succees");
-				
-				if(repCourtier.equals("e")){
-					
-					System.out.println("Bourse recoit des ordres");
+    		
+					System.out.println("Bourse recoit un ordre");
 					ordre_client= (Ordre) inObject.readObject();
 					System.out.println(" ordres recu: "+ordre_client);
 					SurReceptionDe(ordre_client);
 					
-				}
+				
     		} catch (IOException e) {
 				e.printStackTrace();
 			}
     		catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-			
     	}
+			
+    	
 		
 }
     /**
