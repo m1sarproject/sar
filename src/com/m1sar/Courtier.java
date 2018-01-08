@@ -17,6 +17,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -57,7 +59,7 @@ private static int timeLimit=15000;
  * listeOrdre contient la liste d'ordre en attente du client courant
  */
 private HashMap<String,ArrayList<Ordre>> listeOrdre=new HashMap<>();
-private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>();
+private Map<String,Double> prixParEntreprise=new HashMap<String,Double>();
 //private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
 private List<String> clients= new ArrayList<String>();
 BufferedReader in; 
@@ -125,7 +127,7 @@ public void run() {
 		String nomclient="";
 		int nb = 1;
 		System.out.println((String)inObjectB.readObject());
-		outObjectB.writeObject("e");
+		
 		//récuperer la liste des prix a partir de la bourse A FAIRE 
 	   //	prixParEntreprise=bourse.getPrixParEntreprise();
     	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
@@ -150,10 +152,12 @@ public void run() {
 		    			outObjectC.flush();
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
-
+		    			
 		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
 		    			{	
-		    			
+		    				//reponse au threadcourtier
+		    				outObjectB.writeObject("e");
+		    				//REPONSE DE CLIENT
 		    				Object req=inObjectC.readObject(); 
 		    				if(req instanceof String) {
 		    					String rep=(String)req;
@@ -240,7 +244,7 @@ void majClient() throws IOException {
 	
 }
 public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
-	outObjectC=new ObjectOutputStream(outSC);
+	//outObjectC=new ObjectOutputStream(outSC);
 	outObjectC.writeObject(prixParEntreprise);
 	outObjectC.flush();						//nombre pour reprï¿½senter les jours
 	
