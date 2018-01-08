@@ -128,7 +128,6 @@ public void run() {
     	while (true) { 
     		currentClient = ecouteClient.accept();
     		nbCustomer++;
-    		ArrayList<Ordre> lordre=new ArrayList<>();
     		System.out.println("le client s'est connecte");
 
     			try {
@@ -147,10 +146,7 @@ public void run() {
 	
 		    			while (true)  		 
 		    			{	
-		    				//reponse au threadcourtier
-		    				System.out.println("Envoi en cours");
-		    				String tosend = "e";
-		    				outObjectB.writeObject(tosend);
+		    				
 		    				//REPONSE DE CLIENT
 		    				Object req=inObjectC.readObject(); 
 		    				if(req instanceof String) {
@@ -159,9 +155,7 @@ public void run() {
 				    				//supprimer le client et fermer sa socket et decremente nbcustumer
 				    					System.out.println("je suis dans le if du bye");
 				    					//a modifier mettre le put quand le courtier reï¿½oit un accord pas ici
-				    					transmettreOrdreABourse(lordre);
-				    					//	a revoir cela 
-				    					listeOrdre.put(nomclient, lordre);
+				    					
 				    					majClient();
 				    					//est ce que c'est ici qu'on attend les réponses
 				    					break;
@@ -171,8 +165,9 @@ public void run() {
 		    				else {
 		    				Ordre ordre = (Ordre) req; 
 			    			System.out.println("Object received = " + ordre.getEntrepriseName());
-			    			lordre.add(ordre);
-			    			//enregistrer l'ordre pour ce client
+			    			transmettreOrdreABourse(ordre);
+	    					//	a revoir cela 
+	    					//listeOrdre.put(nomclient, lordre);
 		    				}
 		    				//req=(String)inObject.readObject();
 							
@@ -253,8 +248,9 @@ public void CalculCommission(String nomClient) {
 	}
 }
 
-public void transmettreOrdreABourse(ArrayList<Ordre> lordre) throws IOException {
+public void transmettreOrdreABourse( Ordre lordre) throws IOException {
 	outObjectB.writeObject(lordre);
+	outObjectB.flush();
 }
 
 public String prefixe() {

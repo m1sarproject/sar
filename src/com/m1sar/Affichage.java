@@ -20,8 +20,9 @@ public class Affichage extends Application {
 	private XYChart.Series[] montab = new XYChart.Series[20]; //On se limite à 20 entreprises maximum
 
   public Affichage() {
+	  
 		super();
-		
+	
 		HashMap<String,Double> m1 = new HashMap<String,Double>();
 		HashMap<String,Double> m2 = new HashMap<String,Double>();
 		HashMap<String,Double> m3 = new HashMap<String,Double>();
@@ -69,6 +70,7 @@ public class Affichage extends Application {
 
 	public Affichage(ArrayList<HashMap<String, Double>> prixParEntreprise) { //La bourse lui transmet son ArrayList pour faire l'affichage
 		super();
+		System.out.println("Constructeur paramétré");
 		this.prixParEntreprise = prixParEntreprise;
 	}
 

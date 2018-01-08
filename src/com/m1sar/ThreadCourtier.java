@@ -69,8 +69,8 @@ public class ThreadCourtier extends Thread {
     	connexionCourtier();
     	//recuperer la liste des prix 
     	prixParEntreprise=bourse.getPrixParEntreprise();
-    	String repCourtier="i";
-    	ArrayList<Ordre> ordres_client= new ArrayList<>();
+   
+    	Ordre ordre_client;
     	try {
 			outObject.writeObject("Demande de service : etat du marche : 'm', envoyer ordres : 'e'" );
 			outObject.flush();
@@ -81,28 +81,22 @@ public class ThreadCourtier extends Thread {
     	while(true){
     		try {
 				
-    			System.out.println(inObject);
-				 repCourtier =(String) inObject.readObject();
-    			 System.out.println("succees");
+    		
+					System.out.println("Bourse recoit un ordre");
+					ordre_client= (Ordre) inObject.readObject();
+					System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
+					SurReceptionDe(ordre_client);
+					
 				
-				if(repCourtier.equals("e")){
-					
-					System.out.println("Bourse recoit des ordres");
-					ordres_client=(ArrayList<Ordre>) inObject.readObject();
-					System.out.println("List ordres : "+ordres_client);
-					for (Ordre r : ordres_client){
-						SurReceptionDe(r);
-					}
-					
-				}
     		} catch (IOException e) {
 				e.printStackTrace();
 			}
     		catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-			
     	}
+			
+    	
 		
 }
     /**
