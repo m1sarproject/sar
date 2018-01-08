@@ -85,7 +85,7 @@ public class ThreadCourtier extends Thread {
 					System.out.println("Bourse recoit un ordre");
 					ordre_client= (Ordre) inObject.readObject();
 					System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
-					SurReceptionDe(ordre_client);
+					bourse.Consommer(ordre_client);//ajout dans entreprise 2 fois SRD et consommer
 					
 				
     		} catch (IOException e) {
