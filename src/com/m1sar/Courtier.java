@@ -156,7 +156,9 @@ public void run() {
 		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
 		    			{	
 		    				//reponse au threadcourtier
-		    				outObjectB.writeObject("e");
+		    				System.out.println("Envoi en cours");
+		    				String tosend = "e";
+		    				outObjectB.writeObject(tosend);
 		    				//REPONSE DE CLIENT
 		    				Object req=inObjectC.readObject(); 
 		    				if(req instanceof String) {

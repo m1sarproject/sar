@@ -36,7 +36,7 @@ public class BourseClient extends Thread {
 		for (ThreadCourtier courtier : listcourtiers) {
 			if (courtier.estDispo())  
 				{
-				courtier.incNbClient();//incrémenter nombre de client
+				courtier.incNbClient();//incrementer nombre de client
 				return courtier;	
 				}
 		}
@@ -59,12 +59,14 @@ public class BourseClient extends Thread {
 			    ThreadCourtier courtier=getFreeCourtier();
 			    OutputStream outS=clientConnecte.getOutputStream();
 			    ObjectOutputStream outObject=new ObjectOutputStream(outS);
-			  //envoyer le numero de port et  @ip inetAddress du courtier au client
+
+			    //envoyer le numero de port et  @ip inetAddress du courtier au client
+			    
 			    outObject.writeObject(courtier.getInetAddress());
 			    outObject.flush();
 			    outObject.writeInt(courtier.getNport());
 			    outObject.flush();
-			    System.out.println("envoie des paramètres à client terminé");
+			    System.out.println("envoie des parametres au client reussi");
 				
 			} 
 			
@@ -74,7 +76,7 @@ public class BourseClient extends Thread {
 			}
 			
 
-		}
+		  }
 		}
 		catch( IOException e) {
 			e.getMessage();
@@ -84,7 +86,6 @@ public class BourseClient extends Thread {
 			try {
 				serveurClient.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
