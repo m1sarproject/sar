@@ -11,9 +11,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-/**@author Ouerdia
- * 
- */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,37 +125,27 @@ public void run() {
 		ecouteClient=new ServerSocket(portecoute);
 		String nomclient="";
 		int nb = 1;
-		///System.out.println((String)inObjectB.readObject());
-		
-
-		//récuperer la liste des prix a partir de la bourse A FAIRE 
-	   //	prixParEntreprise=bourse.getPrixParEntreprise();
-    	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while 
+    	while (true) { 
     		currentClient = ecouteClient.accept();
     		nbCustomer++;
     		ArrayList<Ordre> lordre=new ArrayList<>();
     		System.out.println("le client s'est connecte");
-    	//pas la peine if(sClient.size()>0) { //s'il y'a un client dans notre liste on commence par traiter ce client
-    		//currentClient=sClient.firstElement();
-    		//System.out.println(currentClient);
+
     			try {
 		    			inSC=currentClient.getInputStream();
 		    			outSC=currentClient.getOutputStream();
 		    			inObjectC = new ObjectInputStream(inSC);
 		    			outObjectC = new ObjectOutputStream(outSC);
-		    			//out=new PrintWriter(outS,true);
-		    			//in =new BufferedReader(new InputStreamReader(inS));
-		    			System.out.println("client numÃ©ro "+nb+" connecte a ce courtier");
+		    			System.out.println("client numero "+nb+" s'est connecte a ce courtier");
 		    			nomclient=(String)inObjectC.readObject(); //Le premier message doit etre le nom du client
 		    			clients.add(nomclient);
-		    			System.out.println("Je suis "+name+" le client "+ nomclient+" vient de s'inscrire");
+		    			System.out.println(" le client "+ nomclient+" vient de s'inscrire");
 		    			outObjectC.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
 		    			outObjectC.flush();
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
-		    			outObjectB.writeObject("e");
-			
-		    			while (true)  		    			//ici on mettra le traitement des ordres reÃ§u par le client
+	
+		    			while (true)  		 
 		    			{	
 		    				//reponse au threadcourtier
 		    				System.out.println("Envoi en cours");
