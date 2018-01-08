@@ -24,7 +24,7 @@ public class ThreadCourtier extends Thread {
     private Socket sCourtier; //socket pour communiuqer avec courtier
 	private Map<String,Double> prixParEntreprise=new HashMap<String,Double>();
 	private int nbCustomer=0;
-	private Bourse bourse;//la bourse qui a crï¿½ï¿½ le Threadcourtier 
+	private Bourse bourse;  //la bourse qui a cree le Threadcourtier 
 	private OutputStream outS;
 	private InputStream inS;
 	private ObjectOutputStream outObject;
@@ -49,48 +49,56 @@ public class ThreadCourtier extends Thread {
 	  public void connexionCourtier(){
 		  try {
 				outS=sCourtier.getOutputStream();
+				inS =sCourtier.getInputStream();
 				outObject = new ObjectOutputStream(outS);
-				System.out.println("j'envoi le numéro de port au courtier ");
+				inObject = new ObjectInputStream(inS);
+				System.out.println("j'envoi le numero de port au courtier ");
 				outObject.writeInt(nport);
 				outObject.flush();
 				outObject.writeObject(bourse.getPrixParEntreprise());
 				outObject.flush();
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 	  }
     @Override
     public void run() {
+    	
     	connexionCourtier();
-    	//récuperer la liste des prix 
+    	//recuperer la liste des prix 
     	prixParEntreprise=bourse.getPrixParEntreprise();
     	String repCourtier="i";
     	ArrayList<Ordre> ordres_client= new ArrayList<>();
-    	
+    	try {
+			outObject.writeObject("Demande de service : etat du marche : 'm', envoyer ordres : 'e'" );
+			outObject.flush();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
     	while(true){
     		try {
 				
-				repCourtier =(String) inObject.readObject();
-				System.out.println("hello");
+    			System.out.println(inObject);
+				 repCourtier =(String) inObject.readObject();
+    			 System.out.println("succees");
 				
 				if(repCourtier.equals("e")){
+					
 					System.out.println("Bourse recoit des ordres");
 					ordres_client=(ArrayList<Ordre>) inObject.readObject();
 					System.out.println("List ordres : "+ordres_client);
 					for (Ordre r : ordres_client){
-						transmettreOrdreABourse(r);
+						SurReceptionDe(r);
 					}
 					
 				}
     		} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			
@@ -100,10 +108,10 @@ public class ThreadCourtier extends Thread {
     /**
      * the brocker sends to his customers the information about the share parices of each company in the stock market  
      */
-    public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
+    public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au debut de la journee avant qu'un client ne soit deco ;il faut ajouter un 
     	outObject=new ObjectOutputStream(outS);
     	outObject.writeObject(prixParEntreprise);
-    	outObject.flush();						//nombre pour reprï¿½senter les jours
+    	outObject.flush();						//nombre pour representer les jours
     	
     }
     /**
@@ -111,9 +119,16 @@ public class ThreadCourtier extends Thread {
      * send to the stock market the order  
      */
 
-    public void transmettreOrdreABourse(Ordre ordre) {
+    public void SurReceptionDe(Ordre ordre) {
     	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
 		e.addOrder(ordre);//ajouter l'ordre dans entreprise
+		Transmettre(ordre);
+    }
+    
+    
+    public void Transmettre(Ordre o) {
+    	
+		bourse.getOrdres().add(o);
     }
     
     /**

@@ -24,6 +24,10 @@ public class Bourse {
 	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
 	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
+	private ArrayList<Ordre> ordres;
+	//List d'ordres 
+	
+	//SRD :Stoque l'ordre dans la liste et les traite facteur
 	private int dayid; 
 	
 	public Bourse() {
@@ -78,7 +82,8 @@ public class Bourse {
 	public HashMap<String,Double> readFromFile(String filename) {
 		
 		HashMap<String,Double> informations = null;
-	      try {
+	      
+		try {
 	         FileInputStream fis = new FileInputStream(filename);
 	         ObjectInputStream ois = new ObjectInputStream(fis);
 	         informations = (HashMap<String,Double>) ois.readObject();
@@ -107,15 +112,10 @@ public class Bourse {
 		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
 	}
 	
-	
-	
-	
-	public HashMap<String, Double> getPrixParEntreprise() {
-		return prixParEntreprise;
-	}
 
-	public boolean agreeOrNot(Ordre o) {
+	public boolean Consommer(Ordre o) { //privÃ©ligie le prix le moins cher en cas d'achats
 		
+		ordres.remove(o);
 		Entreprise concerned = this.getByName(o.getEntrepriseName());
 
 		if (o instanceof OrdreVente) {
@@ -315,7 +315,7 @@ public class Bourse {
 		initPrixParEntreprise();
 		
 	}
-	//remplit la liste des prix initiaux des entreprises
+
 	public void initPrixParEntreprise() {
 		for(Entreprise e:entreprises) {
 			prixParEntreprise.put(e.getName(),e.getPrixUnitaireAction());
@@ -323,27 +323,34 @@ public class Bourse {
 		listeGraphe.add(prixParEntreprise);
 	}
 	
+	
+	public HashMap<String, Double> getPrixParEntreprise() {
+		return prixParEntreprise;
+	}
+	
+	
+	public ArrayList<Ordre> getOrdres() {
+		return ordres;
+	}
+
+	public void setOrdres(ArrayList<Ordre> ordres) {
+		this.ordres = ordres;
+	}
+
 	public static void main(String[] args) throws IOException{
 		
 		int nport=0;
 		nport=Integer.parseInt(args[0]);
-		/*Fenetre mine = new Fenetre (); 
-
-		while (nport==0) {
-			
-			nport=mine.getPortnb();
-			
-		}*/
 		
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
 		ServerSocket serveurCourtier=null;
 		
 		try { 
-			serveurCourtier= new ServerSocket(nport); //Socket d'écoute
+			serveurCourtier= new ServerSocket(nport); //Socket d'ecoute
 		}
 		
-		catch (Exception e) {System.err.println("La création du serveur d'écoute a échoué");}
+		catch (Exception e) {System.err.println("La creation du serveur d'ecoute a echoue");}
 		
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
 		BourseClient bourseclient = new BourseClient (++nport,bourse.courtiers); 
@@ -353,16 +360,16 @@ public class Bourse {
 		 		try{
 		 		
 		 		System.out.println("La bourse attend un courtier");
-				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte à  la socket de communication
+				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte a  la socket de communication
 				
-				System.out.println("Connexion Courtier acceptée par Bourse");	
+				System.out.println("Connexion Courtier acceptee par Bourse");	
 				
 				BufferedReader in =new BufferedReader(new InputStreamReader(courtierConnecte.getInputStream()));
 				String nomcourtier = in.readLine();
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadCourtier tc=new ThreadCourtier(courtierConnecte,++nport, bourse, nomcourtier); //Passer la map des prix en paramètre au courtier
+				ThreadCourtier tc=new ThreadCourtier(courtierConnecte,++nport, bourse, nomcourtier); //Passer la map des prix en parametre au courtier
 				bourse.addBroker(tc);		
 
 				}
@@ -370,10 +377,19 @@ public class Bourse {
 				catch (Exception e) {
 					System.out.println("Socket ferme dans Bourse de serveurCourtier");
 					serveurCourtier.close();
-				}		 	
-					
-		 }	
-
+				}
+		 		
+		 		
+		 		if ( bourse.courtiers.isEmpty() ) {
+		 			
+		 			bourse.updatePrice();
+		 		}
+		 		
+		 		if (! bourse.ordres.isEmpty() ) {
+		 			
+		 			bourse.Consommer (bourse.ordres.get(0)); 		
+		 		}
+		 		
+		 	 }//end of while
+		 }
 	}
-	
-}
