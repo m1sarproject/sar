@@ -129,8 +129,7 @@ public class ThreadBourse extends Thread {
      */
 
     public void SurReceptionDe(Ordre ordre) {
-    	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
-		e.addOrder(ordre);//ajouter l'ordre dans entreprise
+    	
 		Transmettre(ordre);
     }
     

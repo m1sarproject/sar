@@ -120,10 +120,14 @@ public class Bourse {
 		Entreprise concerned = this.getByName(o.getEntrepriseName());
 
 		if (o instanceof OrdreVente) {
-			
-			
+					
 			concerned.addOrder(o);
 			concerned.incDemandesVentes();
+			
+			
+			
+			
+			
 		}
 
 		
