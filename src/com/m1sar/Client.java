@@ -68,7 +68,7 @@ public class Client {
 	public void connexion(){
 		
 			try {
-			//connexion à la bourse
+			//connexion ï¿½ la bourse
 			sc= new Socket(hote,port);
 			outS=sc.getOutputStream();
 			inS=sc.getInputStream();
@@ -162,7 +162,7 @@ public class Client {
 		}
 		
 		depensesEventuelles+=(prix*quantite);
-		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix,quantite);
+		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix,quantite, entreprise);
 		ordres.add(r);
 		return r;
 		
