@@ -260,11 +260,9 @@ public class Client {
 			}
 		outObject.writeObject(new String("bye"));
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IOException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 		}
 	}
