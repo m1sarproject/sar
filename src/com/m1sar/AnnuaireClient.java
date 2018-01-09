@@ -14,14 +14,14 @@ import java.util.Vector;
 
 
 
-public class BourseClient extends Thread {
+public class AnnuaireClient extends Thread {
 	
 	private int nport;
 	private ServerSocket serveurClient=null;
 	private Socket clientConnecte = null;
-	private Vector<ThreadCourtier> listcourtiers;
+	private Vector<ThreadBourse> listcourtiers;
 
-	public BourseClient(int nport,Vector<ThreadCourtier> courtiers) {
+	public AnnuaireClient(int nport,Vector<ThreadBourse> courtiers) {
 		super();
 		this.nport = nport;
 		listcourtiers = courtiers;
@@ -31,9 +31,9 @@ public class BourseClient extends Thread {
 	
 	
 	
-	public ThreadCourtier getFreeCourtier() throws CourtierNotFoundException {
+	public ThreadBourse getFreeCourtier() throws CourtierNotFoundException {
 		
-		for (ThreadCourtier courtier : listcourtiers) {
+		for (ThreadBourse courtier : listcourtiers) {
 			if (courtier.estDispo())  
 				{
 				courtier.incNbClient();//incrementer nombre de client
@@ -56,7 +56,7 @@ public class BourseClient extends Thread {
 			try {
 				clientConnecte = serveurClient.accept();
 				System.out.println("Connexion client accepter par BourseClient");	
-			    ThreadCourtier courtier=getFreeCourtier();
+			    ThreadBourse courtier=getFreeCourtier();
 			    OutputStream outS=clientConnecte.getOutputStream();
 			    ObjectOutputStream outObject=new ObjectOutputStream(outS);
 

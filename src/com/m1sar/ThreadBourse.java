@@ -19,7 +19,7 @@ import java.util.Vector;
 
 
 
-public class ThreadCourtier extends Thread {
+public class ThreadBourse extends Thread {
 
     private Socket sCourtier; //socket pour communiuqer avec courtier
 	private Map<String,Double> prixParEntreprise=new HashMap<String,Double>();
@@ -36,7 +36,7 @@ public class ThreadCourtier extends Thread {
 	
 	
 	
-	  public ThreadCourtier(Socket sCourtier,int nport, Bourse b,String nom) {
+	  public ThreadBourse(Socket sCourtier,int nport, Bourse b,String nom) {
 			super();
 			this.bourse=b;
 			this.nomCourtier=nom;

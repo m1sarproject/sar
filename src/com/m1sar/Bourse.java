@@ -22,7 +22,7 @@ public class Bourse {
 
 	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
-	private Vector<ThreadCourtier> courtiers = new Vector<ThreadCourtier> ();
+	private Vector<ThreadBourse> courtiers = new Vector<ThreadBourse> ();
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
 	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
 	private ArrayList<Ordre> ordres=new ArrayList<>();
@@ -179,7 +179,7 @@ public class Bourse {
      * IllegalArgumentException if the Broker does exist
      * @return <tt>true</tt> 
      */
-	boolean addBroker(ThreadCourtier c) {
+	boolean addBroker(ThreadBourse c) {
 		if ( courtiers.contains(c) ) throw new IllegalArgumentException("The Broker is already in the list.");
 
 		courtiers.add(c);
@@ -193,9 +193,9 @@ public class Bourse {
      * @param L : the collection of Brokers to be appended to this list
      * @return <tt>true</tt> 
      */
-	boolean addAllBrokers(List<ThreadCourtier> L) {
+	boolean addAllBrokers(List<ThreadBourse> L) {
 		
-		for( ThreadCourtier c : L ) {
+		for( ThreadBourse c : L ) {
 			
 			addBroker(c);
 		}
@@ -212,7 +212,7 @@ public class Bourse {
      * @exception : IllegalArgumentException if the Broker does not exist
      * @return <tt>true</tt> 
      */
-	boolean removeBroker(ThreadCourtier c) {
+	boolean removeBroker(ThreadBourse c) {
 		
 		if ( ! courtiers.contains(c) ) throw new IllegalArgumentException("The Broker does not exist.");
 
@@ -391,7 +391,7 @@ public class Bourse {
 		catch (Exception e) {System.err.println("La creation du serveur d'ecoute a echoue");}
 		
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
-		BourseClient bourseclient = new BourseClient (++nport,bourse.courtiers); 
+		AnnuaireClient bourseclient = new AnnuaireClient (++nport,bourse.courtiers); 
 		 
 		while(true) {		
 
@@ -407,7 +407,7 @@ public class Bourse {
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadCourtier tc=new ThreadCourtier(courtierConnecte,++nport, bourse, nomcourtier); //Passer la map des prix en parametre au courtier
+				ThreadBourse tc=new ThreadBourse(courtierConnecte,++nport, bourse, nomcourtier); //Passer la map des prix en parametre au courtier
 				bourse.addBroker(tc);		
 
 				}
