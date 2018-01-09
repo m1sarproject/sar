@@ -80,7 +80,7 @@ public class ThreadBourse extends Thread {
 		
     	while(true){
     		try {
-
+    				int cpt=0;
 					System.out.println("Bourse recoit un message de courtier");
 					Object req=inObject.readObject();
 					if(req instanceof String) {
@@ -95,11 +95,25 @@ public class ThreadBourse extends Thread {
 						}
 					}
 					else {
+						cpt++;
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
+<<<<<<< HEAD
 
 						bourse.Consommer(ordre_client);
+=======
+
+						if(cpt==3) {
+							cpt=0;
+							for (int i = 0; i < 3; i++) {
+								Ordre o=bourse.accord(nomCourtier);
+								outObject.writeObject(o.getId());
+								outObject.writeObject(o.isEstAccepte());
+							}
+						}
+
+>>>>>>> branch 'master' of https://github.com/m1sarproject/sar.git
 						
 					}			
 
