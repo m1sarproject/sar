@@ -97,8 +97,10 @@ public class ThreadBourse extends Thread {
 					else {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
-						//SurReceptionDe(ordre_client);
+						SurReceptionDe(ordre_client);
+						
 						bourse.Consommer(ordre_client);
+						
 					}			
 
 					
@@ -129,7 +131,8 @@ public class ThreadBourse extends Thread {
      */
 
     public void SurReceptionDe(Ordre ordre) {
-    	
+    	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
+		e.addOrder(ordre);//ajouter l'ordre dans entreprise
 		Transmettre(ordre);
     }
     
@@ -251,7 +254,7 @@ public class ThreadBourse extends Thread {
 		System.out.println("nbClinet = "+nbCustomer);
 		if(nbCustomer==0) {
     		try {
-    			   System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
+    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
 					Thread.sleep(timeLimit); //Le sleep a des défauts : si un client se connecte pendant le sleep, il ne le réveille pas du sleep; à revoir
 				} 
     		catch (InterruptedException e) {
