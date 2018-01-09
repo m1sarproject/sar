@@ -98,10 +98,7 @@ public class ThreadBourse extends Thread {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
-<<<<<<< HEAD
-						
-=======
->>>>>>> branch 'master' of https://github.com/m1sarproject/sar.git
+
 						bourse.Consommer(ordre_client);
 						
 					}			
