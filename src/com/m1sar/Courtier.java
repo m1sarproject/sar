@@ -116,7 +116,7 @@ public void inscription(Socket sc) throws IOException {
 	
 }
 public void run() {
-	connexion();//se connecte à la bourse et recupere le numero de port surlequel il ecoute
+	connexion();//se connecte a� la bourse et recupere le numero de port surlequel il ecoute
 	
 	try {
 		
@@ -183,8 +183,7 @@ public void run() {
 				    				}
 				    				//attendre le message de threadCourtier pour les acceptations 
 		    				}
-		    				//req=(String)inObject.readObject();
-							
+
 
 		    			} 
 		    		
@@ -205,7 +204,7 @@ public void run() {
     		if(nbCustomer==0) {
 	    		try {
 	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
-						Thread.sleep(timeLimit); //Le sleep a des dÃ©fauts : si un client se connecte pendant le sleep, il ne le rÃ©veille pas du sleep; Ã  revoir
+						Thread.sleep(timeLimit); //Le sleep a des de�aufauts : si un client se connecte pendant le sleep, il ne le reveille pas du sleep; sinon� revoir
 					} 
 	    		catch (InterruptedException e) {
 						e.printStackTrace();
@@ -223,9 +222,8 @@ public void run() {
 			
 				
     }
-    	//envoyer un message a la bourse
+    
     	
-    	//System.out.println(prefixe() + "Le threadCourtier sort du while");
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -281,9 +279,6 @@ public static void main(String[] args) throws UnknownHostException {
 	
 	System.out.println("Le courtier s'est connecté à la bourse");
 	
-	/*Courtier c=new Courtier("Warren Buffet",nport,hote);
-	c.connexion();*/
-
 	}
 
 }
