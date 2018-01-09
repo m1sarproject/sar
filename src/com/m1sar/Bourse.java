@@ -122,10 +122,7 @@ public class Bourse {
 		if (o instanceof OrdreVente) {
 					
 			concerned.addOrder(o);
-			concerned.incDemandesVentes();
-			
-			
-			
+			concerned.incDemandesVentes();			
 			
 			
 		}
