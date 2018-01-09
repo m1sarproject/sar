@@ -102,8 +102,9 @@ public class ThreadBourse extends Thread {
 						if(cpt==3) {
 							cpt=0;
 							for (int i = 0; i < 3; i++) {
-								boolean v=bourse.Consommer(ordre_client);
-								
+								Ordre o=bourse.accord(nomCourtier);
+								outObject.writeObject(o.getId());
+								outObject.writeObject(o.isEstAccepte());
 							}
 						}
 						

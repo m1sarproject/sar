@@ -112,57 +112,81 @@ public class Bourse {
 		
 		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
 	}
+	/**
+	 * 
+	 * @return le premier ordre appertenant au client que traite le courtier nomCourtier
+	 */
+public Ordre consommer(String nomCourtier) {
+	Ordre ordre=null;
+	for (Ordre o:ordres) {
+		if(o.getNomCourtier().equals(nomCourtier)) {
+			ordre=o;
+			break;
+		}
+	}
+	if(ordre!=null) {
+		ordres.remove(ordre);
+	}
+	return ordre;
+
 	
-
-	public boolean Consommer(Ordre o) { //privéligie le prix le moins cher en cas d'achats
+}
+	public Ordre accord(String nomCourtier) { //privéligie le prix le moins cher en cas d'achats
 		
-		ordres.remove(o);
-		Entreprise concerned = this.getByName(o.getEntrepriseName());
+		Ordre o=consommer(nomCourtier);
+		if(o!=null) {
+			Entreprise concerned = this.getByName(o.getEntrepriseName());
 
-		if (o instanceof OrdreVente) {
+			if (o instanceof OrdreVente) {
+						
+				concerned.addOrder(o);
+				concerned.incDemandesVentes();			
+				
+				
+			}
+
+			
+			if (o instanceof OrdreAchat) {
+			
+			concerned.incDemandesAchat();
+			
+			int nbActionsDispo = concerned.getNbActions();
+			int nbActionsVoulus = o.getQuantite();
+			
+			double prixEntreprise = concerned.getPrixUnitaireAction();
+			double prixPropose = o.getPrixUnitaire();
+			
+			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
+				
+				o.setEstFini();
+				concerned.DecreaseNbActions(nbActionsVoulus);
+				concerned.addOrder(o); //Je stoque l'ordre dans l'entreprise
+				//return true;	
+				o.setEstAccepte(true);
+		
+			}
+			
+			
+			for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
+				
+				if (ordre instanceof OrdreVente && ordre.estAccepte==false) {
 					
-			concerned.addOrder(o);
-			concerned.incDemandesVentes();			
+					if (matching(o,ordre)) o.setEstAccepte(true);//return true;
+					
+				}	
 			
-			
+			}
+					
+		 }
 		}
-
-		
-		if (o instanceof OrdreAchat) {
-		
-		concerned.incDemandesAchat();
-		
-		int nbActionsDispo = concerned.getNbActions();
-		int nbActionsVoulus = o.getQuantite();
-		
-		double prixEntreprise = concerned.getPrixUnitaireAction();
-		double prixPropose = o.getPrixUnitaire();
-		
-		if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
-			
-			o.setEstFini();
-			concerned.DecreaseNbActions(nbActionsVoulus);
-			concerned.addOrder(o); //Je stoque l'ordre dans l'entreprise
-			return true;		
-	
+		else {
+			System.out.println("pas d'ordre poru ce courtier");//enlever le if null apr�s les tests
 		}
 		
 		
-		for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
-			
-			if (ordre instanceof OrdreVente && ordre.estAccepte==false) {
-				
-				if (matching(o,ordre)) return true;
-				
-			}	
-		
-		}
-				
-	 }
-		
-
-
-	return false;
+	//return false;
+	o.setEstAccepte(false);
+	return o;
 	
 	}
 		

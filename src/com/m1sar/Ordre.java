@@ -16,6 +16,23 @@ public abstract class Ordre implements Serializable {
 	private double prix_Propose_par_Client;
 	private int quantiteClient;
 	private String nomCourtier;
+	
+	public boolean isEstAccepte() {
+		return estAccepte;
+	}
+
+	public void setEstAccepte(boolean estAccepte) {
+		this.estAccepte = estAccepte;
+	}
+
+	public String getNomCourtier() {
+		return nomCourtier;
+	}
+
+	public void setNomCourtier(String nomCourtier) {
+		this.nomCourtier = nomCourtier;
+	}
+
 	private int id;
 	public boolean estAccepte=false;
 	private static int nb=0;
