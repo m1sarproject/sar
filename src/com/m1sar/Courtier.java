@@ -170,13 +170,13 @@ public void run() {
 				    					nOrdre=0;
 				    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
 				    					while(nOrdre<3) {
-						    				/*int idrecu=(Integer)inObjectB.readObject();
+						    				int idrecu=(Integer)inObjectB.readObject();
 						    				boolean rep=(boolean)inObjectB.readObject();
 						    				//commission 
 						    				Ordre r=getOrderById(idrecu);
 						    				CalculCommission(rep, r);
 				    						outObjectC.writeObject(idrecu);
-				    						outObjectC.writeObject(rep);*/
+				    						outObjectC.writeObject(rep);
 				    						nOrdre++;
 				    					}
 				    					nOrdre=0;
