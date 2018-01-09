@@ -251,7 +251,7 @@ public class ThreadBourse extends Thread {
 		System.out.println("nbClinet = "+nbCustomer);
 		if(nbCustomer==0) {
     		try {
-    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
+    			   System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
 					Thread.sleep(timeLimit); //Le sleep a des défauts : si un client se connecte pendant le sleep, il ne le réveille pas du sleep; à revoir
 				} 
     		catch (InterruptedException e) {
