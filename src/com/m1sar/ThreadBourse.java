@@ -99,7 +99,6 @@ public class ThreadBourse extends Thread {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
-
 						if(cpt==3) {
 							cpt=0;
 							for (int i = 0; i < 3; i++) {
@@ -109,7 +108,7 @@ public class ThreadBourse extends Thread {
 							}
 						}
 
-						
+
 					}			
 
 					
@@ -140,15 +139,13 @@ public class ThreadBourse extends Thread {
      */
 
     public void SurReceptionDe(Ordre ordre) {
-		Transmettre(ordre);
+    	bourse.getOrdres().add(ordre);
+
     }
     
     
-    public void Transmettre(Ordre o) {
-    	
-		bourse.getOrdres().add(o);
-    }
-    
+
+
     /**
      * Calcule la commission 
      */
