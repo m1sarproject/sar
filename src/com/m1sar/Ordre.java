@@ -16,7 +16,6 @@ public abstract class Ordre implements Serializable {
 	private double prix_Propose_par_Client;
 	private int quantiteClient;
 	private String nomCourtier;
-
 	private int id;
 	public boolean estAccepte=false;
 	private static int nb=0;

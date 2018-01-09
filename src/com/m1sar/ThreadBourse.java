@@ -97,7 +97,7 @@ public class ThreadBourse extends Thread {
 					else {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
-						//SurReceptionDe(ordre_client);
+						SurReceptionDe(ordre_client);
 						bourse.Consommer(ordre_client);
 					}			
 
