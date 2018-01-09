@@ -80,6 +80,7 @@ public class ThreadCourtier extends Thread {
 		
     	while(true){
     		try {
+
 					System.out.println("Bourse recoit un message de courtier");
 					Object req=inObject.readObject();
 					if(req instanceof String) {
@@ -96,8 +97,10 @@ public class ThreadCourtier extends Thread {
 					else {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
-						SurReceptionDe(ordre_client);
+						//SurReceptionDe(ordre_client);
+						bourse.Consommer(ordre_client);
 					}			
+
 					
 				
     		} catch (IOException e) {

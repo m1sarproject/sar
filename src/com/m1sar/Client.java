@@ -204,13 +204,22 @@ public class Client {
 				if(i%4!=0){
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 					String r=lect.nextLine();
+					System.out.print("Donnez le prix : ");
+					Double prix=lect.nextDouble();
+					lect.nextLine();
+					System.out.print("Donnez le nb actions a acheter : ");
+					int nbActions=lect.nextInt();
+					lect.nextLine();
+					System.out.print("Donnez le nom de l entreprise : ");
+					String nom_entreprise=lect.nextLine();
 					if(r.equals("a")){
-						ordre=acheter(5.0, 5, "Apple");
+						
+						ordre=acheter(prix, nbActions, nom_entreprise);
 						Produir(ordre);
 						System.out.println("OrdreAchat bien envoyer");
 					}
 					if(r.equals("v")){
-						ordre=vendre(7.0, 10, "Apple");
+						ordre=vendre(prix, nbActions, nom_entreprise);
 						Produir(ordre);
 						System.out.println("OrdreVente bien envoyer");
 					}
@@ -223,15 +232,23 @@ public class Client {
 						getReponseBource(idOrdre,yesOuNon);
 						
 					}
+					
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 					String r=lect.nextLine();
+					System.out.print("Donnez le prix : ");
+					Double prix=lect.nextDouble();
+					System.out.print("Donnez le nb actions a acheter : ");
+					int nbActions=lect.nextInt();
+					System.out.print("Donnez le nom de l entreprise : ");
+					String nom_entreprise=lect.nextLine();
 					if(r.equals("a")){
-						ordre=acheter(5.0, 5, "Apple");
+						
+						ordre=acheter(prix, nbActions, nom_entreprise);
 						Produir(ordre);
 						System.out.println("OrdreAchat bien envoyer");
 					}
 					if(r.equals("v")){
-						ordre=vendre(7.0, 10, "Apple");
+						ordre=vendre(prix, nbActions, nom_entreprise);
 						Produir(ordre);
 						System.out.println("OrdreVente bien envoyer");
 					}
