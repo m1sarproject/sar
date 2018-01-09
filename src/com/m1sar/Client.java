@@ -45,6 +45,7 @@ public class Client {
 	private Map<String,Double> prixBoursePourEntreprise;
 	private double depensesEventuelles;
 	private int quantiteEventuelleVendu;
+	private String nameCourtier;
 
 	
 	public Client(String nameClient, double solde,int port,InetAddress hte) {
@@ -85,7 +86,8 @@ public class Client {
 			outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
 			inObject = new ObjectInputStream(connexionCourtier.getInputStream());
 			inscription(); 
-			System.out.println("message du courtier"+(String)inObject.readObject());
+			nameCourtier= (String) inObject.readObject();
+			System.out.println("message du courtier "+nameCourtier+" : "+(String)inObject.readObject());
 			
 			//cpt=0;
 			//System.out.println("Client "+nameClient+" veut se connecter");
@@ -162,7 +164,7 @@ public class Client {
 		}
 		
 		depensesEventuelles+=(prix*quantite);
-		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix,quantite, entreprise);
+		Ordre r =new OrdreAchat(entreprise, this.nameClient, prix,quantite,nameCourtier);
 		ordres.add(r);
 		return r;
 		
@@ -184,7 +186,7 @@ public class Client {
 		}
 		
 		quantiteEventuelleVendu+=quantite;
-		Ordre r =new OrdreVente(entreprise, this.nameClient, prix,quantite);
+		Ordre r =new OrdreVente(entreprise, this.nameClient, prix,quantite,nameCourtier);
 		ordres.add(r);
 		return r;
 		

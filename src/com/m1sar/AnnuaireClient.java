@@ -48,7 +48,7 @@ public class AnnuaireClient extends Thread {
 		
 		try {
 			serveurClient = new ServerSocket(nport);
-			System.out.println("Le serveur client est Ã  l'ecoute sur le port "+nport);
+			System.out.println("Le serveur client est a  l'ecoute sur le port "+nport);
 		
 		
 		while (true) {

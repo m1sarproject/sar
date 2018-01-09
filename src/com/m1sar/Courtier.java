@@ -91,14 +91,14 @@ public void connexion(){
 	    inscription(sc);
 	    //il écoute les clients sur un numéro de port 
 		//accepte les connexions et échange avec eux
-		System.out.println("j'essaye de récuperer le numéro de port surlequel j'écoute");
+		System.out.println("j essaye de recuperer le numero de port surlequel j'ecoute");
 		outSB=sc.getOutputStream();
 		outObjectB= new ObjectOutputStream(outSB);
 		inSB=sc.getInputStream();//communication avec bourse
 		inObjectB = new ObjectInputStream(inSB);
 		this.portecoute=inObjectB.readInt();
 		prixParEntreprise=(HashMap<String,Double>)inObjectB.readObject();
-		System.err.println(prixParEntreprise);
+		//System.err.println(prixParEntreprise);
 		
 	}
 	catch (Exception e) {
@@ -136,7 +136,9 @@ public void run() {
 		    			System.out.println("client numero "+nb+" s'est connecte a ce courtier");
 		    			nomclient=(String)inObjectC.readObject(); //Le premier message doit etre le nom du client
 		    			System.out.println(" le client "+ nomclient+" vient de s'inscrire");
-		    			outObjectC.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
+		    			outObjectC.writeObject(name);
+		    			outObjectC.flush();
+		    			outObjectC.writeObject(new String("Bienvenu cher client "+nomclient+", vous pouvez envoyez vos ordre"));
 		    			outObjectC.flush();
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
