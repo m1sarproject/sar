@@ -80,12 +80,24 @@ public class ThreadCourtier extends Thread {
 		
     	while(true){
     		try {
-				
-    		
-					System.out.println("Bourse recoit un ordre");
-					ordre_client= (Ordre) inObject.readObject();
-					System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
-					SurReceptionDe(ordre_client);
+					System.out.println("Bourse recoit un message de courtier");
+					Object req=inObject.readObject();
+					if(req instanceof String) {
+						String info=(String)req;
+						if(info.equals("decreClient")) {
+							nbCustomer--;
+						}
+						if(info.equals("bye")) {
+							//courtier se deconnecte  on enleve le threadCourtier de la liste
+							bourse.removeBroker(this);
+							break;//sortir du while
+						}
+					}
+					else {
+						ordre_client= (Ordre)req;
+						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
+						SurReceptionDe(ordre_client);
+					}			
 					
 				
     		} catch (IOException e) {

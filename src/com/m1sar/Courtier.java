@@ -55,10 +55,8 @@ private static int timeLimit=15000;
 /**
  * listeOrdre contient la liste d'ordre en attente du client courant
  */
-private HashMap<String,ArrayList<Ordre>> listeOrdre=new HashMap<>();
+private ArrayList<Ordre> listeOrdre=new ArrayList<>();
 private Map<String,Double> prixParEntreprise=new HashMap<String,Double>();
-//private Vector<Socket> sClient=new Vector<Socket>();//socket de communication avec les clients
-private List<String> clients= new ArrayList<String>();
 BufferedReader in; 
 PrintWriter out;
 
@@ -137,16 +135,14 @@ public void run() {
 		    			outObjectC = new ObjectOutputStream(outSC);
 		    			System.out.println("client numero "+nb+" s'est connecte a ce courtier");
 		    			nomclient=(String)inObjectC.readObject(); //Le premier message doit etre le nom du client
-		    			clients.add(nomclient);
 		    			System.out.println(" le client "+ nomclient+" vient de s'inscrire");
 		    			outObjectC.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
 		    			outObjectC.flush();
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
-	
+		    			int nOrdre=0;
 		    			while (true)  		 
 		    			{	
-		    				
 		    				//REPONSE DE CLIENT
 		    				Object req=inObjectC.readObject(); 
 		    				if(req instanceof String) {
@@ -154,20 +150,36 @@ public void run() {
 		    					if(rep.equals("bye")) {
 				    				//supprimer le client et fermer sa socket et decremente nbcustumer
 				    					System.out.println("je suis dans le if du bye");
-				    					//a modifier mettre le put quand le courtier reï¿½oit un accord pas ici
-				    					
+				    					//envoyer a bourse la mise a jours du nombre de client
+				    					outObjectB.writeObject("decreClient");
 				    					majClient();
-				    					//est ce que c'est ici qu'on attend les réponses
 				    					break;
 				    				}
 		    				}
 		    				
 		    				else {
-		    				Ordre ordre = (Ordre) req; 
-			    			System.out.println("Object received = " + ordre.getEntrepriseName());
-			    			transmettreOrdreABourse(ordre);
-	    					//	a revoir cela 
-	    					//listeOrdre.put(nomclient, lordre);
+		    					    nOrdre++;
+		    					    Ordre ordre = (Ordre) req; 
+					    			System.out.println("Object received = " + ordre.getEntrepriseName());
+					    			transmettreOrdreABourse(ordre);
+			    					//	a revoir cela 
+			    					listeOrdre.add(ordre);
+				    				if(nOrdre==3) {
+				    					nOrdre=0;
+				    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
+				    					while(nOrdre<3) {
+						    				/*int idrecu=(Integer)inObjectB.readObject();
+						    				boolean rep=(boolean)inObjectB.readObject();
+						    				//commission 
+						    				Ordre r=getOrderById(idrecu);
+						    				CalculCommission(rep, r);
+				    						outObjectC.writeObject(idrecu);
+				    						outObjectC.writeObject(rep);*/
+				    						nOrdre++;
+				    					}
+				    					nOrdre=0;
+				    				}
+				    				//attendre le message de threadCourtier pour les acceptations 
 		    				}
 		    				//req=(String)inObject.readObject();
 							
@@ -199,9 +211,8 @@ public void run() {
     		}
 	    		
     		if(nbCustomer==0) {	
-	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse");
-	    			//envoyer à la bourse un message pour me deconnecter 
-	    			//outObjectB.writeObject("deco");
+	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse"); 
+	    			outObjectB.writeObject("bye");
 	    			break;//sortir du while(true)
     		}
 	    		
@@ -220,13 +231,18 @@ public void run() {
 	
 	
 }
+public Ordre getOrderById(int id) {
+	Ordre res=null;
+	for(Ordre t : listeOrdre) {
+		if(t.getId()==id)res=t;
+		
+	}
+	return res;
+}
 void majClient() throws IOException {
 	
 	currentClient.close();
 	nbCustomer--;
-	//avertir la bourse  que le nombre de client a été decrémenté 
-	//outObject.writeObject("nbclient");//faire un if dans threadCourtier pour qu'il decremente
-	//outObject.writeInt(nbCustomer);
 	
 }
 public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
@@ -239,17 +255,15 @@ public void sendPriceCompanies() throws IOException {//quand est ce que s'est fa
  * Calcule la commission 
  */
 //a revoir une fois qu'on a fait les acceptations
-public void CalculCommission(String nomClient) {
-	ArrayList<Ordre>l=listeOrdre.get(nomClient);
-	for(Ordre o:l) {
-		if(o.estAccepte) {
+public void CalculCommission(boolean rep,Ordre o) {
+	if(rep) {
 		accountBalance+=o.getPrixUnitaire()*o.getQuantite()*tauxCommission;
 		}
-	}
+	
 }
 
-public void transmettreOrdreABourse( Ordre lordre) throws IOException {
-	outObjectB.writeObject(lordre);
+public void transmettreOrdreABourse( Ordre ordre) throws IOException {
+	outObjectB.writeObject(ordre);
 	outObjectB.flush();
 }
 
