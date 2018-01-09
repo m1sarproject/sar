@@ -99,11 +99,6 @@ public class ThreadBourse extends Thread {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
-<<<<<<< HEAD
-
-						bourse.Consommer(ordre_client);
-=======
-
 						if(cpt==3) {
 							cpt=0;
 							for (int i = 0; i < 3; i++) {
@@ -113,8 +108,7 @@ public class ThreadBourse extends Thread {
 							}
 						}
 
->>>>>>> branch 'master' of https://github.com/m1sarproject/sar.git
-						
+
 					}			
 
 					
@@ -145,17 +139,12 @@ public class ThreadBourse extends Thread {
      */
 
     public void SurReceptionDe(Ordre ordre) {
-    	Entreprise e=bourse.getByName(ordre.getEntrepriseName());
-		e.addOrder(ordre);//ajouter l'ordre dans entreprise
-		Transmettre(ordre);
+    	bourse.getOrdres().add(ordre);
     }
     
     
-    public void Transmettre(Ordre o) {
-    	
-		bourse.getOrdres().add(o);
-    }
-    
+
+
     /**
      * Calcule la commission 
      */
