@@ -226,12 +226,14 @@ public class Client {
 						System.out.println("OrdreVente bien envoyer");
 					}
 				}
-				if(i==2){
+				if(i==1){
 					System.out.println("J attends la reponse de la Bourse");
-					for(int j=0;j<2;j++){
+					for(int j=0;j<1;j++){
 						int idOrdre = (int) inObject.readObject();
 						boolean yesOuNon=(boolean) inObject.readObject();
 						getReponseBource(idOrdre,yesOuNon);
+						System.out.println("Portefeille de Client : "+portefeuille);
+						System.out.println("Solde de Client : "+solde);
 						
 					}
 			

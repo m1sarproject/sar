@@ -167,10 +167,10 @@ public void run() {
 					    			System.out.println("j'ai transmis");
 			    					//	a revoir cela 
 			    					listeOrdre.add(ordre);
-				    				if(nOrdre==2) {
+				    				if(nOrdre==1) {
 				    					nOrdre=0;
 				    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
-				    					while(nOrdre<2) {
+				    					while(nOrdre<1) {
 				    						System.out.println("j'attend réponse bourse");
 						    				int idrecu=(Integer)inObjectB.readObject();
 						    				boolean rep=(boolean)inObjectB.readObject();

@@ -94,9 +94,9 @@ public class ThreadBourse extends Thread {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
-						if(cpt==2) {
+						if(cpt==1) {
 							cpt=0;
-							for (int i = 0; i < 2; i++) {
+							for (int i = 0; i < 1; i++) {
 								System.out.println("je repond au courtier acceptation ");
 								Ordre o=bourse.accord(nomCourtier);
 								outObject.writeObject(o.getId());
