@@ -259,7 +259,7 @@ public void sendPriceCompanies() throws IOException {//quand est ce que s'est fa
 //a revoir une fois qu'on a fait les acceptations
 public void CalculCommission(boolean rep,Ordre o) {
 	if(rep) {
-		accountBalance+=o.getPrixUnitaire()*o.getQuantite()*tauxCommission;
+		accountBalance+=o.getPrixUnitaire()*o.getQuantiteClient()*tauxCommission;
 		}
 	
 }

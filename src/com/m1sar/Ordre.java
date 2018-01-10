@@ -5,6 +5,8 @@ import java.io.Serializable;
 public abstract class Ordre implements Serializable {
 	
 
+	
+
 	/**
 	 * 
 	 */
@@ -12,6 +14,15 @@ public abstract class Ordre implements Serializable {
 	private String entreprise;
 	private String client; //prix proposé par le client
 	private int quantite;
+	private double prixUnitaire; //prix proposé par le client
+	
+	public int getQuantiteClient() {
+		return quantiteClient;
+	}
+
+	public void setQuantiteClient(int quantiteClient) {
+		this.quantiteClient = quantiteClient;
+	}
 	private double prix_Propose_par_Client;
 	private int quantiteClient;
 	private String nomCourtier;
@@ -39,6 +50,7 @@ public abstract class Ordre implements Serializable {
 	public Ordre(String entreprise, String client, double prix_Propose_par_Client,int quantite,String nom){
 		this.prix_Propose_par_Client=prix_Propose_par_Client;
 		this.entreprise = entreprise;
+		this.client=client;
 		id=++nb;
 		this.quantiteClient = quantite;
 		this.nomCourtier = nom;
@@ -56,9 +68,6 @@ public abstract class Ordre implements Serializable {
 	}
 
 
-	public int getQuantite() {
-		return quantite;
-	}
 	
 	
 	public void setEstFini() {
@@ -75,8 +84,10 @@ public abstract class Ordre implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Ordre [entreprise=" + entreprise + ", client=" + client +  quantite + ", prix_Propose_par_Client=" + prix_Propose_par_Client
-				+ ", quantiteClient=" + quantiteClient + ", nomCourtier=" + nomCourtier + "]";
+		return "Ordre [entreprise=" + entreprise + ", client=" + client + ", prixUnitaire=" + prixUnitaire
+				+ ", prix_Propose_par_Client=" + prix_Propose_par_Client + ", quantiteClient=" + quantiteClient
+				+ ", nomCourtier=" + nomCourtier + ", estAccepte=" + estAccepte + "]";
+
 	}
 	
 

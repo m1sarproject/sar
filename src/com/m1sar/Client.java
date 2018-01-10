@@ -306,23 +306,25 @@ public class Client {
 	
 	public void getReponseBource(int idOrdre, boolean yesOuNon) {
 		Ordre r=getOrderById(idOrdre);
-		System.out.println("reponde recu pour ordre "+r.getEntrepriseName());
+		System.out.println("Ordre "+r.getPrixUnitaire());
+		
 		if(yesOuNon) {
 			if(r instanceof OrdreAchat) {
+				System.out.println("dans le if un ordreAchaat");
 				majPortefeuilleAchat(r);
-				depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantite());
+				depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantiteClient());
 				
 			}
 			if(r instanceof OrdreVente) {
 				majPortefeuilleVente(r);
-				quantiteEventuelleVendu-=r.getQuantite();
+				quantiteEventuelleVendu-=r.getQuantiteClient();
 			}
 		}
 		if(r instanceof OrdreAchat) {
-			depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantite());
+			depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantiteClient());
 		}
 		if(r instanceof OrdreVente) {
-			quantiteEventuelleVendu-=r.getQuantite();
+			quantiteEventuelleVendu-=r.getQuantiteClient();
 		}
 		ordres.remove(r);
 		
@@ -332,15 +334,15 @@ public class Client {
 	
 	
 	public void majPortefeuilleAchat(Ordre r){
-			double prixR=r.getPrixUnitaire()*r.getQuantite();
+			double prixR=r.getPrixUnitaire()*r.getQuantiteClient();
 			solde-=(prixR+(prixR*tauxDeComission));
 			
 			if(portefeuille.containsKey(r.getEntrepriseName())){
 				int i=portefeuille.get(r.getEntrepriseName());
-				portefeuille.replace(r.getEntrepriseName(), r.getQuantite()+i);
+				portefeuille.replace(r.getEntrepriseName(), r.getQuantiteClient()+i);
 			}
 			else{
-				portefeuille.put(r.getEntrepriseName(), r.getQuantite());
+				portefeuille.put(r.getEntrepriseName(), r.getQuantiteClient());
 			}
 		
 	}
@@ -355,13 +357,13 @@ public class Client {
 	public void majPortefeuilleVente(Ordre r){
 		
 		if(!portefeuille.containsKey(r.getEntrepriseName()))return;
-		double prixR=r.getPrixUnitaire()*r.getQuantite();
+		double prixR=r.getPrixUnitaire()*r.getQuantiteClient();
 		solde+=(prixR-(prixR*tauxDeComission));
 		int i=portefeuille.get(r.getEntrepriseName());
-		if(i==r.getQuantite())portefeuille.remove(r.getEntrepriseName());
+		if(i==r.getQuantiteClient())portefeuille.remove(r.getEntrepriseName());
 			
 		else{
-			portefeuille.replace(r.getEntrepriseName(), i-r.getQuantite());
+			portefeuille.replace(r.getEntrepriseName(), i-r.getQuantiteClient());
 		}
 		
 		
