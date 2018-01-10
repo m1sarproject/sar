@@ -71,16 +71,16 @@ public class ThreadBourse extends Thread {
     	prixParEntreprise=bourse.getPrixParEntreprise();
    
     	Ordre ordre_client;
-    	try {
+    	/*try {
 			outObject.writeObject("Demande de service : etat du marche : 'm', envoyer ordres : 'e'" );
 			outObject.flush();
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
-		
+		}*/
+    	int cpt=0;
     	while(true){
     		try {
-    				int cpt=0;
+    				
 					System.out.println("Bourse recoit un message de courtier");
 					Object req=inObject.readObject();
 					if(req instanceof String) {
@@ -99,9 +99,11 @@ public class ThreadBourse extends Thread {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
-						if(cpt==3) {
+						if(cpt==2) {
+							System.out.println("je repond au courtier acceptation 1");
 							cpt=0;
-							for (int i = 0; i < 3; i++) {
+							for (int i = 0; i < 2; i++) {
+								System.out.println("je repond au courtier acceptation 2");
 								Ordre o=bourse.accord(nomCourtier);
 								outObject.writeObject(o.getId());
 								outObject.writeObject(o.isEstAccepte());

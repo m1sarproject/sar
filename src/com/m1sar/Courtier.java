@@ -116,7 +116,7 @@ public void inscription(Socket sc) throws IOException {
 	
 }
 public void run() {
-	connexion();//se connecte a  la bourse et recupere le numero de port surlequel il ecoute
+	connexion();//se connecte aï¿½ la bourse et recupere le numero de port surlequel il ecoute
 	
 	try {
 		
@@ -164,12 +164,14 @@ public void run() {
 		    					    Ordre ordre = (Ordre) req; 
 					    			System.out.println("Object received = " + ordre.getEntrepriseName());
 					    			transmettreOrdreABourse(ordre);
+					    			System.out.println("j'ai transmis");
 			    					//	a revoir cela 
 			    					listeOrdre.add(ordre);
-				    				if(nOrdre==3) {
+				    				if(nOrdre==2) {
 				    					nOrdre=0;
 				    					//j'ai envoyÃ© les 3 ordres j'attends les acceptations de la bourse
-				    					while(nOrdre<3) {
+				    					while(nOrdre<2) {
+				    						System.out.println("j'attend rÃ©ponse bourse");
 						    				int idrecu=(Integer)inObjectB.readObject();
 						    				boolean rep=(boolean)inObjectB.readObject();
 						    				//commission 
@@ -204,7 +206,7 @@ public void run() {
     		if(nbCustomer==0) {
 	    		try {
 	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
-						Thread.sleep(timeLimit); //Le sleep a des deƒaufauts : si un client se connecte pendant le sleep, il ne le reveille pas du sleep; sinon  revoir
+						Thread.sleep(timeLimit); //Le sleep a des deï¿½aufauts : si un client se connecte pendant le sleep, il ne le reveille pas du sleep; sinonï¿½ revoir
 					} 
 	    		catch (InterruptedException e) {
 						e.printStackTrace();

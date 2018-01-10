@@ -226,35 +226,15 @@ public class Client {
 						System.out.println("OrdreVente bien envoyer");
 					}
 				}
-				if(i==3){
+				if(i==2){
 					System.out.println("J attends la reponse de la Bourse");
-					for(int j=0;j<3;j++){
+					for(int j=0;j<2;j++){
 						int idOrdre = (int) inObject.readObject();
 						boolean yesOuNon=(boolean) inObject.readObject();
 						getReponseBource(idOrdre,yesOuNon);
 						
 					}
-				if(i<=nbOrdre){
-					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
-					String r=lect.nextLine();
-					System.out.print("Donnez le prix : ");
-					Double prix=lect.nextDouble();
-					System.out.print("Donnez le nb actions a acheter : ");
-					int nbActions=lect.nextInt();
-					System.out.print("Donnez le nom de l entreprise : ");
-					String nom_entreprise=lect.nextLine();
-					if(r.equals("a")){
-						
-						ordre=acheter(prix, nbActions, nom_entreprise);
-						Produir(ordre);
-						System.out.println("OrdreAchat bien envoyer");
-					}
-					if(r.equals("v")){
-						ordre=vendre(prix, nbActions, nom_entreprise);
-						Produir(ordre);
-						System.out.println("OrdreVente bien envoyer");
-					}
-				}
+			
 					
 				}
 				
@@ -324,6 +304,7 @@ public class Client {
 	
 	public void getReponseBource(int idOrdre, boolean yesOuNon) {
 		Ordre r=getOrderById(idOrdre);
+		System.out.println("j'ai recu reponse");
 		if(yesOuNon) {
 			if(r instanceof OrdreAchat) {
 				majPortefeuilleAchat(r);
