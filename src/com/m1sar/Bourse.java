@@ -135,9 +135,10 @@ public Ordre consommer(String nomCourtier) {
 	public Ordre accord(String nomCourtier) { //privéligie le prix le moins cher en cas d'achats
 		
 		Ordre o=consommer(nomCourtier);
+		System.out.println(o);
 		if(o!=null) {
 			Entreprise concerned = this.getByName(o.getEntrepriseName());
-
+			System.out.println(" entreprise concerne dans acoor : "+concerned);
 			if (o instanceof OrdreVente) {
 						
 				concerned.addOrder(o);
@@ -148,22 +149,27 @@ public Ordre consommer(String nomCourtier) {
 
 			
 			if (o instanceof OrdreAchat) {
-			
+				System.out.println("dans le if un ordreAchaat");
 			concerned.incDemandesAchat();
 			
 			int nbActionsDispo = concerned.getNbActions();
-			int nbActionsVoulus = o.getQuantite();
+			int nbActionsVoulus = o.getQuantiteClient();
 			
 			double prixEntreprise = concerned.getPrixUnitaireAction();
 			double prixPropose = o.getPrixUnitaire();
-			
+			System.out.println("prix de client propose : "+o.getPrixUnitaire());
+			System.out.println("nbActionDispo : "+nbActionsDispo);
+			System.out.println("nbActionDispo : "+nbActionsDispo);
+			System.out.println("nbActionsVoulus : "+nbActionsVoulus);
+			System.out.println("prixEntreprise : "+prixEntreprise);
 			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
-				
+				System.out.println("dans le if pour true qui accepte Achat ");
 				o.setEstFini();
 				concerned.DecreaseNbActions(nbActionsVoulus);
 				concerned.addOrder(o); //Je stoque l'ordre dans l'entreprise
 				//return true;	
 				o.setEstAccepte(true);
+				System.out.println("Achat accepte = "+o);
 		
 			}
 			
@@ -186,7 +192,7 @@ public Ordre consommer(String nomCourtier) {
 		
 		
 	//return false;
-	o.setEstAccepte(false);
+	
 	return o;
 	
 	}
@@ -195,7 +201,7 @@ public Ordre consommer(String nomCourtier) {
 	public boolean matching(Ordre achat,Ordre vente) {
 		
 		
-		return achat.getQuantite() >= vente.getQuantite() && achat.getPrixUnitaire() >= vente.getPrixUnitaire();
+		return achat.getQuantiteClient() >= vente.getQuantiteClient() && achat.getPrixUnitaire() >= vente.getPrixUnitaire();
 				
 	}
 
