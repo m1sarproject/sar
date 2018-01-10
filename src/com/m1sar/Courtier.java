@@ -177,13 +177,13 @@ public void run() {
 						    				//commission 
 						    				Ordre r=getOrderById(idrecu);
 						    				CalculCommission(rep, r);
+						    				System.out.println("mon solde après ordre qui est "+rep+" est "+accountBalance);
 				    						outObjectC.writeObject(idrecu);
 				    						outObjectC.writeObject(rep);
 				    						nOrdre++;
 				    					}
 				    					nOrdre=0;
 				    				}
-				    				//attendre le message de threadCourtier pour les acceptations 
 		    				}
 
 
@@ -216,7 +216,7 @@ public void run() {
     		if(nbCustomer==0) {	
 	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse"); 
 	    			outObjectB.writeObject("bye");
-	    			break;//sortir du while(true)
+	    			break;
     		}
 	    		
 	    							
