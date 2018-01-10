@@ -150,7 +150,7 @@ public Ordre consommer(String nomCourtier) {
 			if (o instanceof OrdreAchat) {
 			
 			concerned.incDemandesAchat();
-			
+			System.out.println(o);
 			int nbActionsDispo = concerned.getNbActions();
 			int nbActionsVoulus = o.getQuantite();
 			
@@ -158,7 +158,7 @@ public Ordre consommer(String nomCourtier) {
 			double prixPropose = o.getPrixUnitaire();
 			
 			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
-				
+				System.out.println("hello j'achete de l'entreprise");
 				o.setEstFini();
 				concerned.DecreaseNbActions(nbActionsVoulus);
 				concerned.addOrder(o); //Je stoque l'ordre dans l'entreprise
@@ -185,8 +185,6 @@ public Ordre consommer(String nomCourtier) {
 		}
 		
 		
-	//return false;
-	o.setEstAccepte(false);
 	return o;
 	
 	}
@@ -195,7 +193,7 @@ public Ordre consommer(String nomCourtier) {
 	public boolean matching(Ordre achat,Ordre vente) {
 		
 		
-		return achat.getQuantite() >= vente.getQuantite() && achat.getPrixUnitaire() >= vente.getPrixUnitaire();
+		return achat.getQuantite() >= vente.getQuantite() && achat.getPrixUnitaire()>= vente.getPrixUnitaire();
 				
 	}
 
