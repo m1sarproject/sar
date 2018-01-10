@@ -151,7 +151,7 @@ public Ordre consommer(String nomCourtier) {
 			if (o instanceof OrdreAchat) {
 				System.out.println("dans le if un ordreAchaat");
 			concerned.incDemandesAchat();
-			
+			System.out.println(o);
 			int nbActionsDispo = concerned.getNbActions();
 			int nbActionsVoulus = o.getQuantiteClient();
 			
@@ -163,7 +163,7 @@ public Ordre consommer(String nomCourtier) {
 			System.out.println("nbActionsVoulus : "+nbActionsVoulus);
 			System.out.println("prixEntreprise : "+prixEntreprise);
 			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
-				System.out.println("dans le if pour true qui accepte Achat ");
+				System.out.println("hello j'achete de l'entreprise");
 				o.setEstFini();
 				concerned.DecreaseNbActions(nbActionsVoulus);
 				concerned.addOrder(o); //Je stoque l'ordre dans l'entreprise
@@ -189,17 +189,12 @@ public Ordre consommer(String nomCourtier) {
 		else {
 			System.out.println("pas d'ordre poru ce courtier");//enlever le if null après les tests
 		}
-		
-		
-	//return false;
-	
 	return o;
 	
 	}
 		
 	
 	public boolean matching(Ordre achat,Ordre vente) {
-		
 		
 		return achat.getQuantiteClient() >= vente.getQuantiteClient() && achat.getPrixUnitaire() >= vente.getPrixUnitaire();
 				
