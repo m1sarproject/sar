@@ -118,6 +118,7 @@ public class Bourse {
 	 */
 public Ordre consommer(String nomCourtier) {
 	Ordre ordre=null;
+	System.out.println("LIST ORDRE taille "+ordres.size());
 	for (Ordre o:ordres) {
 		if(o.getNomCourtier().equals(nomCourtier)) {
 			ordre=o;

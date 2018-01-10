@@ -304,7 +304,7 @@ public class Client {
 	
 	public void getReponseBource(int idOrdre, boolean yesOuNon) {
 		Ordre r=getOrderById(idOrdre);
-		System.out.println("j'ai recu reponse");
+		System.out.println("reponde recu pour ordre "+r.getEntrepriseName());
 		if(yesOuNon) {
 			if(r instanceof OrdreAchat) {
 				majPortefeuilleAchat(r);
