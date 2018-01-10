@@ -82,6 +82,9 @@ public class ThreadBourse extends Thread {
 						String info=(String)req;
 						if(info.equals("decreClient")) {
 							nbCustomer--;
+							outObject.writeInt(nbCustomer);
+							outObject.flush();
+							System.out.println("j'ai envoyé à courtier nbcustumer");
 						}
 						if(info.equals("bye")) {
 							//courtier se deconnecte  on enleve le threadCourtier de la liste
@@ -100,7 +103,9 @@ public class ThreadBourse extends Thread {
 								System.out.println("je repond au courtier acceptation ");
 								Ordre o=bourse.accord(nomCourtier);
 								outObject.writeObject(o.getId());
+								outObject.flush();
 								outObject.writeObject(o.isEstAccepte());
+								outObject.flush();
 							}
 						}
 

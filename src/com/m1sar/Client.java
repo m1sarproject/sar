@@ -45,6 +45,7 @@ public class Client {
 	private Map<String,Double> prixBoursePourEntreprise;
 	private double depensesEventuelles;
 	private int quantiteEventuelleVendu;
+	private boolean connecte=false;
 	private String nameCourtier;
 
 	
@@ -58,15 +59,20 @@ public class Client {
 		this.port = port;
 		this.hote = hte;
 		connexion();
-		readStateStocks();
-		echangeOrdresClientCourtier();
+		if(connecte==true) {
+			readStateStocks();
+			echangeOrdresClientCourtier();
+			
+		} 
+		else {
+			System.out.println("Navre vous ne pouvez pas vous connecté aucun courtier n'est disponible");
+		}
 	}
-	
 	 /**@author Vitalina
      * 
      * 
      */
-	public void connexion(){
+	public void connexion() {
 		
 			try {
 			//connexion ï¿½ la bourse
@@ -78,16 +84,21 @@ public class Client {
 			outObject= new ObjectOutputStream(outS);
 			inObject= new ObjectInputStream(inS);
 			////recupere les numeros de port et @ip du courtier inetaddress et se connecte au courtier
-			InetAddress host=(InetAddress)inObject.readObject();
-			int portCourtier=inObject.readInt();
-			sc.close();
-			Socket connexionCourtier=new Socket(host, portCourtier);
-			System.out.println("conenxion au courtier reussi");
-			outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
-			inObject = new ObjectInputStream(connexionCourtier.getInputStream());
-			inscription(); 
-			nameCourtier= (String) inObject.readObject();
-			System.out.println("message du courtier "+nameCourtier+" : "+(String)inObject.readObject());
+			Object o=inObject.readObject();
+			if(!(o instanceof String)) {
+				connecte=true;
+				InetAddress host=(InetAddress)o;
+				int portCourtier=inObject.readInt();
+				sc.close();
+				Socket connexionCourtier=new Socket(host, portCourtier);
+				System.out.println("conenxion au courtier reussi");
+				outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
+				inObject = new ObjectInputStream(connexionCourtier.getInputStream());
+				inscription(); 
+				nameCourtier= (String) inObject.readObject();
+				System.out.println("message du courtier "+nameCourtier+" : "+(String)inObject.readObject());
+			}
+			
 			
 			//cpt=0;
 			//System.out.println("Client "+nameClient+" veut se connecter");
@@ -423,7 +434,10 @@ public class Client {
 	
 		int nport = Integer.parseInt(args[0]);
 		InetAddress hote = InetAddress.getByName(args[1]);
-		Client client = new Client ("vitalinka",210.0,nport,hote);
+		Scanner lect = new Scanner(System.in);
+		System.out.println("Donnez le nom du client :");
+		String nom=lect.nextLine();
+		Client client = new Client (nom,210.0,nport,hote);
 		
 		
 	}

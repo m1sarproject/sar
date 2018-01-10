@@ -31,7 +31,7 @@ public class AnnuaireClient extends Thread {
 	
 	
 	
-	public ThreadBourse getFreeCourtier() throws CourtierNotFoundException {
+	public ThreadBourse getFreeCourtier() {
 		
 		for (ThreadBourse courtier : listcourtiers) {
 			if (courtier.estDispo())  
@@ -41,7 +41,7 @@ public class AnnuaireClient extends Thread {
 				}
 		}
 		
-		throw new CourtierNotFoundException ("Aucun courtier n'est disponible");	
+		return null;
 	}
 	
 	public void run () {
@@ -53,26 +53,22 @@ public class AnnuaireClient extends Thread {
 		
 		while (true) {
 			
-			try {
-				clientConnecte = serveurClient.accept();
-				System.out.println("Connexion client accepter par BourseClient");	
-			    ThreadBourse courtier=getFreeCourtier();
-			    OutputStream outS=clientConnecte.getOutputStream();
-			    ObjectOutputStream outObject=new ObjectOutputStream(outS);
-
+			clientConnecte = serveurClient.accept();
+			System.out.println("Connexion client accepter par BourseClient");	
+			ThreadBourse tcourtier=getFreeCourtier();
+			OutputStream outS=clientConnecte.getOutputStream();
+			ObjectOutputStream outObject=new ObjectOutputStream(outS);
+			if(tcourtier!=null) {
 			    //envoyer le numero de port et  @ip inetAddress du courtier au client
-			    
-			    outObject.writeObject(courtier.getInetAddress());
+			    outObject.writeObject(tcourtier.getInetAddress());
 			    outObject.flush();
-			    outObject.writeInt(courtier.getNport());
+			    outObject.writeInt(tcourtier.getNport());
 			    outObject.flush();
 			    System.out.println("envoie des parametres au client reussi");
-				
-			} 
-			
-			catch (CourtierNotFoundException e ) {
-				System.out.println(e.getMessage());
-				clientConnecte.close();
+			}
+			else {
+				outObject.writeObject("Aucun Courtier n'est disponible");
+				outObject.flush();
 			}
 			
 
