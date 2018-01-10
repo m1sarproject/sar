@@ -203,7 +203,7 @@ public class Client {
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
 			for(int i=1; i<=nbOrdre;i++){
-				if(i%4!=0 && i<nbOrdre+1){
+				if(i%4!=0 ){
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 					String r=lect.nextLine();
 					System.out.print("Donnez le prix : ");
@@ -226,7 +226,7 @@ public class Client {
 						System.out.println("OrdreVente bien envoyer");
 					}
 				}
-				else{
+				if(i==3){
 					System.out.println("J attends la reponse de la Bourse");
 					for(int j=0;j<3;j++){
 						int idOrdre = (int) inObject.readObject();
