@@ -226,9 +226,9 @@ public class Client {
 						System.out.println("OrdreVente bien envoyer");
 					}
 				}
-				if(i==3){
+				if(i==2){
 					System.out.println("J attends la reponse de la Bourse");
-					for(int j=0;j<3;j++){
+					for(int j=0;j<2;j++){
 						int idOrdre = (int) inObject.readObject();
 						boolean yesOuNon=(boolean) inObject.readObject();
 						getReponseBource(idOrdre,yesOuNon);
@@ -324,6 +324,7 @@ public class Client {
 	
 	public void getReponseBource(int idOrdre, boolean yesOuNon) {
 		Ordre r=getOrderById(idOrdre);
+		System.out.println("reponde recu pour ordre "+r.getEntrepriseName());
 		if(yesOuNon) {
 			if(r instanceof OrdreAchat) {
 				majPortefeuilleAchat(r);

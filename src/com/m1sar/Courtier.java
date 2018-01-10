@@ -166,10 +166,10 @@ public void run() {
 					    			transmettreOrdreABourse(ordre);
 			    					//	a revoir cela 
 			    					listeOrdre.add(ordre);
-				    				if(nOrdre==3) {
+				    				if(nOrdre==2) {
 				    					nOrdre=0;
 				    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
-				    					while(nOrdre<3) {
+				    					while(nOrdre<2) {
 						    				int idrecu=(Integer)inObjectB.readObject();
 						    				boolean rep=(boolean)inObjectB.readObject();
 						    				//commission 
