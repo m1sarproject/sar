@@ -203,7 +203,9 @@ public class Client {
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
 			int cpt=0;//compte le nbordre qu on va envoyer au courtier
-			
+			//envoyer nbOrdre a traites au courtier
+			outObject.writeObject(nbOrdre);
+			outObject.flush();
 			while(nbOrdre!=0){
 			
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
@@ -211,7 +213,7 @@ public class Client {
 					System.out.print("Donnez le prix : ");
 					Double prix=lect.nextDouble();
 					lect.nextLine();
-					System.out.print("Donnez le nb actions a acheter : ");
+					System.out.print("Donnez le nb actions a acheter ou vendre : ");
 					int nbActions=lect.nextInt();
 					lect.nextLine();
 					System.out.print("Donnez le nom de l entreprise : ");
@@ -414,6 +416,16 @@ public class Client {
 	
 	//produir envoie des ordres qui on vient de creer
 	public void Produir(Ordre r){
+		if(r==null){
+			try {
+				outObject.writeObject("null");
+				outObject.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 		if(r instanceof OrdreAchat ){
 			System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
 		}

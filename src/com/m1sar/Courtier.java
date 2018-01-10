@@ -143,8 +143,13 @@ public void run() {
 		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
 		    			int nOrdre=0;
+		    			int nbOrdres=0;
+		    			nbOrdres=(int) inObjectC.readObject();
+		    			outObjectB.writeObject(nbOrdres);
+		    			outObjectB.flush();
 		    			while (true)  		 
 		    			{	
+		    				
 		    				//REPONSE DE CLIENT
 		    				Object req=inObjectC.readObject(); 
 		    				if(req instanceof String) {
@@ -157,34 +162,60 @@ public void run() {
 				    					majClient();
 				    					break;
 				    				}
+		    					if(rep.equals("null")){
+		    						System.out.println("Je suis null courtier");
+		    					    nbOrdres--;
+		    					   outObjectB.writeObject("null");
+		    					   outObjectB.flush();
+		    					}
 		    				}
 		    				
-		    				else {
+		    				
+		    				if(req instanceof Ordre){
 		    					    nOrdre++;
+		    					    nbOrdres--;
 		    					    Ordre ordre = (Ordre) req; 
 					    			System.out.println("Object received = " + ordre.getEntrepriseName());
 					    			transmettreOrdreABourse(ordre);
 					    			System.out.println("j'ai transmis");
 			    					//	a revoir cela 
 			    					listeOrdre.add(ordre);
-				    				if(nOrdre==1) {
-				    					nOrdre=0;
-				    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
-				    					while(nOrdre<1) {
-				    						System.out.println("j'attend réponse bourse");
-						    				int idrecu=(Integer)inObjectB.readObject();
-						    				boolean rep=(boolean)inObjectB.readObject();
-						    				//commission 
-						    				Ordre r=getOrderById(idrecu);
-						    				CalculCommission(rep, r);
-						    				System.out.println("mon solde après ordre qui est "+rep+" est "+accountBalance);
-				    						outObjectC.writeObject(idrecu);
-				    						outObjectC.writeObject(rep);
-				    						nOrdre++;
-				    					}
-				    					nOrdre=0;
-				    				}
 		    				}
+		    				if(nOrdre==3) {
+		    					
+		    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
+		    					for(int j=0;j<3;j++) {
+		    						System.out.println("j'attend réponse bourse");
+				    				int idrecu=(Integer)inObjectB.readObject();
+				    				boolean rep=(boolean)inObjectB.readObject();
+				    				//commission 
+				    				Ordre r=getOrderById(idrecu);
+				    				CalculCommission(rep, r);
+				    				System.out.println("mon solde après ordre qui est "+rep+" est "+accountBalance);
+		    						outObjectC.writeObject(idrecu);
+		    						outObjectC.writeObject(rep);
+		    						
+		    					}
+		    					nOrdre=0;
+		    				}
+		    				if(nOrdre<3 && nbOrdres==0){
+		    					for(int j=0;j<nOrdre;j++) {
+		    						System.out.println("j'attend réponse bourse dans nbO==0");
+				    				int idrecu=(Integer)inObjectB.readObject();
+				    				boolean rep=(boolean)inObjectB.readObject();
+				    				//commission 
+				    				Ordre r=getOrderById(idrecu);
+				    				CalculCommission(rep, r);
+				    				System.out.println("mon solde après ordre qui est "+rep+" est "+accountBalance);
+		    						outObjectC.writeObject(idrecu);
+		    						outObjectC.writeObject(rep);
+		    						
+		    					}
+		    					nOrdre=0;
+		    				}
+				    				
+				    				
+		    				
 
 
 		    			} 

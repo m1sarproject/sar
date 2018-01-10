@@ -71,7 +71,17 @@ public class ThreadBourse extends Thread {
     	prixParEntreprise=bourse.getPrixParEntreprise();
    
     	Ordre ordre_client;
+    	int nbOrdres=0;
     	int cpt=0;
+    	try {
+    		nbOrdres=(int) inObject.readObject();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     	while(true){
     		try {
     				
@@ -84,31 +94,44 @@ public class ThreadBourse extends Thread {
 							nbCustomer--;
 						}
 						if(info.equals("bye")) {
+							
 							//courtier se deconnecte  on enleve le threadCourtier de la liste
 							bourse.removeBroker(this);
 							break;//sortir du while
 						}
+						if(req.equals("null")){
+							System.out.println("Je suis null threadBourse");
+    					
+    					    nbOrdres--;
+    					}
 					}
-					else {
+					if(req instanceof Ordre){
 						cpt++;
+						nbOrdres--;
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
-						if(cpt==1) {
-							cpt=0;
-							for (int i = 0; i < 1; i++) {
-								System.out.println("je repond au courtier acceptation ");
-								Ordre o=bourse.accord(nomCourtier);
-								outObject.writeObject(o.getId());
-								outObject.writeObject(o.isEstAccepte());
-							}
+					}
+					if(cpt==3) {
+							
+						for (int i = 0; i < 3; i++) {
+							System.out.println("je repond au courtier acceptation ");
+							Ordre o=bourse.accord(nomCourtier);
+							outObject.writeObject(o.getId());
+							outObject.writeObject(o.isEstAccepte());
 						}
-
-
-					}			
-
-					
-				
+						cpt=0;
+					}
+					if(cpt<3 && nbOrdres==0){
+						for (int i = 0; i < cpt; i++) {
+							System.out.println("je repond au courtier acceptation ");
+							Ordre o=bourse.accord(nomCourtier);
+							outObject.writeObject(o.getId());
+							outObject.writeObject(o.isEstAccepte());
+						}
+						cpt=0;
+					}
+						
     		} catch (IOException e) {
 				e.printStackTrace();
 			}
