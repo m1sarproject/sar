@@ -162,6 +162,16 @@ public class ThreadBourse extends Thread {
 
     public void SurReceptionDe(Ordre ordre) {
     	bourse.getOrdres().add(ordre);
+    	Entreprise concerned =bourse.getByName(ordre.getEntrepriseName());
+    	if (ordre instanceof OrdreVente) {
+			
+			concerned.addOrder(ordre);
+			concerned.incDemandesVentes();			
+		}
+    	else {
+    		concerned.addOrder(ordre);
+    		concerned.incDemandesAchat();
+    	}
 
     }
     
