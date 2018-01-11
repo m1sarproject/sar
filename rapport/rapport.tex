@@ -1,0 +1,159 @@
+
+
+
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{mathpazo} 
+\usepackage{indentfirst}
+\usepackage[section]{placeins}
+\usepackage{url}
+\usepackage{hyperref}
+
+
+\usepackage{algorithm,algpseudocode}
+
+\begin{document}
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{titlepage}
+	\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+	
+	\center
+	
+	%------------------------------------------------
+	%	Headings
+	%------------------------------------------------
+	
+	\textsc{\LARGE Université Paris Dauphine}\\[1.5cm] 
+	
+	\textsc{\Large Master 1 MIAGE}\\[0.5cm] 
+	
+
+	
+	%------------------------------------------------
+	%	Title
+	%------------------------------------------------
+	
+	\HRule\\[0.4cm]
+	
+	{\huge\bfseries Projet de Systèmes \& Algorithmes Répartis}\\[0.4cm]
+	
+	\HRule\\[1.5cm]
+	
+	%------------------------------------------------
+	%	Author(s)
+	%------------------------------------------------
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft}
+			\large
+			\textit{Réalisé par :}\\
+			Vitalina \textsc{MALUSH}\\ 
+			Lyes \textsc{MEGHARA}\\ 
+			Ouerdia \textsc{IDINARENE}\\ 
+			Nadia \textsc{MSELLEK}\\ 
+		\end{flushleft}
+	\end{minipage}
+	~
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushright}
+			\large
+			\textit{Encadré par :}\\
+			Mme Joyce \textsc{EL HADDAD}% Supervisor's name
+
+		\end{flushright}
+	\end{minipage}
+	
+
+	
+	
+	\vfill\vfill 
+	
+	{\large10 Janvier 2018} 
+	
+
+
+
+	\leavevmode \newline 	\leavevmode \newline 	\leavevmode \newline 	\leavevmode \newline 	\leavevmode \newline 
+	\includegraphics[width=0.6\textwidth]{dauphine.png}\\[1cm] 
+	 
+
+	
+
+	
+\end{titlepage}
+
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
+
+
+
+
+
+\section{Introduction}
+
+
+En nous aidant des procédés et méthodes apprises en cours de Systèmes et Algorithmes répartis, nous avons mis en place un système distribué permettant de créer une simulation boursière.\newline 
+
+Nous avons mis en place un certain nombre d’entreprises souhaitant mettre en vente des actions (dites actions flottantes) sur la bourse,  ainsi que des clients qui eux aussi souhaitent vendre leurs propres actions.\newline D’autres clients souhaitent eux acquérir des actions d’entreprises et sollicitent la bourse qui leur attribue un courtier pour effectuer toutes ces transactions, modélisées par des ordres.
+
+
+
+
+\section{Outils de développement}
+
+Dans le cadre de ce projet, nous avons utilisé GitHub pour une meilleure collaboration, eclipse sous la JDK 1.8, Doxygène nous a permis de générer une documentation visible depuis le fichier index.html. \newline Pour finir ce rapport a été rédigé en utilisant LateX.
+
+
+\section{Description du projet}
+
+\subsection{Hypothèses}
+
+La première hypothèse que nous avons émise est que la bourse est d'abord lancée, s'en suit derrière le(s) courtiers(s) pour enfin lancer les clients. \newline
+
+Aussi, par souci de cohérence avec le fonctionnement des systèmes boursiers avec des clients dans la vie active, le Client envoie 3 ordres successivement en les transmettant à son courtier, qui lui les transmet à la Bourse pour effectuer le traitement, le client attend de recevoir ses réponses avant de décider de ses futures actions (achat/vente). \newline
+
+
+\clearpage
+
+\subsection{Choix techniques}
+
+Après une réflexion  entre RMI et Socket TCP, nous avons finalement décidé d'utiliser les Sockets pour les communications entre nos différentes classes; d'une part, c'est un modèle que nous connaissions déjà, et d'autre part, les sockets permettaient d'envoyer et de récupérer des objets (serializables) via les objets ObjectOutputStream ainsi que ObjectInputStream et respectivement les méthodes : readObject() et writeObject(). \newline 
+
+
+\begin{algorithm}
+\caption{Consommer ($Ordre$)}
+\label{alg:euclid}
+\begin{algorithmic}[]
+\State $U$: a set of authentic users
+\State $T$: a set containing trustor and trustee information
+    \Procedure{DepthDetection}{$T_{t_h}$, $U_i$}
+    \State $T_{u_i} \gets$ list of trustee taking $U_i$ as trustor
+    \State $I_{u_i} \gets$ list of items rated by $U_i$
+    \State Build $U_i$'s trust network using $T_{t_h}$
+    \For{each item $i$ in $I_{u_i}$}
+    \State $NU_{u_i} \gets$ list of users who rated $I_i$
+        \For{each user $u$ in $NU_{u_i}$ }
+            \If{$u$ is in $T_{u_i}$}
+                \State use the rating and trust of $u$ for prediction of rating
+            \EndIf
+        \EndFor
+    \EndFor
+    \State \textbf{return} $L$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+\end{document}
