@@ -41,12 +41,10 @@ private int portecoute;
 private InetAddress hote;
 private Socket sc;
 private ServerSocket ecouteClient;
-
 private InputStream inSB;
 private OutputStream outSB;
 private ObjectInputStream inObjectB;
 private ObjectOutputStream outObjectB;
-
 private OutputStream outSC;
 private InputStream inSC;
 private ObjectInputStream inObjectC;
@@ -54,7 +52,6 @@ private ObjectOutputStream outObjectC;
 private Socket currentClient;
 /** Time to sleep the broker */
 private static int timeLimit=15000;
-
 
 /** List of order that the broker recieve from its client*/
 private ArrayList<Ordre> listeOrdre=new ArrayList<>();
@@ -122,20 +119,18 @@ public void run() {
 	connexion();
 	
 	try {
-		
+		//le courtier ecoute les clients
 		ecouteClient=new ServerSocket(portecoute);
 		String nomclient="";
 		int nb = 1;
     	while (true) { 
     		currentClient = ecouteClient.accept();
-    		System.out.println("le client s'est connecte");
-
+    		//traitement du client connecte
     			try {
 		    			inSC=currentClient.getInputStream();
 		    			outSC=currentClient.getOutputStream();
 		    			inObjectC = new ObjectInputStream(inSC);
 		    			outObjectC = new ObjectOutputStream(outSC);
-		    			System.out.println("client numero "+nb+" s'est connecte a ce courtier");
 		    			nomclient=(String)inObjectC.readObject(); 
 		    			System.out.println(" le client "+ nomclient+" vient de s'inscrire");
 		    			outObjectC.writeObject(name);
@@ -148,11 +143,11 @@ public void run() {
 		    			nbOrdres=(int) inObjectC.readObject();
 		    			outObjectB.writeObject(nbOrdres);
 		    			outObjectB.flush();
+		    			//reception des ordres du client
 		    			while (true)  		 
 		    			{	
-		    				
-		    				//REPONSE DE CLIENT
 		    				Object req=inObjectC.readObject(); 
+		    				//req peut etre un message de deconnexion ou bien un ordre
 		    				if(req instanceof String) {
 		    					String rep=(String)req;
 		    					if(rep.equals("bye")) {
@@ -168,32 +163,36 @@ public void run() {
 		    					}
 		    				}
 		    				
-		    				
 		    				if(req instanceof Ordre){
 		    					    nOrdre++;
 		    					    nbOrdres--;
+		    					    //envoie de l'ordre a bourse
 		    					    Ordre ordre = (Ordre) req; 
-					    			System.out.println("Object received = " + ordre.getEntrepriseName());
+					    			System.out.println("j'ai recu l'ordre "+ordre.getId()+" du client"+nomclient);
 					    			transmettreOrdreABourse(ordre);
-					    			System.out.println("j'ai transmis");
-			    					//	a revoir cela 
+					    			System.out.println("j'ai transmis l'ordre a la bourse");
+			    					//ajouter l'ordre dans la liste d'ordre de courtier
 			    					listeOrdre.add(ordre);
-			    					System.out.println(" nOrdre : "+nOrdre);
-									System.out.println(" nbOrdres : "+nbOrdres);
 		    				}
 
 		    				if(nOrdre==2) {
 
-		    					
 		    					//j'ai envoyé les 2 ordres j'attends les acceptations de la bourse
 		    					for(int j=0;j<2;j++) {
-		    						System.out.println("j'attend réponse bourse");
+		    						System.out.println("j'attend que la bourse me réponde");
 				    				int idrecu=(Integer)inObjectB.readObject();
 				    				boolean rep=(boolean)inObjectB.readObject();
-				    				//commission 
+				    				//récupérer l'ordre dont j'ai recu la reponse
 				    				Ordre r=getOrderById(idrecu);
+				    				//calculer la commission
 				    				CalculCommission(rep, r);
-				    				System.out.println("mon solde après ordre qui est "+rep+" est "+accountBalance);
+				    				if(rep==false) {
+				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est refuse "+" est: "+accountBalance);
+				    				}
+				    				else {
+				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est accepte "+" est: "+accountBalance);
+				    				}
+				    				
 		    						outObjectC.writeObject(idrecu);
 		    						outObjectC.writeObject(rep);
 		    						
@@ -206,13 +205,18 @@ public void run() {
 		    				if(nOrdre<2 && nbOrdres==0){
 
 		    					for(int j=0;j<nOrdre;j++) {
-		    						System.out.println("j'attend réponse bourse dans nbO==0");
 				    				int idrecu=(Integer)inObjectB.readObject();
 				    				boolean rep=(boolean)inObjectB.readObject();
 				    				//commission 
 				    				Ordre r=getOrderById(idrecu);
 				    				CalculCommission(rep, r);
-				    				System.out.println("mon solde après ordre qui est "+rep+" est "+accountBalance);
+				    				if(rep==false) {
+				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est refuse "+" est: "+accountBalance);
+				    				}
+				    				else {
+				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est accepte "+" est: "+accountBalance);
+				    				}
+				    				
 		    						outObjectC.writeObject(idrecu);
 		    						outObjectC.writeObject(rep);
 		    						
@@ -232,15 +236,10 @@ public void run() {
 					e.printStackTrace();
 				}
     			
-    			
-    		
-    	//} celui du if size
-    		System.out.println("nbClinet = "+nbCustomer);
     		if(nbCustomer<=0) {
 	    		try {
 	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
-						Thread.sleep(timeLimit); //Le sleep a des de�aufauts : si un client se connecte pendant le sleep, il ne le reveille pas du sleep; sinon� revoir
-						System.out.println("avant de recevori nbCustumer");
+						Thread.sleep(timeLimit);//attendre un peu avant de me deconnecter dans le cas ou un client peut me contacter
     					nbCustomer=inObjectB.readInt();
 					} 
 	    		catch (InterruptedException e) {
@@ -249,8 +248,7 @@ public void run() {
     		}
 	    		
     		if(nbCustomer<=0) {	
-	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse"); 
-	    			
+	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse");
 	    			outObjectB.writeObject("bye");
 	    			break;
     		}
@@ -324,14 +322,11 @@ public static void main(String[] args) throws UnknownHostException {
 	
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
-	
-	
 	Scanner lect = new Scanner(System.in);
-	System.out.println("Entrez le nom du courtier :");
+	System.out.println("Donnez le nom du courtier :");
 	String nom=lect.nextLine();
 	Courtier b=new Courtier(nom,nport,hote);
-	
-	System.out.println("Le courtier s'est connecté à la bourse");
+	System.out.println("je me suis connecte a la bourse");
 	
 	}
 
