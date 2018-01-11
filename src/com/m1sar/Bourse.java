@@ -452,15 +452,11 @@ public Ordre consommer(String nomCourtier) {
 		private ArrayList <HashMap<String,Double>> prixParEntreprise  = new  ArrayList <HashMap<String,Double>> ();
 		private XYChart.Series[] montab = new XYChart.Series[20]; //On se limite à 20 entreprises maximum
 
-	  public Affichage() {
-		 
-		  System.out.println("Ma liste est t-elle vide ? "+listeGraphe);
-			
+	  public Affichage() {			
 			
 			for (int i = 0;i<listeGraphe.size();i++) {
 			
 			prixParEntreprise.add(listeGraphe.get(i));
-			System.out.println("ajout avec succes");
 
 			}
 			
@@ -543,7 +539,8 @@ public Ordre consommer(String nomCourtier) {
 		ServerSocket serveurCourtier=null;
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
-		
+		//bourse.afficheGraphe(args); décommenter pour tester
+
 		try { 
 			serveurCourtier= new ServerSocket(nport); //Socket d'ecoute
 		}
