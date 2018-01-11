@@ -84,9 +84,7 @@ public class ThreadBourse extends Thread {
     	int nbOrdres=0;
     	int cpt=0;
     	while(true){
-    		try {
-        		
-    				
+    		try {	
 					System.out.println("Bourse recoit un message de courtier");
 					Object req=inObject.readObject();
 					if(req instanceof Integer ) nbOrdres=(int) req;
@@ -111,6 +109,7 @@ public class ThreadBourse extends Thread {
     					}
 					}
 					
+					
 					if(req instanceof Ordre){
 						cpt++;
 						nbOrdres--;
@@ -118,18 +117,17 @@ public class ThreadBourse extends Thread {
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
 					}
-					System.out.println("cpt "+cpt);
-					System.out.println("nbOrdres "+nbOrdres);
+
 					if(cpt==2) {
-							
-						for (int i = 0; i < 2; i++) {
+
+						for (int i = 0; i < 3; i++) {
 							System.out.println("je repond au courtier acceptation ");
 							bourse.accord(nomCourtier);
 							
 						}
 						cpt=0;
 					}
-					if(cpt<2 && nbOrdres==0){
+					if(cpt<3 && nbOrdres==0){
 						for (int i = 0; i < cpt; i++) {
 							System.out.println("je repond au courtier acceptation ");
 						    bourse.accord(nomCourtier);
@@ -200,112 +198,6 @@ public class ThreadBourse extends Thread {
 	}
 	
 
-	/*public void addClient(Socket client) throws IOException {
-    	this.sClient.add(client);
-    	incNbClient();
-    	
-    }*/
 	
-    /*
-	ArrayList<Ordre> lordre=new ArrayList<>();
-
-	
-	
-	while (true) { //ici quand tout ou clients (pas sur) se deco on sort du while  
-
-		if(sClient.size()>0) { //s'il y'a un client dans notre liste on commence par traiter ce client
-			
-			currentClient=sClient.firstElement();
-			System.out.println(currentClient);
-
-			try {
-	    			inS=currentClient.getInputStream();
-	    			outS=currentClient.getOutputStream();
-	    			inObject = new ObjectInputStream(inS);
-	    			outObject = new ObjectOutputStream(outS);
-	    			//out=new PrintWriter(outS,true);
-	    			//in =new BufferedReader(new InputStreamReader(inS));
-	    			System.out.println("client numéro "+nb+" connecte a ce courtier");
-	    			nomclient=(String)inObject.readObject(); //Le premier message doit etre le nom du client
-	    			clients.add(nomclient);
-	    			System.out.println("Je suis "+nomCourtier+" le client "+ nomclient+" vient de s'inscrire");
-	    			outObject.writeObject(new String("Bienvenu cher client, vous pouvez envoyez vos ordre"));
-	    			outObject.flush();
-
-	    			//out.println("Bienvenu cher client, vous pouvez envoyez vos ordre");
-	    			//envoyer la liste des prix au client
-	    			sendPriceCompanies();
-
-	    				    		
-	    			while (true)  		    			//ici on mettra le traitement des ordres reçu par le client
-	    			{
-	    				
-	    				
-	    				System.out.println("JE SUIS DANS 2 VAL");
-	    				Object req=inObject.readObject(); 
-	    				if(req instanceof String) {
-	    					String rep=(String)req;
-	    					if(rep.equals("bye")) {
-			    				//supprimer le client et fermer sa socket et decremente nbcustumer
-			    					System.out.println("je suis dans le if du bye");
-			    					//a modifier mettre le put quand le courtier re�oit un accord pas ici
-			    					listeOrdre.put(nomclient, lordre);
-			    					majClient();
-			    					break;
-			    				}
-	    				}
-	    				
-	    				else {
-	    				Ordre ordre = (Ordre) req; 
-		    			System.out.println("Object received = " + ordre.getEntrepriseName());
-		    			transmettreOrdreABourse(ordre);
-		    			lordre.add(ordre);
-		    			//enregistrer l'ordre pour ce client
-	    				}
-	    				//req=(String)inObject.readObject();
-						
-
-	    			}
-	    		
-			}
-			catch (IOException e) {
-
-				e.printStackTrace();
-			} 
-			catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-		
-	}
-		System.out.println("nbClinet = "+nbCustomer);
-		if(nbCustomer==0) {
-    		try {
-    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
-					Thread.sleep(timeLimit); //Le sleep a des défauts : si un client se connecte pendant le sleep, il ne le réveille pas du sleep; à revoir
-				} 
-    		catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-		}
-    		
-		if(nbCustomer==0) {	
-    			System.out.println(prefixe() + "Je n'ai plus de clients, je me déconnecte de la bourse");
-    			bourse.removeBroker(this);
-    			break;//sortir du while(true)
-		}
-    		
-    							
-		nb++;	
-		
-			
-}*/
-	//envoyer un message a la bourse
-	
-	//System.out.println(prefixe() + "Le threadCourtier sort du while");
-	
-
 	
 }

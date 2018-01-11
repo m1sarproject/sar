@@ -184,12 +184,12 @@ public void run() {
 			    					System.out.println(" nOrdre : "+nOrdre);
 									System.out.println(" nbOrdres : "+nbOrdres);
 		    				}
-		    				System.out.println("nOrdre "+nOrdre);
-							System.out.println("nbOrdres "+nbOrdres);
+
 		    				if(nOrdre==2) {
+
 		    					
-		    					//j'ai envoyé les 2 ordres j'attends les acceptations de la bourse
-		    					for(int j=0;j<2;j++) {
+		    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
+		    					for(int j=0;j<3;j++) {
 		    						System.out.println("j'attend réponse bourse");
 				    				int idrecu=(Integer)inObjectB.readObject();
 				    				boolean rep=(boolean)inObjectB.readObject();
@@ -203,9 +203,11 @@ public void run() {
 		    					}
 		    					nOrdre=0;
 		    				}
+
 		    				
 		    				
 		    				if(nOrdre<2 && nbOrdres==0){
+
 		    					for(int j=0;j<nOrdre;j++) {
 		    						System.out.println("j'attend réponse bourse dans nbO==0");
 				    				int idrecu=(Integer)inObjectB.readObject();
