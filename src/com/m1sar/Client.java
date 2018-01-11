@@ -154,7 +154,10 @@ public class Client {
      * 
      */
 	public Ordre vendre (double prix, int quantite, String entreprise){
-		if(portefeuille.size()==0)return null;
+		if(portefeuille.size()==0){
+			System.out.println("pas de vente P vide");
+			return null;
+		}
 		if ( ! venteLegal(entreprise,quantite) ) {
 			System.out.println("ce Vente n est pas legal");
 			return null;
@@ -175,7 +178,7 @@ public class Client {
      */
 	public void echangeOrdresClientCourtier() {
 		Scanner lect = new Scanner(System.in);
-		Ordre ordre;
+		Ordre ordre=null;
 		try {
 			System.out.println("Hello mon Courtier je vais t envoyer des ORDRES");
 			System.out.print("Donnez le nbOrdres a creer : ");
@@ -201,49 +204,57 @@ public class Client {
 						
 						ordre=acheter(prix, nbActions, nom_entreprise);
 						Produir(ordre);
-						System.out.println("OrdreAchat bien envoyer");
+						if(ordre!=null){
+							System.out.println("OrdreAchat bien envoyer");
+							}
+						
+						
 					}
 					if(r.equals("v")){
 						ordre=vendre(prix, nbActions, nom_entreprise);
 						Produir(ordre);
+						if(ordre!=null){
 						System.out.println("OrdreVente bien envoyer");
+						}
 					}
-				cpt++;
-				nbOrdre--;
-				if(cpt==3){
-					System.out.println("J attends la reponse de la Bourse");
-					for(int j=0;j<3;j++){
+					if(ordre!=null){
+						cpt++;
+					}
+					nbOrdre--;
+					if(cpt==3){
+						System.out.println("J attends la reponse de la Bourse");
+						for(int j=0;j<3;j++){
+							int idOrdre = (int) inObject.readObject();
+							boolean yesOuNon=(boolean) inObject.readObject();
+							getReponseBource(idOrdre,yesOuNon);
+							System.out.println("Portefeille de Client : "+portefeuille);
+							System.out.println("Solde de Client : "+solde);
+						
+						}
+						cpt=0;
+					}
+				
+				}
+				if(cpt!=0){
+					System.out.println("J attends la reponse de la Bourse apres sortir de while");
+					for(int j=0;j<cpt;j++){
 						int idOrdre = (int) inObject.readObject();
 						boolean yesOuNon=(boolean) inObject.readObject();
 						getReponseBource(idOrdre,yesOuNon);
 						System.out.println("Portefeille de Client : "+portefeuille);
 						System.out.println("Solde de Client : "+solde);
-						
+					
 					}
 					cpt=0;
 				}
-				
+				outObject.writeObject(new String("bye"));
+				deconnexion();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
-			if(cpt!=0){
-				System.out.println("J attends la reponse de la Bourse apres sortir de while");
-				for(int j=0;j<cpt;j++){
-					int idOrdre = (int) inObject.readObject();
-					boolean yesOuNon=(boolean) inObject.readObject();
-					getReponseBource(idOrdre,yesOuNon);
-					System.out.println("Portefeille de Client : "+portefeuille);
-					System.out.println("Solde de Client : "+solde);
-					
-				}
-				cpt=0;
+			catch (IOException e) {
+				e.printStackTrace();
 			}
-		outObject.writeObject(new String("bye"));
-		deconnexion();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-		e.printStackTrace();
-		}
 	}
 	
 	/**@author Vitalina
@@ -252,6 +263,7 @@ public class Client {
      * check if the condition is legal to sell OrdreVente
      */
 	public boolean venteLegal(String entreprise,int quantite){
+		
 		if(!portefeuille.containsKey(entreprise))return false;
 		return (portefeuille.get(entreprise)-quantiteEventuelleVendu)>=quantite;
 	}
@@ -274,7 +286,7 @@ public class Client {
 	
 	/**@author Vitalina
      * 
-     * 
+     * disconnection of Client
      */
 	public void deconnexion(){
 		
@@ -293,8 +305,8 @@ public class Client {
 		
 	}
 	/**@author Vitalina
-     * 
-     * 
+     * @param id of Order
+     * @return Order from list of orders
      */
 	
 	
@@ -305,7 +317,10 @@ public class Client {
 		}
 		return res;
 	}
-	
+	/**@author Vitalina
+     * @param id of Order, boolean if Order was accepted or no
+     * deals answer of Bourse and update portefeille according to OrderVante or OrderAchat
+     */
 	public void getReponseBource(int idOrdre, boolean yesOuNon) {
 		Ordre r=getOrderById(idOrdre);
 		System.out.println("Ordre "+r.getPrixUnitaire());

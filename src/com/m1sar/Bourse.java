@@ -145,6 +145,7 @@ public Ordre consommer(String nomCourtier) {
 				int nbActionsDispo = concerned.getNbActions();
 				int nbActionsVoulus = o.getQuantiteClient();
 			
+
 				double prixEntreprise = concerned.getPrixUnitaireAction();
 				double prixPropose = o.getPrixUnitaire();
 				if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
@@ -157,8 +158,7 @@ public Ordre consommer(String nomCourtier) {
 						th.envoyerRep(o.getId(), o.estAccepte);
 					//avertir le courtier dont le nom est nomCourtier
 					}
-					
-			
+							
 				}
 				else {
 					for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
@@ -216,7 +216,7 @@ public Ordre consommer(String nomCourtier) {
 	
 	public boolean matching(Ordre achat,Ordre vente) {
 		
-		return achat.getQuantiteClient() >= vente.getQuantiteClient() && achat.getPrixUnitaire() >= vente.getPrixUnitaire();
+		return (achat.getQuantiteClient() == vente.getQuantiteClient() && achat.getPrixUnitaire() == vente.getPrixUnitaire() && vente.getEntrepriseName().equals(achat.getEntrepriseName()));
 				
 	}
 

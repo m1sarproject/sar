@@ -85,13 +85,11 @@ public class ThreadBourse extends Thread {
     	int cpt=0;
     	while(true){
     		try {
+        		
     				
 					System.out.println("Bourse recoit un message de courtier");
 					Object req=inObject.readObject();
-					if(req instanceof Integer) {
-						nbOrdres=(int)req;
-						
-					}
+					if(req instanceof Integer ) nbOrdres=(int) req;
 					if(req instanceof String) {
 						String info=(String)req;
 						if(info.equals("decreClient")) {
@@ -143,6 +141,7 @@ public class ThreadBourse extends Thread {
     		catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
+    		
     	}
 			
     	
@@ -164,6 +163,7 @@ public class ThreadBourse extends Thread {
 
     public void SurReceptionDe(Ordre ordre) {
     	bourse.getOrdres().add(ordre);
+    	System.out.println("je suis dans SRD");
     	Entreprise concerned =bourse.getByName(ordre.getEntrepriseName());
     	if (ordre instanceof OrdreVente) {
 			

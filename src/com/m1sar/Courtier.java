@@ -181,6 +181,8 @@ public void run() {
 					    			System.out.println("j'ai transmis");
 			    					//	a revoir cela 
 			    					listeOrdre.add(ordre);
+			    					System.out.println(" nOrdre : "+nOrdre);
+									System.out.println(" nbOrdres : "+nbOrdres);
 		    				}
 		    				if(nOrdre==3) {
 		    					
