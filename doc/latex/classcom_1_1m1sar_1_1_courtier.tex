@@ -1,0 +1,120 @@
+\hypertarget{classcom_1_1m1sar_1_1_courtier}{}\section{com.\+m1sar.\+Courtier Class Reference}
+\label{classcom_1_1m1sar_1_1_courtier}\index{com.\+m1sar.\+Courtier@{com.\+m1sar.\+Courtier}}
+Inheritance diagram for com.\+m1sar.\+Courtier\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1m1sar_1_1_courtier}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_aace4acdb7a996a617f18e7073472db99}\label{classcom_1_1m1sar_1_1_courtier_aace4acdb7a996a617f18e7073472db99}} 
+{\bfseries Courtier} (String name, int port, Inet\+Address hte)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_courtier_a1bb2f1869f4d4fc017df9a3b61d9cfae}{Send\+Accord\+Information} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_a85d517053430a42fcb4898dd3be64f07}\label{classcom_1_1m1sar_1_1_courtier_a85d517053430a42fcb4898dd3be64f07}} 
+double {\bfseries get\+Taux\+Commission} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_a4811275c71f904d574382201c00cc1d4}\label{classcom_1_1m1sar_1_1_courtier_a4811275c71f904d574382201c00cc1d4}} 
+void {\bfseries connexion} ()
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_courtier_aef4506822d0bdcd2d66267a49efaf039}{inscription} (Socket sc)  throws I\+O\+Exception 
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_a06cf321542a1b26fb78714c692c4ebbb}\label{classcom_1_1m1sar_1_1_courtier_a06cf321542a1b26fb78714c692c4ebbb}} 
+void {\bfseries run} ()
+\item 
+\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} \hyperlink{classcom_1_1m1sar_1_1_courtier_ac9e5e9ad51dbb22d38a67d7a859259a0}{get\+Order\+By\+Id} (int id)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_courtier_a309ef9b76b3504683d0bf2cf8d634094}{send\+Price\+Companies} ()  throws I\+O\+Exception 
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_courtier_af614a260bc606940e06e3efee5771611}{Calcul\+Commission} (boolean rep, \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} o)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_courtier_a54879f046ad25b89a1aed6f573fa1bf2}{transmettre\+Ordre\+A\+Bourse} (\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} ordre)  throws I\+O\+Exception 
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_aec0e3da5c60e31546a0532c524f5aee3}\label{classcom_1_1m1sar_1_1_courtier_aec0e3da5c60e31546a0532c524f5aee3}} 
+String {\bfseries prefixe} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_acf39c456b496674cccc31741262f4255}\label{classcom_1_1m1sar_1_1_courtier_acf39c456b496674cccc31741262f4255}} 
+static void {\bfseries main} (String\mbox{[}$\,$\mbox{]} args)  throws Unknown\+Host\+Exception 
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static double \hyperlink{classcom_1_1m1sar_1_1_courtier_ad00c315730363c06b266dec9f9cb8343}{taux\+Commission} =0.\+1
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_af614a260bc606940e06e3efee5771611}\label{classcom_1_1m1sar_1_1_courtier_af614a260bc606940e06e3efee5771611}} 
+\index{com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}!Calcul\+Commission@{Calcul\+Commission}}
+\index{Calcul\+Commission@{Calcul\+Commission}!com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}}
+\subsubsection{\texorpdfstring{Calcul\+Commission()}{CalculCommission()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Courtier.\+Calcul\+Commission (\begin{DoxyParamCaption}\item[{boolean}]{rep,  }\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{o }\end{DoxyParamCaption})}
+
+Computes the tax rate \mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_ac9e5e9ad51dbb22d38a67d7a859259a0}\label{classcom_1_1m1sar_1_1_courtier_ac9e5e9ad51dbb22d38a67d7a859259a0}} 
+\index{com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}!get\+Order\+By\+Id@{get\+Order\+By\+Id}}
+\index{get\+Order\+By\+Id@{get\+Order\+By\+Id}!com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}}
+\subsubsection{\texorpdfstring{get\+Order\+By\+Id()}{getOrderById()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} com.\+m1sar.\+Courtier.\+get\+Order\+By\+Id (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+Get the order by giving its id 
+\begin{DoxyParams}{Parameters}
+{\em id} & \+: the id of the order \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Order 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_aef4506822d0bdcd2d66267a49efaf039}\label{classcom_1_1m1sar_1_1_courtier_aef4506822d0bdcd2d66267a49efaf039}} 
+\index{com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}!inscription@{inscription}}
+\index{inscription@{inscription}!com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}}
+\subsubsection{\texorpdfstring{inscription()}{inscription()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Courtier.\+inscription (\begin{DoxyParamCaption}\item[{Socket}]{sc }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+Lets the broker log in the market by giving his name 
+\begin{DoxyParams}{Parameters}
+{\em Socket} & sc \+: the socket to send the name to the market \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_a1bb2f1869f4d4fc017df9a3b61d9cfae}\label{classcom_1_1m1sar_1_1_courtier_a1bb2f1869f4d4fc017df9a3b61d9cfae}} 
+\index{com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}!Send\+Accord\+Information@{Send\+Accord\+Information}}
+\index{Send\+Accord\+Information@{Send\+Accord\+Information}!com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}}
+\subsubsection{\texorpdfstring{Send\+Accord\+Information()}{SendAccordInformation()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Courtier.\+Send\+Accord\+Information (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+informe le client de la transaction (accord) effectuï¿½e pour qu\textquotesingle{}ils mettent ï¿½ jours leurs portefeuilles \mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_a309ef9b76b3504683d0bf2cf8d634094}\label{classcom_1_1m1sar_1_1_courtier_a309ef9b76b3504683d0bf2cf8d634094}} 
+\index{com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}!send\+Price\+Companies@{send\+Price\+Companies}}
+\index{send\+Price\+Companies@{send\+Price\+Companies}!com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}}
+\subsubsection{\texorpdfstring{send\+Price\+Companies()}{sendPriceCompanies()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Courtier.\+send\+Price\+Companies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+Send the pries to his client when he logs in \mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_a54879f046ad25b89a1aed6f573fa1bf2}\label{classcom_1_1m1sar_1_1_courtier_a54879f046ad25b89a1aed6f573fa1bf2}} 
+\index{com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}!transmettre\+Ordre\+A\+Bourse@{transmettre\+Ordre\+A\+Bourse}}
+\index{transmettre\+Ordre\+A\+Bourse@{transmettre\+Ordre\+A\+Bourse}!com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}}
+\subsubsection{\texorpdfstring{transmettre\+Ordre\+A\+Bourse()}{transmettreOrdreABourse()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Courtier.\+transmettre\+Ordre\+A\+Bourse (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{ordre }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+Sends the order to the market 
+\begin{DoxyParams}{Parameters}
+{\em the} & order to be sent \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_courtier_ad00c315730363c06b266dec9f9cb8343}\label{classcom_1_1m1sar_1_1_courtier_ad00c315730363c06b266dec9f9cb8343}} 
+\index{com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}!taux\+Commission@{taux\+Commission}}
+\index{taux\+Commission@{taux\+Commission}!com\+::m1sar\+::\+Courtier@{com\+::m1sar\+::\+Courtier}}
+\subsubsection{\texorpdfstring{taux\+Commission}{tauxCommission}}
+{\footnotesize\ttfamily double com.\+m1sar.\+Courtier.\+taux\+Commission =0.\+1\hspace{0.3cm}{\ttfamily [static]}}
+
+Commision tax of this broker 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Nick/\+Desktop/\+M1 M\+I\+A\+G\+E/\+Iam\+The\+One/\+Systèmes \& Algo Répartis/\+Projet/sar/src/com/m1sar/Courtier.\+java\end{DoxyCompactItemize}

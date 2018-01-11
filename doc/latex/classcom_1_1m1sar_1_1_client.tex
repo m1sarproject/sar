@@ -1,0 +1,248 @@
+\hypertarget{classcom_1_1m1sar_1_1_client}{}\section{com.\+m1sar.\+Client Class Reference}
+\label{classcom_1_1m1sar_1_1_client}\index{com.\+m1sar.\+Client@{com.\+m1sar.\+Client}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_af679443c7353bb7bbd197cf94049a70c}\label{classcom_1_1m1sar_1_1_client_af679443c7353bb7bbd197cf94049a70c}} 
+{\bfseries Client} (String name\+Client, double solde, int port, Inet\+Address hte)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_aeff9ee8926647a8be490c5f0beea31d5}{connexion} ()
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_ac6681e529e1a045aae86e571dbfea5e3}{inscription} ()
+\item 
+\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} \hyperlink{classcom_1_1m1sar_1_1_client_a7042e50f398b3b9b7bbeada8f12954c2}{acheter} (double prix, int quantite, String entreprise)
+\item 
+\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} \hyperlink{classcom_1_1m1sar_1_1_client_ac7c456af1862320de2c394a23a7d80cd}{vendre} (double prix, int quantite, String entreprise)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_a661a6a21b9891b99319d45fe1bb7c0c9}{echange\+Ordres\+Client\+Courtier} ()
+\item 
+boolean \hyperlink{classcom_1_1m1sar_1_1_client_a193f812c6df9bd999c444eb3ec5007da}{vente\+Legal} (String entreprise, int quantite)
+\item 
+boolean \hyperlink{classcom_1_1m1sar_1_1_client_a9ab9d2ee49a49ffc34d876c554bf29b3}{achat\+Legal} (String entreprise, double prix, int quantite)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_adbad3a491bebe1acf093c0c6343ec507}{deconnexion} ()
+\item 
+\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} \hyperlink{classcom_1_1m1sar_1_1_client_a29230c6248c0b37d1faeb254270f0001}{get\+Order\+By\+Id} (int id)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_a78ef39501ca822bcd7df390bead5baae}{get\+Reponse\+Bource} (int id\+Ordre, boolean yes\+Ou\+Non)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_ae58f81c93ca69cc75c923e91f758d75f}{maj\+Portefeuille\+Achat} (\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} r)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_afa011fd42124137bc9131ae8b9f2851d}{maj\+Portefeuille\+Vente} (\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} r)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_a289d7402a20981f2ab07159e617ec3d8}{read\+State\+Stocks} ()
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_client_af8ee1c17e73359f447bc14b8fe4b790c}{Produir} (\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} r)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a952cf270821d658eef12c5dca9d16133}\label{classcom_1_1m1sar_1_1_client_a952cf270821d658eef12c5dca9d16133}} 
+static void {\bfseries main} (String\mbox{[}$\,$\mbox{]} args)  throws Unknown\+Host\+Exception
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_afea2b8c72db2abdc5d6e68e5d817bc25}\label{classcom_1_1m1sar_1_1_client_afea2b8c72db2abdc5d6e68e5d817bc25}} 
+static int {\bfseries cpt} =0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Vitalina La classe \hyperlink{classcom_1_1m1sar_1_1_client}{Client} qui peut acheter ou vendre des actions 
+\end{DoxyAuthor}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a9ab9d2ee49a49ffc34d876c554bf29b3}\label{classcom_1_1m1sar_1_1_client_a9ab9d2ee49a49ffc34d876c554bf29b3}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!achat\+Legal@{achat\+Legal}}
+\index{achat\+Legal@{achat\+Legal}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{achat\+Legal()}{achatLegal()}}
+{\footnotesize\ttfamily boolean com.\+m1sar.\+Client.\+achat\+Legal (\begin{DoxyParamCaption}\item[{String}]{entreprise,  }\item[{double}]{prix,  }\item[{int}]{quantite }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em name} & of company and the price of all Stocks which \hyperlink{classcom_1_1m1sar_1_1_client}{Client} want to buy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true or false check if the condition is legal to buy \hyperlink{classcom_1_1m1sar_1_1_ordre_achat}{Ordre\+Achat} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a7042e50f398b3b9b7bbeada8f12954c2}\label{classcom_1_1m1sar_1_1_client_a7042e50f398b3b9b7bbeada8f12954c2}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!acheter@{acheter}}
+\index{acheter@{acheter}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{acheter()}{acheter()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} com.\+m1sar.\+Client.\+acheter (\begin{DoxyParamCaption}\item[{double}]{prix,  }\item[{int}]{quantite,  }\item[{String}]{entreprise }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em clients} & price ,amount how much he wants to buy of stocks, name of company \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{classcom_1_1m1sar_1_1_ordre_achat}{Ordre\+Achat} if it is legal or non return null 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_aeff9ee8926647a8be490c5f0beea31d5}\label{classcom_1_1m1sar_1_1_client_aeff9ee8926647a8be490c5f0beea31d5}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!connexion@{connexion}}
+\index{connexion@{connexion}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{connexion()}{connexion()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+connexion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina make connection with Thread\+Bource which find for this client \hyperlink{classcom_1_1m1sar_1_1_courtier}{Courtier} available and client obtain IP and host of this \hyperlink{classcom_1_1m1sar_1_1_courtier}{Courtier} if any \hyperlink{classcom_1_1m1sar_1_1_courtier}{Courtier} is available client is disconnected 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_adbad3a491bebe1acf093c0c6343ec507}\label{classcom_1_1m1sar_1_1_client_adbad3a491bebe1acf093c0c6343ec507}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!deconnexion@{deconnexion}}
+\index{deconnexion@{deconnexion}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{deconnexion()}{deconnexion()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+deconnexion (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina disconnection of \hyperlink{classcom_1_1m1sar_1_1_client}{Client} 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a661a6a21b9891b99319d45fe1bb7c0c9}\label{classcom_1_1m1sar_1_1_client_a661a6a21b9891b99319d45fe1bb7c0c9}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!echange\+Ordres\+Client\+Courtier@{echange\+Ordres\+Client\+Courtier}}
+\index{echange\+Ordres\+Client\+Courtier@{echange\+Ordres\+Client\+Courtier}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{echange\+Ordres\+Client\+Courtier()}{echangeOrdresClientCourtier()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+echange\+Ordres\+Client\+Courtier (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina make exchanges between \hyperlink{classcom_1_1m1sar_1_1_client}{Client}, \hyperlink{classcom_1_1m1sar_1_1_courtier}{Courtier} and \hyperlink{classcom_1_1m1sar_1_1_thread_bourse}{Thread\+Bourse} and received notifications if Orders were accepted or non and finally disconnection of this client 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a29230c6248c0b37d1faeb254270f0001}\label{classcom_1_1m1sar_1_1_client_a29230c6248c0b37d1faeb254270f0001}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!get\+Order\+By\+Id@{get\+Order\+By\+Id}}
+\index{get\+Order\+By\+Id@{get\+Order\+By\+Id}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{get\+Order\+By\+Id()}{getOrderById()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} com.\+m1sar.\+Client.\+get\+Order\+By\+Id (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & of Order \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Order from list of orders 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a78ef39501ca822bcd7df390bead5baae}\label{classcom_1_1m1sar_1_1_client_a78ef39501ca822bcd7df390bead5baae}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!get\+Reponse\+Bource@{get\+Reponse\+Bource}}
+\index{get\+Reponse\+Bource@{get\+Reponse\+Bource}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{get\+Reponse\+Bource()}{getReponseBource()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+get\+Reponse\+Bource (\begin{DoxyParamCaption}\item[{int}]{id\+Ordre,  }\item[{boolean}]{yes\+Ou\+Non }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & of Order, boolean if Order was accepted or no deals answer of \hyperlink{classcom_1_1m1sar_1_1_bourse}{Bourse} and update portefeille according to Order\+Vante or Order\+Achat \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_ac6681e529e1a045aae86e571dbfea5e3}\label{classcom_1_1m1sar_1_1_client_ac6681e529e1a045aae86e571dbfea5e3}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!inscription@{inscription}}
+\index{inscription@{inscription}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{inscription()}{inscription()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+inscription (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina sends the Clients name to the \hyperlink{classcom_1_1m1sar_1_1_courtier}{Courtier} 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_ae58f81c93ca69cc75c923e91f758d75f}\label{classcom_1_1m1sar_1_1_client_ae58f81c93ca69cc75c923e91f758d75f}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!maj\+Portefeuille\+Achat@{maj\+Portefeuille\+Achat}}
+\index{maj\+Portefeuille\+Achat@{maj\+Portefeuille\+Achat}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{maj\+Portefeuille\+Achat()}{majPortefeuilleAchat()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+maj\+Portefeuille\+Achat (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{r }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina Once the order is finished, updates the wallet of the current client only 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}} & \+: Buying order \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_afa011fd42124137bc9131ae8b9f2851d}\label{classcom_1_1m1sar_1_1_client_afa011fd42124137bc9131ae8b9f2851d}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!maj\+Portefeuille\+Vente@{maj\+Portefeuille\+Vente}}
+\index{maj\+Portefeuille\+Vente@{maj\+Portefeuille\+Vente}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{maj\+Portefeuille\+Vente()}{majPortefeuilleVente()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+maj\+Portefeuille\+Vente (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{r }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina Once the order is finished, updates the wallet of the current client only 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}} & \+: Selling order \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_af8ee1c17e73359f447bc14b8fe4b790c}\label{classcom_1_1m1sar_1_1_client_af8ee1c17e73359f447bc14b8fe4b790c}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!Produir@{Produir}}
+\index{Produir@{Produir}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{Produir()}{Produir()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+Produir (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{r }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina Sends an order to the Broker 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a289d7402a20981f2ab07159e617ec3d8}\label{classcom_1_1m1sar_1_1_client_a289d7402a20981f2ab07159e617ec3d8}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!read\+State\+Stocks@{read\+State\+Stocks}}
+\index{read\+State\+Stocks@{read\+State\+Stocks}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{read\+State\+Stocks()}{readStateStocks()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Client.\+read\+State\+Stocks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina Shows the market status to the client 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_ac7c456af1862320de2c394a23a7d80cd}\label{classcom_1_1m1sar_1_1_client_ac7c456af1862320de2c394a23a7d80cd}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!vendre@{vendre}}
+\index{vendre@{vendre}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{vendre()}{vendre()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} com.\+m1sar.\+Client.\+vendre (\begin{DoxyParamCaption}\item[{double}]{prix,  }\item[{int}]{quantite,  }\item[{String}]{entreprise }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em clients} & price ,amount how much he wants to sale of stocks, name of company \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{classcom_1_1m1sar_1_1_ordre_vente}{Ordre\+Vente} if it is legal or non return null 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_client_a193f812c6df9bd999c444eb3ec5007da}\label{classcom_1_1m1sar_1_1_client_a193f812c6df9bd999c444eb3ec5007da}} 
+\index{com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}!vente\+Legal@{vente\+Legal}}
+\index{vente\+Legal@{vente\+Legal}!com\+::m1sar\+::\+Client@{com\+::m1sar\+::\+Client}}
+\subsubsection{\texorpdfstring{vente\+Legal()}{venteLegal()}}
+{\footnotesize\ttfamily boolean com.\+m1sar.\+Client.\+vente\+Legal (\begin{DoxyParamCaption}\item[{String}]{entreprise,  }\item[{int}]{quantite }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Vitalina 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em name} & of company and the number of Stocks to buy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true or false check if the condition is legal to sell \hyperlink{classcom_1_1m1sar_1_1_ordre_vente}{Ordre\+Vente} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Nick/\+Desktop/\+M1 M\+I\+A\+G\+E/\+Iam\+The\+One/\+Systèmes \& Algo Répartis/\+Projet/sar/src/com/m1sar/Client.\+java\end{DoxyCompactItemize}

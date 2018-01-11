@@ -1,0 +1,221 @@
+\hypertarget{classcom_1_1m1sar_1_1_bourse}{}\section{com.\+m1sar.\+Bourse Class Reference}
+\label{classcom_1_1m1sar_1_1_bourse}\index{com.\+m1sar.\+Bourse@{com.\+m1sar.\+Bourse}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Hash\+Map$<$ String, Double $>$ \hyperlink{classcom_1_1m1sar_1_1_bourse_a36588334a5398fdd07745a39ac809fa0}{update\+Price} ()
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_bourse_a04a69e51bbab147243a5b9f37fcc561a}{write\+To\+File} (Hash\+Map informations)
+\item 
+Hash\+Map$<$ String, Double $>$ \hyperlink{classcom_1_1m1sar_1_1_bourse_a807d02571a2cfdfccb83b74549a3e208}{read\+From\+File} (String filename)
+\item 
+\hyperlink{classcom_1_1m1sar_1_1_entreprise}{Entreprise} \hyperlink{classcom_1_1m1sar_1_1_bourse_a5b396735aca0672d7f37a2eb098f4edf}{get\+By\+Name} (String name)
+\item 
+\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} \hyperlink{classcom_1_1m1sar_1_1_bourse_aeb40be5d0f691a90eb1f6629f42e56de}{consommer} (String nom\+Courtier)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_bourse_aa084f404d85f7292a1238ebc38ceac09}{accord} (String nom\+Courtier)  throws I\+O\+Exception 
+\item 
+boolean \hyperlink{classcom_1_1m1sar_1_1_bourse_a0bfccebb42e75ab2465b86ceb2ec9f68}{matching} (\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} achat, \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} vente)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_bourse_a735c9da562fa5e84f2cc50cfed378bd9}{init\+Companies} ()
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_bourse_ae4e655b8d10208ff6b9e73eb62767558}{init\+Prix\+Par\+Entreprise} ()
+\item 
+Hash\+Map$<$ String, Double $>$ \hyperlink{classcom_1_1m1sar_1_1_bourse_ae68d9ea867f6e9043afe0b5868dda5fe}{get\+Prix\+Par\+Entreprise} ()
+\item 
+Vector$<$ \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} $>$ \hyperlink{classcom_1_1m1sar_1_1_bourse_acdeb99f593d0fdc0743934cb7e692156}{get\+Ordres} ()
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_bourse_a33e6699fa91c63f54221f1ebf3de723b}{set\+Ordres} (Vector$<$ \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} $>$ ordres)
+\item 
+\hyperlink{classcom_1_1m1sar_1_1_thread_bourse}{Thread\+Bourse} \hyperlink{classcom_1_1m1sar_1_1_bourse_a2c4daf19799b68d297a686df4aebb0c4}{get\+Thread\+By\+Name} (String nom\+TH)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a5bbb0315c9e6fe1c74d6f112eefaf847}\label{classcom_1_1m1sar_1_1_bourse_a5bbb0315c9e6fe1c74d6f112eefaf847}} 
+static void {\bfseries main} (String\mbox{[}$\,$\mbox{]} args)  throws I\+O\+Exception
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_aa084f404d85f7292a1238ebc38ceac09}\label{classcom_1_1m1sar_1_1_bourse_aa084f404d85f7292a1238ebc38ceac09}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!accord@{accord}}
+\index{accord@{accord}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{accord()}{accord()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Bourse.\+accord (\begin{DoxyParamCaption}\item[{String}]{nom\+Courtier }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+\begin{DoxyAuthor}{Author}
+Lyes Gets and returns the order matching with the name of the Broker. 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em nom\+Courtier} & \+: the name of broker \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_aeb40be5d0f691a90eb1f6629f42e56de}\label{classcom_1_1m1sar_1_1_bourse_aeb40be5d0f691a90eb1f6629f42e56de}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!consommer@{consommer}}
+\index{consommer@{consommer}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{consommer()}{consommer()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} com.\+m1sar.\+Bourse.\+consommer (\begin{DoxyParamCaption}\item[{String}]{nom\+Courtier }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+le premier ordre appertenant au client que traite le courtier nom\+Courtier 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a5b396735aca0672d7f37a2eb098f4edf}\label{classcom_1_1m1sar_1_1_bourse_a5b396735aca0672d7f37a2eb098f4edf}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!get\+By\+Name@{get\+By\+Name}}
+\index{get\+By\+Name@{get\+By\+Name}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{get\+By\+Name()}{getByName()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1m1sar_1_1_entreprise}{Entreprise} com.\+m1sar.\+Bourse.\+get\+By\+Name (\begin{DoxyParamCaption}\item[{String}]{name }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Gets and returns the Company matching with the name passed as argument. 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em name} & \+: the name of the company \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \hyperlink{classcom_1_1m1sar_1_1_entreprise}{Entreprise}} 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em No\+Such\+Element\+Exception} & if the name does not match with all companies \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_acdeb99f593d0fdc0743934cb7e692156}\label{classcom_1_1m1sar_1_1_bourse_acdeb99f593d0fdc0743934cb7e692156}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!get\+Ordres@{get\+Ordres}}
+\index{get\+Ordres@{get\+Ordres}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{get\+Ordres()}{getOrdres()}}
+{\footnotesize\ttfamily Vector$<$\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}$>$ com.\+m1sar.\+Bourse.\+get\+Ordres (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Returns the vector of Orders 
+\end{DoxyAuthor}
+\begin{DoxyReturn}{Returns}
+{\ttfamily void} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_ae68d9ea867f6e9043afe0b5868dda5fe}\label{classcom_1_1m1sar_1_1_bourse_ae68d9ea867f6e9043afe0b5868dda5fe}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!get\+Prix\+Par\+Entreprise@{get\+Prix\+Par\+Entreprise}}
+\index{get\+Prix\+Par\+Entreprise@{get\+Prix\+Par\+Entreprise}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{get\+Prix\+Par\+Entreprise()}{getPrixParEntreprise()}}
+{\footnotesize\ttfamily Hash\+Map$<$String, Double$>$ com.\+m1sar.\+Bourse.\+get\+Prix\+Par\+Entreprise (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Returns the hash\+Map that shows the price of an action for each company 
+\end{DoxyAuthor}
+\begin{DoxyReturn}{Returns}
+{\ttfamily void} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a2c4daf19799b68d297a686df4aebb0c4}\label{classcom_1_1m1sar_1_1_bourse_a2c4daf19799b68d297a686df4aebb0c4}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!get\+Thread\+By\+Name@{get\+Thread\+By\+Name}}
+\index{get\+Thread\+By\+Name@{get\+Thread\+By\+Name}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{get\+Thread\+By\+Name()}{getThreadByName()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1m1sar_1_1_thread_bourse}{Thread\+Bourse} com.\+m1sar.\+Bourse.\+get\+Thread\+By\+Name (\begin{DoxyParamCaption}\item[{String}]{nom\+TH }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Returns the Broker from its name 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em the} & Name (id) of the Broker to be returned \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily \hyperlink{classcom_1_1m1sar_1_1_thread_bourse}{Thread\+Bourse}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a735c9da562fa5e84f2cc50cfed378bd9}\label{classcom_1_1m1sar_1_1_bourse_a735c9da562fa5e84f2cc50cfed378bd9}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!init\+Companies@{init\+Companies}}
+\index{init\+Companies@{init\+Companies}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{init\+Companies()}{initCompanies()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Bourse.\+init\+Companies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Initializes with a list of companies, and the prices for each company 
+\end{DoxyAuthor}
+\begin{DoxyReturn}{Returns}
+{\ttfamily void} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_ae4e655b8d10208ff6b9e73eb62767558}\label{classcom_1_1m1sar_1_1_bourse_ae4e655b8d10208ff6b9e73eb62767558}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!init\+Prix\+Par\+Entreprise@{init\+Prix\+Par\+Entreprise}}
+\index{init\+Prix\+Par\+Entreprise@{init\+Prix\+Par\+Entreprise}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{init\+Prix\+Par\+Entreprise()}{initPrixParEntreprise()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Bourse.\+init\+Prix\+Par\+Entreprise (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Initializes the prices for each company 
+\end{DoxyAuthor}
+\begin{DoxyReturn}{Returns}
+{\ttfamily void} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a0bfccebb42e75ab2465b86ceb2ec9f68}\label{classcom_1_1m1sar_1_1_bourse_a0bfccebb42e75ab2465b86ceb2ec9f68}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!matching@{matching}}
+\index{matching@{matching}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{matching()}{matching()}}
+{\footnotesize\ttfamily boolean com.\+m1sar.\+Bourse.\+matching (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{achat,  }\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{vente }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Checks if the buying order matchs with the selling order, returns true if so. 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em achat} & \+: the buying order \\
+\hline
+{\em vente} & \+: the selling order \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily boolean} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a807d02571a2cfdfccb83b74549a3e208}\label{classcom_1_1m1sar_1_1_bourse_a807d02571a2cfdfccb83b74549a3e208}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!read\+From\+File@{read\+From\+File}}
+\index{read\+From\+File@{read\+From\+File}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{read\+From\+File()}{readFromFile()}}
+{\footnotesize\ttfamily Hash\+Map$<$String,Double$>$ com.\+m1sar.\+Bourse.\+read\+From\+File (\begin{DoxyParamCaption}\item[{String}]{filename }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Reads from file the history 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a33e6699fa91c63f54221f1ebf3de723b}\label{classcom_1_1m1sar_1_1_bourse_a33e6699fa91c63f54221f1ebf3de723b}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!set\+Ordres@{set\+Ordres}}
+\index{set\+Ordres@{set\+Ordres}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{set\+Ordres()}{setOrdres()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Bourse.\+set\+Ordres (\begin{DoxyParamCaption}\item[{Vector$<$ \hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} $>$}]{ordres }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes Sets the orders for the market 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}{Parameters}
+{\em the} & vector of orders to be set \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily void} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a36588334a5398fdd07745a39ac809fa0}\label{classcom_1_1m1sar_1_1_bourse_a36588334a5398fdd07745a39ac809fa0}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!update\+Price@{update\+Price}}
+\index{update\+Price@{update\+Price}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{update\+Price()}{updatePrice()}}
+{\footnotesize\ttfamily Hash\+Map$<$String,Double$>$ com.\+m1sar.\+Bourse.\+update\+Price (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes At the end of the day, update the price of every business action in each company Follow this rule \+: new price = old prince + delta where delta = (number of purchase orders -\/ number of sale orders ) / number of buisness actions 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_bourse_a04a69e51bbab147243a5b9f37fcc561a}\label{classcom_1_1m1sar_1_1_bourse_a04a69e51bbab147243a5b9f37fcc561a}} 
+\index{com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}!write\+To\+File@{write\+To\+File}}
+\index{write\+To\+File@{write\+To\+File}!com\+::m1sar\+::\+Bourse@{com\+::m1sar\+::\+Bourse}}
+\subsubsection{\texorpdfstring{write\+To\+File()}{writeToFile()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Bourse.\+write\+To\+File (\begin{DoxyParamCaption}\item[{Hash\+Map}]{informations }\end{DoxyParamCaption})}
+
+\begin{DoxyAuthor}{Author}
+Lyes At the end of the day, saves the informations serialized to a file 
+\end{DoxyAuthor}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Nick/\+Desktop/\+M1 M\+I\+A\+G\+E/\+Iam\+The\+One/\+Systèmes \& Algo Répartis/\+Projet/sar/src/com/m1sar/Bourse.\+java\end{DoxyCompactItemize}

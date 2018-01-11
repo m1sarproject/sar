@@ -1,0 +1,80 @@
+\hypertarget{classcom_1_1m1sar_1_1_thread_bourse}{}\section{com.\+m1sar.\+Thread\+Bourse Class Reference}
+\label{classcom_1_1m1sar_1_1_thread_bourse}\index{com.\+m1sar.\+Thread\+Bourse@{com.\+m1sar.\+Thread\+Bourse}}
+Inheritance diagram for com.\+m1sar.\+Thread\+Bourse\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1m1sar_1_1_thread_bourse}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_ac083c16dd85a59f19f3ea1728d32e057}\label{classcom_1_1m1sar_1_1_thread_bourse_ac083c16dd85a59f19f3ea1728d32e057}} 
+{\bfseries Thread\+Bourse} (Socket s\+Courtier, int nport, \hyperlink{classcom_1_1m1sar_1_1_bourse}{Bourse} b, String nom)
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_ac052e73112ac20e1c2e6fa3f7c9bce94}\label{classcom_1_1m1sar_1_1_thread_bourse_ac052e73112ac20e1c2e6fa3f7c9bce94}} 
+void {\bfseries connexion\+Courtier} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_adfc535a296af8c294920dadf497a928b}\label{classcom_1_1m1sar_1_1_thread_bourse_adfc535a296af8c294920dadf497a928b}} 
+String {\bfseries get\+Nom\+Courtier} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_aa7c0c87d2fb28b192bf812ae0654d596}\label{classcom_1_1m1sar_1_1_thread_bourse_aa7c0c87d2fb28b192bf812ae0654d596}} 
+void {\bfseries set\+Nom\+Courtier} (String nom\+Courtier)
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_a5d851ffad404a8c62a3175f222ce410f}\label{classcom_1_1m1sar_1_1_thread_bourse_a5d851ffad404a8c62a3175f222ce410f}} 
+void {\bfseries run} ()
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_thread_bourse_acea1b4e4e2757b3cc82bba756eda4057}{send\+Price\+Companies} ()  throws I\+O\+Exception 
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_thread_bourse_a714db4602cd1dff9a732caf861b1d5e6}{Sur\+Reception\+De} (\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre} ordre)
+\item 
+void \hyperlink{classcom_1_1m1sar_1_1_thread_bourse_a431e283fa57268481834f67709b7ec07}{envoyer\+Rep} (int id, boolean rep)  throws I\+O\+Exception 
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_a7fe473194bcccaa0aa31b8f0e816834b}\label{classcom_1_1m1sar_1_1_thread_bourse_a7fe473194bcccaa0aa31b8f0e816834b}} 
+void {\bfseries inc\+Nb\+Client} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_a2b4318d2553102b0421c5616a7ef93e9}\label{classcom_1_1m1sar_1_1_thread_bourse_a2b4318d2553102b0421c5616a7ef93e9}} 
+boolean {\bfseries est\+Dispo} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_aa9a44f7d1cd2d2cfce8520270b2cd7f8}\label{classcom_1_1m1sar_1_1_thread_bourse_aa9a44f7d1cd2d2cfce8520270b2cd7f8}} 
+int {\bfseries get\+Nport} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_a54c11ec3c4ecf3235a66e457ba464c39}\label{classcom_1_1m1sar_1_1_thread_bourse_a54c11ec3c4ecf3235a66e457ba464c39}} 
+Inet\+Address {\bfseries get\+Inet\+Address} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_a431e283fa57268481834f67709b7ec07}\label{classcom_1_1m1sar_1_1_thread_bourse_a431e283fa57268481834f67709b7ec07}} 
+\index{com\+::m1sar\+::\+Thread\+Bourse@{com\+::m1sar\+::\+Thread\+Bourse}!envoyer\+Rep@{envoyer\+Rep}}
+\index{envoyer\+Rep@{envoyer\+Rep}!com\+::m1sar\+::\+Thread\+Bourse@{com\+::m1sar\+::\+Thread\+Bourse}}
+\subsubsection{\texorpdfstring{envoyer\+Rep()}{envoyerRep()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Thread\+Bourse.\+envoyer\+Rep (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{boolean}]{rep }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+Answers to the broker if the order is ok or not 
+\begin{DoxyParams}{Parameters}
+{\em id} & \+: the id of the broker  \+: the answere \+: true/false \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_acea1b4e4e2757b3cc82bba756eda4057}\label{classcom_1_1m1sar_1_1_thread_bourse_acea1b4e4e2757b3cc82bba756eda4057}} 
+\index{com\+::m1sar\+::\+Thread\+Bourse@{com\+::m1sar\+::\+Thread\+Bourse}!send\+Price\+Companies@{send\+Price\+Companies}}
+\index{send\+Price\+Companies@{send\+Price\+Companies}!com\+::m1sar\+::\+Thread\+Bourse@{com\+::m1sar\+::\+Thread\+Bourse}}
+\subsubsection{\texorpdfstring{send\+Price\+Companies()}{sendPriceCompanies()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Thread\+Bourse.\+send\+Price\+Companies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+the brocker sends to his customers the information about the share parices of each company in the stock market \mbox{\Hypertarget{classcom_1_1m1sar_1_1_thread_bourse_a714db4602cd1dff9a732caf861b1d5e6}\label{classcom_1_1m1sar_1_1_thread_bourse_a714db4602cd1dff9a732caf861b1d5e6}} 
+\index{com\+::m1sar\+::\+Thread\+Bourse@{com\+::m1sar\+::\+Thread\+Bourse}!Sur\+Reception\+De@{Sur\+Reception\+De}}
+\index{Sur\+Reception\+De@{Sur\+Reception\+De}!com\+::m1sar\+::\+Thread\+Bourse@{com\+::m1sar\+::\+Thread\+Bourse}}
+\subsubsection{\texorpdfstring{Sur\+Reception\+De()}{SurReceptionDe()}}
+{\footnotesize\ttfamily void com.\+m1sar.\+Thread\+Bourse.\+Sur\+Reception\+De (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1m1sar_1_1_ordre}{Ordre}}]{ordre }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ordre} & the order passed by the customer send the order to the stock market \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Nick/\+Desktop/\+M1 M\+I\+A\+G\+E/\+Iam\+The\+One/\+Systèmes \& Algo Répartis/\+Projet/sar/src/com/m1sar/Thread\+Bourse.\+java\end{DoxyCompactItemize}
