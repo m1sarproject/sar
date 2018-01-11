@@ -100,12 +100,12 @@ public class Client {
 				int portCourtier=inObject.readInt();
 				sc.close();
 				Socket connexionCourtier=new Socket(host, portCourtier);
-				System.out.println("Connexion au Courtier reussi");
+				System.out.println("connexion au courtier reussi");
 				outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
 				inObject = new ObjectInputStream(connexionCourtier.getInputStream());
 				inscription(); 
 				nameCourtier= (String) inObject.readObject();
-				System.out.println("message du courtier "+nameCourtier+" : "+(String)inObject.readObject());
+				System.out.println(nameCourtier+" : "+(String)inObject.readObject());
 			  }
 					
 			}
