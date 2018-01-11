@@ -131,8 +131,9 @@ public class Bourse {
 	 * @return le premier ordre appertenant au client que traite le courtier nomCourtier
 	 */
 public Ordre consommer(String nomCourtier) {
+	System.out.println("List Ordres dans Bourse = : "+ordres);
 	Ordre ordre=null;
-	System.out.println("LIST ORDRE taille "+ordres.size());
+
 	for (Ordre o:ordres) {
 		if(o.getNomCourtier().equals(nomCourtier)) {
 			ordre=o;
@@ -155,7 +156,7 @@ public Ordre consommer(String nomCourtier) {
 			System.out.println(" entreprise concerne dans acoor : "+concerned);		
 			if (o instanceof OrdreAchat) {
 				
-				System.out.println(o);
+				
 				int nbActionsDispo = concerned.getNbActions();
 				int nbActionsVoulus = o.getQuantiteClient();
 			
@@ -166,7 +167,7 @@ public Ordre consommer(String nomCourtier) {
 					o.setEstFini();
 					concerned.DecreaseNbActions(nbActionsVoulus);	
 					o.setEstAccepte(true);
-					System.out.println("Achat accepte = "+o);
+					
 					ThreadBourse th=getThreadByName(nomCourtier);
 					if(th!=null) {
 						th.envoyerRep(o.getId(), o.estAccepte);
@@ -551,6 +552,7 @@ public Ordre consommer(String nomCourtier) {
 		AnnuaireClient bourseclient = new AnnuaireClient (++nport,bourse.courtiers); 
 		 
 		while(true) {		
+			
 
 		 		try{
 		 		

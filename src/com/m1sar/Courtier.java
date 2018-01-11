@@ -184,6 +184,8 @@ public void run() {
 			    					System.out.println(" nOrdre : "+nOrdre);
 									System.out.println(" nbOrdres : "+nbOrdres);
 		    				}
+		    				System.out.println("nOrdre "+nOrdre);
+							System.out.println("nbOrdres "+nbOrdres);
 		    				if(nOrdre==2) {
 		    					
 		    					//j'ai envoyé les 2 ordres j'attends les acceptations de la bourse
@@ -201,6 +203,8 @@ public void run() {
 		    					}
 		    					nOrdre=0;
 		    				}
+		    				
+		    				
 		    				if(nOrdre<2 && nbOrdres==0){
 		    					for(int j=0;j<nOrdre;j++) {
 		    						System.out.println("j'attend réponse bourse dans nbO==0");

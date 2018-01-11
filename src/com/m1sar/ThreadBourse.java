@@ -110,6 +110,7 @@ public class ThreadBourse extends Thread {
     					    nbOrdres--;
     					}
 					}
+					
 					if(req instanceof Ordre){
 						cpt++;
 						nbOrdres--;
@@ -117,6 +118,8 @@ public class ThreadBourse extends Thread {
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
 					}
+					System.out.println("cpt "+cpt);
+					System.out.println("nbOrdres "+nbOrdres);
 					if(cpt==2) {
 							
 						for (int i = 0; i < 2; i++) {
