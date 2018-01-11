@@ -157,11 +157,7 @@ public Ordre consommer(String nomCourtier) {
 			
 			double prixEntreprise = concerned.getPrixUnitaireAction();
 			double prixPropose = o.getPrixUnitaire();
-			System.out.println("prix de client propose : "+o.getPrixUnitaire());
-			System.out.println("nbActionDispo : "+nbActionsDispo);
-			System.out.println("nbActionDispo : "+nbActionsDispo);
-			System.out.println("nbActionsVoulus : "+nbActionsVoulus);
-			System.out.println("prixEntreprise : "+prixEntreprise);
+			
 			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
 				System.out.println("hello j'achete de l'entreprise");
 				o.setEstFini();
@@ -196,7 +192,7 @@ public Ordre consommer(String nomCourtier) {
 	
 	public boolean matching(Ordre achat,Ordre vente) {
 		
-		return achat.getQuantiteClient() >= vente.getQuantiteClient() && achat.getPrixUnitaire() >= vente.getPrixUnitaire();
+		return (achat.getQuantiteClient() == vente.getQuantiteClient() && achat.getPrixUnitaire() == vente.getPrixUnitaire() && vente.getEntrepriseName().equals(achat.getEntrepriseName()));
 				
 	}
 
