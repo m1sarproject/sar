@@ -213,10 +213,7 @@ public void run() {
 		    						
 		    					}
 		    					nOrdre=0;
-		    				}
-				    				
-				    				
-		    				
+		    				}	
 
 
 		    			} 

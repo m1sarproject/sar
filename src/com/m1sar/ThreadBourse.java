@@ -63,7 +63,17 @@ public class ThreadBourse extends Thread {
 			}
 			
 	  }
-    @Override
+    public String getNomCourtier() {
+		return nomCourtier;
+	}
+
+
+	public void setNomCourtier(String nomCourtier) {
+		this.nomCourtier = nomCourtier;
+	}
+
+
+	@Override
     public void run() {
     	
     	connexionCourtier();
@@ -73,21 +83,15 @@ public class ThreadBourse extends Thread {
     	Ordre ordre_client;
     	int nbOrdres=0;
     	int cpt=0;
-    	try {
-    		nbOrdres=(int) inObject.readObject();
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
     	while(true){
     		try {
     				
 					System.out.println("Bourse recoit un message de courtier");
 					Object req=inObject.readObject();
-					
+					if(req instanceof Integer) {
+						nbOrdres=(int)req;
+						
+					}
 					if(req instanceof String) {
 						String info=(String)req;
 						if(info.equals("decreClient")) {
@@ -119,18 +123,16 @@ public class ThreadBourse extends Thread {
 							
 						for (int i = 0; i < 3; i++) {
 							System.out.println("je repond au courtier acceptation ");
-							Ordre o=bourse.accord(nomCourtier);
-							outObject.writeObject(o.getId());
-							outObject.writeObject(o.isEstAccepte());
+							bourse.accord(nomCourtier);
+							
 						}
 						cpt=0;
 					}
 					if(cpt<3 && nbOrdres==0){
 						for (int i = 0; i < cpt; i++) {
 							System.out.println("je repond au courtier acceptation ");
-							Ordre o=bourse.accord(nomCourtier);
-							outObject.writeObject(o.getId());
-							outObject.writeObject(o.isEstAccepte());
+						    bourse.accord(nomCourtier);
+							
 						}
 						cpt=0;
 					}
@@ -174,23 +176,11 @@ public class ThreadBourse extends Thread {
     	}
 
     }
-    
-    
-
-
-    /**
-     * Calcule la commission 
-     */
-   /* public void CalculCommission(String nomClient) {
-    	ArrayList<Ordre>l=listeOrdre.get(nomClient);
-    	for(Ordre o:l) {
-    		if(o.estAccepte) {
-    		accountBalance+=o.getPrixUnitaire()*o.getQuantite()*tauxCommission;
-    		}
-    	}
+ 
+    public void envoyerRep(int id,boolean rep) throws IOException {
+    	outObject.writeObject(id);
+		outObject.writeObject(rep);
     }
-    */
-
     public void incNbClient() {
     	if (estDispo()) {nbCustomer++; return;}
     

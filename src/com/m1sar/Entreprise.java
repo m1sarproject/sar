@@ -1,12 +1,13 @@
 package com.m1sar;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Entreprise {
 
 	private String name;
 	private int nbActions;
-	private ArrayList<Ordre> ordres;
+	private Vector<Ordre> ordres;
 	private double prixUnitaireAction;
 	private int nbDemandesAchats;
 	private int nbDemandesVentes;
@@ -31,7 +32,7 @@ public class Entreprise {
 		this.name=name;
 		this.nbActions=nbActions;
 		this.prixUnitaireAction=prixUnitaireAction;
-		ordres = new ArrayList<Ordre>();
+		ordres = new Vector<Ordre>();
 	}
 	
 	public int getNbActions(){
@@ -68,7 +69,7 @@ public class Entreprise {
 		
 	}
 
-	public ArrayList<Ordre> getOrdres() {
+	public Vector<Ordre> getOrdres() {
 		return ordres;
 	}
 	

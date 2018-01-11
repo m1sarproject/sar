@@ -132,56 +132,84 @@ public Ordre consommer(String nomCourtier) {
 
 	
 }
-	public Ordre accord(String nomCourtier) { //privéligie le prix le moins cher en cas d'achats
+	public void accord(String nomCourtier) throws IOException { //privéligie le prix le moins cher en cas d'achats
 		
 		Ordre o=consommer(nomCourtier);
 		System.out.println(o);
 		if(o!=null) {
 			Entreprise concerned = this.getByName(o.getEntrepriseName());
-			System.out.println(" entreprise concerne dans acoor : "+concerned);
-			if (o instanceof OrdreVente) {
-						
-		    
-				
-				
-			}
-
-			
+			System.out.println(" entreprise concerne dans acoor : "+concerned);		
 			if (o instanceof OrdreAchat) {
 				
 				System.out.println(o);
 				int nbActionsDispo = concerned.getNbActions();
 				int nbActionsVoulus = o.getQuantiteClient();
 			
-			double prixEntreprise = concerned.getPrixUnitaireAction();
-			double prixPropose = o.getPrixUnitaire();
-			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
-				o.setEstFini();
-				concerned.DecreaseNbActions(nbActionsVoulus);
-				 
-				//return true;	
-				o.setEstAccepte(true);
-				System.out.println("Achat accepte = "+o);
-		
-			}
+				double prixEntreprise = concerned.getPrixUnitaireAction();
+				double prixPropose = o.getPrixUnitaire();
+				if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
+					o.setEstFini();
+					concerned.DecreaseNbActions(nbActionsVoulus);	
+					o.setEstAccepte(true);
+					System.out.println("Achat accepte = "+o);
+					ThreadBourse th=getThreadByName(nomCourtier);
+					if(th!=null) {
+						th.envoyerRep(o.getId(), o.estAccepte);
+					//avertir le courtier dont le nom est nomCourtier
+					}
+					
 			
-			
+				}
+				else {
+					for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
+						
+						if (ordre instanceof OrdreVente && ordre.estAccepte==false && !(ordre.getNomCourtier().equals(nomCourtier))) {
+							
+							if (matching(o,ordre)) {
+								o.setEstAccepte(true);
+								ThreadBourse th1=getThreadByName(nomCourtier);
+								ThreadBourse th2=getThreadByName(ordre.getNomCourtier());
+								if(th1!=null && th2!=null) {
+									th1.envoyerRep(o.getId(), o.estAccepte);
+									th2.envoyerRep(ordre.getId(), true);
+									break;
+								}
+							}
+							//avertir les deux courtiers
+							
+						}	
+					
+					}
+				}
+				
+					
+		 }
+		else {
 			for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
 				
-				if (ordre instanceof OrdreVente && ordre.estAccepte==false) {
+				if (ordre instanceof OrdreAchat && ordre.estAccepte==false && !(ordre.getNomCourtier().equals(nomCourtier))) {
 					
-					if (matching(o,ordre)) o.setEstAccepte(true);//return true;
+					if (matching(o,ordre)) {
+						o.setEstAccepte(true);
+						ThreadBourse th1=getThreadByName(nomCourtier);
+						ThreadBourse th2=getThreadByName(ordre.getNomCourtier());
+						if(th1!=null && th2!=null) {
+							th1.envoyerRep(o.getId(), o.estAccepte);
+							th2.envoyerRep(ordre.getId(), true);
+							break;
+						}
+					}
+					//avertir les deux courtiers
 					
 				}	
 			
 			}
-					
-		 }
+				
+			}
 		}
 		else {
 			System.out.println("pas d'ordre poru ce courtier");//enlever le if null apr�s les tests
 		}
-	return o;
 	
 	}
 		
@@ -393,7 +421,14 @@ public Ordre consommer(String nomCourtier) {
 	public void setOrdres(Vector<Ordre> ordres) {
 		this.ordres = ordres;
 	}
-	
+	public ThreadBourse getThreadByName(String nomTH) {
+		for(ThreadBourse t:courtiers) {
+			if(t.getNomCourtier().equals(nomTH)) {
+				return t;
+			}
+		}
+		return null;
+	}
 
 	public static void main(String[] args) throws IOException{
 
