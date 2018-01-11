@@ -124,6 +124,26 @@ public class Bourse {
 		
 		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
 	}
+
+	/**
+	 * 
+	 * @return le premier ordre appertenant au client que traite le courtier nomCourtier
+	 */
+public Ordre consommer(String nomCourtier) {
+	System.out.println("List Ordres dans Bourse = : "+ordres);
+	Ordre ordre=null;
+
+	for (Ordre o:ordres) {
+		if(o.getNomCourtier().equals(nomCourtier)) {
+			ordre=o;
+			break;
+		}
+	}
+	if(ordre!=null) {
+		ordres.remove(ordre);
+	}
+	return ordre;
+}
 	
 	
 	/**@author Lyes
@@ -131,20 +151,6 @@ public class Bourse {
      * @param nomCourtier : the name of broker
      * @return <tt>Ordre</tt> 
      */
-	public Ordre consommer(String nomCourtier) {
-		
-		
-		for (Ordre o:ordres) {
-			if(o.getNomCourtier().equals(nomCourtier)) {
-				ordres.remove(o);
-				return o;
-			}
-		}
-		
-		return null;
-	
-		
-	}
 	
 	public void accord(String nomCourtier) throws IOException { 
 		
@@ -155,7 +161,7 @@ public class Bourse {
 			System.out.println(" entreprise concerne dans acoor : "+concerned);		
 			if (o instanceof OrdreAchat) {
 				
-				System.out.println(o);
+				
 				int nbActionsDispo = concerned.getNbActions();
 				int nbActionsVoulus = o.getQuantiteClient();
 			
@@ -166,7 +172,7 @@ public class Bourse {
 					o.setEstFini();
 					concerned.DecreaseNbActions(nbActionsVoulus);	
 					o.setEstAccepte(true);
-					System.out.println("Achat accepte = "+o);
+					
 					ThreadBourse th=getThreadByName(nomCourtier);
 					if(th!=null) {
 						th.envoyerRep(o.getId(), o.estAccepte);
@@ -510,6 +516,7 @@ public class Bourse {
 		AnnuaireClient bourseclient = new AnnuaireClient (++nport,bourse.courtiers); 
 		 
 		while(true) {		
+			
 
 		 		try{
 		 		

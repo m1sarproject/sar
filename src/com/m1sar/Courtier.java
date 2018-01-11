@@ -184,7 +184,9 @@ public void run() {
 			    					System.out.println(" nOrdre : "+nOrdre);
 									System.out.println(" nbOrdres : "+nbOrdres);
 		    				}
-		    				if(nOrdre==3) {
+
+		    				if(nOrdre==2) {
+
 		    					
 		    					//j'ai envoyé les 3 ordres j'attends les acceptations de la bourse
 		    					for(int j=0;j<3;j++) {
@@ -201,7 +203,11 @@ public void run() {
 		    					}
 		    					nOrdre=0;
 		    				}
-		    				if(nOrdre<3 && nbOrdres==0){
+
+		    				
+		    				
+		    				if(nOrdre<2 && nbOrdres==0){
+
 		    					for(int j=0;j<nOrdre;j++) {
 		    						System.out.println("j'attend réponse bourse dans nbO==0");
 				    				int idrecu=(Integer)inObjectB.readObject();
