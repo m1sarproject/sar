@@ -104,6 +104,15 @@ public abstract class Ordre implements Serializable {
 	public void setQuantiteClient(int quantiteClient) {
 		this.quantiteClient = quantiteClient;
 	}
+
+	public String getClientName() {
+		return client;
+	}
+
+	public void setClientName(String client) {
+		this.client = client;
+	}
+	
 	 
 
 }

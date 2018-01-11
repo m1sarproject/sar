@@ -86,6 +86,7 @@ public class Bourse {
 	           oos.writeObject(informations);
 	           oos.close();
 	           fos.close();
+	           System.out.printf("Les informations de la journnee ont bien ete sauvegardees");
 	     }catch(IOException ioe) {
 	           ioe.printStackTrace();
 	     }
@@ -170,7 +171,7 @@ public Ordre consommer(String nomCourtier) {
 		if(o!=null) {
 			Entreprise concerned = this.getByName(o.getEntrepriseName());
 			if (o instanceof OrdreAchat) {
-				
+				System.out.println("Bource traite OrdreAchat de "+o.getClientName()+" : "+o.getEntrepriseName()+", quantite : "+o.getQuantiteClient());		
 				
 				int nbActionsDispo = concerned.getNbActions();
 				int nbActionsVoulus = o.getQuantiteClient();
@@ -191,6 +192,7 @@ public Ordre consommer(String nomCourtier) {
 							
 				}
 				else {
+					System.out.println("Bource traite OrdreVente de "+o.getClientName()+" : "+o.getEntrepriseName()+", quantite : "+o.getQuantiteClient());		
 					for ( Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
 						
 						if (ordre instanceof OrdreVente && ordre.estAccepte==false && !(ordre.getNomCourtier().equals(nomCourtier))) {
@@ -252,7 +254,8 @@ public Ordre consommer(String nomCourtier) {
 			}
 		}
 		else {
-			System.out.println("pas d'ordre poru ce courtier");
+
+			System.out.println("Pas d'ordre pour ce Courtier");
 
 		}
 	
@@ -597,7 +600,8 @@ public Ordre consommer(String nomCourtier) {
 		
 		catch (ArrayIndexOutOfBoundsException e) {
 			
-			System.out.println("Veuillez entrer un numero de port valable");
+
+			System.out.println("Veuillez entre un numero de port valable");
 			Scanner in = new Scanner(System.in);
 			nport = Integer.parseInt(in.nextLine());
 		}
@@ -614,9 +618,11 @@ public Ordre consommer(String nomCourtier) {
 		
 		catch (Exception e) {System.err.println("La creation du serveur d'ecoute a echoue");}
 		
+		
+		System.out.println("Bourse est ouverte ");
+		System.out.println("Le jour numero : "+bourse.dayid);
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
 		AnnuaireClient bourseclient = new AnnuaireClient (++nport,bourse.courtiers); 
-		 
 		while(true) {		
 			
 
@@ -624,8 +630,9 @@ public Ordre consommer(String nomCourtier) {
 		 		
 		 
 		 		if ( bourse.courtiers.isEmpty() && bourse.dayid>0 ) {
-			 			
+		 				
 			 			bourse.updatePrice();
+			 			System.out.println("Le jour numero : "+bourse.dayid);
 			 		}
 		 		System.out.println("La bourse attend un courtier");
 				Socket courtierConnecte = serveurCourtier.accept();			
