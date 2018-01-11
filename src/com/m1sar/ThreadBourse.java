@@ -73,6 +73,7 @@ public class ThreadBourse extends Thread {
 	}
 
 
+	
 	@Override
     public void run() {
     	
@@ -116,18 +117,20 @@ public class ThreadBourse extends Thread {
 						ordre_client= (Ordre)req;
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
+						System.out.println(" nOrdre : "+cpt);
+						System.out.println(" nbOrdres : "+nbOrdres);
 					}
 
 					if(cpt==2) {
 
-						for (int i = 0; i < 3; i++) {
+						for (int i = 0; i < 2; i++) {
 							System.out.println("je repond au courtier acceptation ");
 							bourse.accord(nomCourtier);
 							
 						}
 						cpt=0;
 					}
-					if(cpt<3 && nbOrdres==0){
+					if(cpt<2 && nbOrdres==0){
 						for (int i = 0; i < cpt; i++) {
 							System.out.println("je repond au courtier acceptation ");
 						    bourse.accord(nomCourtier);

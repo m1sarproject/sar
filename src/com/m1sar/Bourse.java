@@ -134,7 +134,7 @@ public Ordre consommer(String nomCourtier) {
 	
 }
 	public void accord(String nomCourtier) throws IOException { //privÃ©ligie le prix le moins cher en cas d'achats
-		
+		boolean rentre=false;
 		Ordre o=consommer(nomCourtier);
 		System.out.println(o);
 		if(o!=null) {
@@ -153,12 +153,12 @@ public Ordre consommer(String nomCourtier) {
 					o.setEstFini();
 					concerned.DecreaseNbActions(nbActionsVoulus);	
 					o.setEstAccepte(true);
-					
 					ThreadBourse th=getThreadByName(nomCourtier);
 					if(th!=null) {
 						th.envoyerRep(o.getId(), o.estAccepte);
 					//avertir le courtier dont le nom est nomCourtier
 					}
+					
 							
 				}
 				else {
@@ -182,7 +182,15 @@ public Ordre consommer(String nomCourtier) {
 					
 					}
 				}
+			if(o.estAccepte==false) {
+				System.out.println("ordre achat non accepte je suis dans bourse");
+				ThreadBourse th=getThreadByName(nomCourtier);
+				if(th!=null) {
+					th.envoyerRep(o.getId(), o.estAccepte);
+				//avertir le courtier dont le nom est nomCourtier
+				}
 				
+			}
 					
 		 }
 		else {
@@ -205,11 +213,19 @@ public Ordre consommer(String nomCourtier) {
 				}	
 			
 			}
+			if(o.estAccepte==false) {
+				System.out.println("ordre vente non accepte je suis dans bourse");
+				ThreadBourse th=getThreadByName(nomCourtier);
+				if(th!=null) {
+					th.envoyerRep(o.getId(), o.estAccepte);
+				//avertir le courtier dont le nom est nomCourtier
+				}
 				
+			}	
 			}
 		}
 		else {
-			System.out.println("pas d'ordre poru ce courtier");//enlever le if null après les tests
+			System.out.println("pas d'ordre poru ce courtier");//enlever le if null aprï¿½s les tests
 		}
 	
 	}
@@ -453,6 +469,11 @@ public Ordre consommer(String nomCourtier) {
 
 		 		try{
 		 		
+		 
+		 		if ( bourse.courtiers.isEmpty() && bourse.dayid>0 ) {
+			 			
+			 			bourse.updatePrice();
+			 		}
 		 		System.out.println("La bourse attend un courtier");
 				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte a  la socket de communication
 				
@@ -474,10 +495,7 @@ public Ordre consommer(String nomCourtier) {
 				}
 		 		
 		 		
-		 		if ( bourse.courtiers.isEmpty() ) {
-		 			
-		 			bourse.updatePrice();
-		 		}
+		 	
 		 		
 		 		
 		 	 }//end of while

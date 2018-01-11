@@ -222,8 +222,6 @@ public class Client {
 					}
 					
 					nbOrdre--;
-					System.out.println("cpt "+cpt);
-					System.out.println("nbOrdres "+nbOrdre);
 					if(cpt==2){
 						System.out.println("J attends la reponse de la Bourse");
 						for(int j=0;j<2;j++){
