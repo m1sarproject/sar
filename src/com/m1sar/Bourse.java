@@ -14,17 +14,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.Vector;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 
 
 
 public class Bourse {
 
 	
+	
+	
+	
+	
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	private Vector<ThreadBourse> courtiers = new Vector<ThreadBourse> ();
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
-	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
+	static ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
 	private Vector<Ordre> ordres=new Vector<Ordre>();
 	//List d'ordres 
 	
@@ -208,7 +222,7 @@ public Ordre consommer(String nomCourtier) {
 			}
 		}
 		else {
-			System.out.println("pas d'ordre poru ce courtier");//enlever le if null après les tests
+			System.out.println("pas d'ordre poru ce courtier");//enlever le if null aprï¿½s les tests
 		}
 	
 	}
@@ -429,14 +443,106 @@ public Ordre consommer(String nomCourtier) {
 		}
 		return null;
 	}
+	
+	
+	
+  public static class Affichage extends Application {
+		
+		
+		private ArrayList <HashMap<String,Double>> prixParEntreprise  = new  ArrayList <HashMap<String,Double>> ();
+		private XYChart.Series[] montab = new XYChart.Series[20]; //On se limite Ã  20 entreprises maximum
+
+	  public Affichage() {
+		 
+		  System.out.println("Ma liste est t-elle vide ? "+listeGraphe);
+			
+			
+			for (int i = 0;i<listeGraphe.size();i++) {
+			
+			prixParEntreprise.add(listeGraphe.get(i));
+			System.out.println("ajout avec succes");
+
+			}
+			
+		}
+	  
+
+
+		@Override public void start(Stage stage) {
+	  	
+			
+	      stage.setTitle("Evolution des prix");
+	      stage.setOnCloseRequest(e -> System.exit(0));
+	      final CategoryAxis xAxis = new CategoryAxis();
+	      final NumberAxis yAxis = new NumberAxis();
+	       xAxis.setLabel("Jours");
+	       yAxis.setLabel("Prix");
+	       xAxis.autosize();
+	       yAxis.autosize();
+	      final LineChart<String,Number> lineChart =  new LineChart<String,Number>(xAxis,yAxis);
+	      lineChart.setTitle("Evolution des prix");
+	        
+	      Set<String> nomEntreprises = prixParEntreprise.get(0).keySet();
+
+	      XYChart.Series series = null;
+	      int index=0;
+			
+	      for (String nom : nomEntreprises) {
+				
+				 series = new XYChart.Series();
+				 series.setName(nom);
+				 
+				 
+		       for (int i=0; i < prixParEntreprise.size(); i++)  {
+			 		
+		    	  if (prixParEntreprise.get(i).get(nom) != null)
+		      		series.getData().add( new XYChart.Data(i+"-"+nom, prixParEntreprise.get(i).get(nom)));
+		      		
+		      	}
+		        
+		       montab[index++]=series;
+		        
+			}
+	      
+
+			for(int i=0;i<index;i++)
+			  lineChart.getData().add(montab[i]);
+
+	      Scene scene  = new Scene(lineChart,800,600);              
+	      stage.setScene(scene);
+	      stage.show();
+	  }
+
+
+	  public static void main(String[] args) {
+	      launch(args);
+	  }
+	}
+	
+	
+
+	
+	public void afficheGraphe (String [] args) {
+		
+        Affichage.main(args);
+		
+	}
+	
+	
+	
+	
+	
+	
 
 	public static void main(String[] args) throws IOException{
+		
 
+		
 		int nport=0;
 		nport=Integer.parseInt(args[0]);
+		ServerSocket serveurCourtier=null;
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
-		ServerSocket serveurCourtier=null;
 		
 		try { 
 			serveurCourtier= new ServerSocket(nport); //Socket d'ecoute
@@ -475,6 +581,8 @@ public Ordre consommer(String nomCourtier) {
 		 		if ( bourse.courtiers.isEmpty() ) {
 		 			
 		 			bourse.updatePrice();
+		 			bourse.afficheGraphe(args);
+
 		 		}
 		 		
 		 		
