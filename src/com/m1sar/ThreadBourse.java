@@ -96,7 +96,7 @@ public class ThreadBourse extends Thread {
 							nbCustomer--;
 							outObject.writeInt(nbCustomer);
 							outObject.flush();
-							System.out.println("j'ai envoyé à courtier nbcustumer");
+							System.out.println("j'ai envoyï¿½ ï¿½ courtier nbcustumer");
 						}
 						if(info.equals("bye")) {
 							
@@ -117,16 +117,16 @@ public class ThreadBourse extends Thread {
 						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
 					}
-					if(cpt==3) {
+					if(cpt==2) {
 							
-						for (int i = 0; i < 3; i++) {
+						for (int i = 0; i < 2; i++) {
 							System.out.println("je repond au courtier acceptation ");
 							bourse.accord(nomCourtier);
 							
 						}
 						cpt=0;
 					}
-					if(cpt<3 && nbOrdres==0){
+					if(cpt<2 && nbOrdres==0){
 						for (int i = 0; i < cpt; i++) {
 							System.out.println("je repond au courtier acceptation ");
 						    bourse.accord(nomCourtier);
