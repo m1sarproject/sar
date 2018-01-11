@@ -18,44 +18,47 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
+@SuppressWarnings("unused")
 
 public class Courtier extends Thread{
 
 
 private String name;
-/**
- * nb is used to ensure that the name of the broker is unique 
- */
+/** nb is used to ensure that the name of the broker is unique */
 private static int nb=1;
+/** List of clients that belongs to the broker */
 private Vector<Client> customers= new Vector<Client>();
-/**
- * nbCustomer number of customers which are connected to this Broker
- */
+
+/** nbCustomer number of customers which are connected to this Broker */
 private int id;
 private int nbCustomer=0;
-public static double tauxCommission=0.1; //un taux de 10% pour tous les courtiers
+/** Commision tax of this broker */
+public static double tauxCommission=0.1;
+/** Account balance of this broker */
 private double accountBalance=0.;
 private int port;
-private int portecoute;//sur lequel il ecoute les clients
+private int portecoute;
 private InetAddress hote;
 private Socket sc;
 private ServerSocket ecouteClient;
-//stream de com avec la bourse
+
 private InputStream inSB;
 private OutputStream outSB;
 private ObjectInputStream inObjectB;
 private ObjectOutputStream outObjectB;
-//stream de com avec le client
+
 private OutputStream outSC;
 private InputStream inSC;
 private ObjectInputStream inObjectC;
 private ObjectOutputStream outObjectC;
 private Socket currentClient;
+/** Time to sleep the broker */
 private static int timeLimit=15000;
-/**
- * listeOrdre contient la liste d'ordre en attente du client courant
- */
+
+
+/** List of order that the broker recieve from its client*/
 private ArrayList<Ordre> listeOrdre=new ArrayList<>();
+/** State of the market */
 private Map<String,Double> prixParEntreprise=new HashMap<String,Double>();
 BufferedReader in; 
 PrintWriter out;
@@ -89,16 +92,12 @@ public void connexion(){
 	try {
 	    sc= new Socket(hote,port);
 	    inscription(sc);
-	    //il écoute les clients sur un numéro de port 
-		//accepte les connexions et échange avec eux
-		System.out.println("j essaye de recuperer le numero de port surlequel j'ecoute");
 		outSB=sc.getOutputStream();
 		outObjectB= new ObjectOutputStream(outSB);
-		inSB=sc.getInputStream();//communication avec bourse
+		inSB=sc.getInputStream(); //communication avec bourse
 		inObjectB = new ObjectInputStream(inSB);
 		this.portecoute=inObjectB.readInt();
 		prixParEntreprise=(HashMap<String,Double>)inObjectB.readObject();
-		//System.err.println(prixParEntreprise);
 		
 	}
 	catch (Exception e) {
@@ -107,7 +106,9 @@ public void connexion(){
 }
 
 
-//Permet simplement de s'inscrire auprès de la bourse en donnant son nom
+/** Lets the broker log in the market by giving his name 
+ *  @param Socket sc : the socket to send the name to the market
+ *  */
 public void inscription(Socket sc) throws IOException {
 	
 	OutputStream outS=sc.getOutputStream();
@@ -115,8 +116,10 @@ public void inscription(Socket sc) throws IOException {
 	out.println(name);
 	
 }
+
+
 public void run() {
-	connexion();//se connecte a� la bourse et recupere le numero de port surlequel il ecoute
+	connexion();
 	
 	try {
 		
@@ -125,8 +128,6 @@ public void run() {
 		int nb = 1;
     	while (true) { 
     		currentClient = ecouteClient.accept();
-    		//if (nb==1)nbCustomer++;
-    		//System.out.println("nombre client après accepte"+nbCustomer);
     		System.out.println("le client s'est connecte");
 
     			try {
@@ -135,13 +136,12 @@ public void run() {
 		    			inObjectC = new ObjectInputStream(inSC);
 		    			outObjectC = new ObjectOutputStream(outSC);
 		    			System.out.println("client numero "+nb+" s'est connecte a ce courtier");
-		    			nomclient=(String)inObjectC.readObject(); //Le premier message doit etre le nom du client
+		    			nomclient=(String)inObjectC.readObject(); 
 		    			System.out.println(" le client "+ nomclient+" vient de s'inscrire");
 		    			outObjectC.writeObject(name);
 		    			outObjectC.flush();
 		    			outObjectC.writeObject(new String("Bienvenu cher client "+nomclient+", vous pouvez envoyez vos ordre"));
 		    			outObjectC.flush();
-		    			//envoyer la liste des prix au client
 		    			sendPriceCompanies();
 		    			int nOrdre=0;
 		    			int nbOrdres=0;
@@ -156,15 +156,12 @@ public void run() {
 		    				if(req instanceof String) {
 		    					String rep=(String)req;
 		    					if(rep.equals("bye")) {
-				    				//supprimer le client et fermer sa socket et decremente nbcustumer
-				    					System.out.println("je suis dans le if du bye");
-				    					//envoyer a bourse la mise a jours du nombre de client
+				    					//supprimer le client et fermer sa socket et decremente nbcustumer
 				    					outObjectB.writeObject("decreClient");
 				    					majClient();
 				    					break;
 				    				}
 		    					if(rep.equals("null")){
-		    						System.out.println("Je suis null courtier");
 		    					    nbOrdres--;
 		    					   outObjectB.writeObject("null");
 		    					   outObjectB.flush();
@@ -266,41 +263,52 @@ public void run() {
     
     	
 	} catch (IOException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} 
 	
 	
 }
+
+
+/** Get the order by giving its id
+ *  @param id : the id of the order
+ *  @return Order */
 public Ordre getOrderById(int id) {
-	Ordre res=null;
 	for(Ordre t : listeOrdre) {
-		if(t.getId()==id)res=t;
-		
+		if(t.getId()==id) return t;	
 	}
-	return res;
+	return null;
 }
+
+/** Updates the status of his client when he logs out*/
 void majClient() throws IOException {
 	nbCustomer--;
 	currentClient.close();
 	
 }
-public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
+
+/** Send the pries to his client when he logs in*/
+
+public void sendPriceCompanies() throws IOException { 
 
 	outObjectC.writeObject(prixParEntreprise);
-	outObjectC.flush();						//nombre pour reprï¿½senter les jours
+	outObjectC.flush();						
 	
 }
-/**
- * Calcule la commission 
- */
-//a revoir une fois qu'on a fait les acceptations
+
+
+/** Computes the tax rate */
 public void CalculCommission(boolean rep,Ordre o) {
 	if(rep) {
 		accountBalance+=o.getPrixUnitaire()*o.getQuantiteClient()*tauxCommission;
 		}
 	
 }
+
+
+/** Sends the order to the market
+ * @param the order to be sent
+ * */
 
 public void transmettreOrdreABourse( Ordre ordre) throws IOException {
 	outObjectB.writeObject(ordre);
@@ -310,12 +318,16 @@ public void transmettreOrdreABourse( Ordre ordre) throws IOException {
 public String prefixe() {
 	return name+" : ";
 }
+
+
 public static void main(String[] args) throws UnknownHostException {
 	
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
+	
+	
 	Scanner lect = new Scanner(System.in);
-	System.out.println("Donnez le nom du courtier :");
+	System.out.println("Entrez le nom du courtier :");
 	String nom=lect.nextLine();
 	Courtier b=new Courtier(nom,nport,hote);
 	

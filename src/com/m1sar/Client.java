@@ -22,10 +22,13 @@ import java.util.Vector;
 /**@author Vitalina
 La classe Client qui peut acheter ou vendre des actions
 */
+
+@SuppressWarnings("unused")
 public class Client {
 
 	public static int cpt=0;
 
+	
 	private int port=4999;
 	static InetAddress hote;
 	Socket sc;
@@ -35,16 +38,26 @@ public class Client {
 	InputStream inS;
 	private ObjectOutputStream outObject;
 	private ObjectInputStream inObject;
+	/** Name of the current client */
 	private String nameClient;
+	/** id of the current client */
 	private int idClient;
+	/** List of orders that belongs to the current client */
 	private List<Ordre> ordres;
+	/** Wallet of the current client */
 	private Map<String,Integer> portefeuille;
+	/** Current amount of the current client */
 	private double solde;
+	/** % of his Broker */
 	private double tauxDeComission=0.1;
+	/** What the client knows of the state of the market */
 	private Map<String,Double> prixBoursePourEntreprise;
+	/** When the client orders, he keeps his money until his brokers says that's OK, we use this double to compute it  */
 	private double depensesEventuelles;
+	/** Same logic but for selling orders  */
 	private int quantiteEventuelleVendu;
 	private boolean connecte=false;
+	/** Name of his broker */
 	private String nameCourtier;
 
 	
@@ -53,7 +66,7 @@ public class Client {
 		this.nameClient = nameClient+idClient;
 		this.solde = solde;
 		portefeuille=new HashMap<>();
-		ordres =new ArrayList<>(); //Inutile de le changer en vector, la liste des ordres est propre au client, donc pas d'accès concurrent à cet attribut
+		ordres =new ArrayList<>(); 
 		idClient=cpt++;
 		this.port = port;
 		this.hote = hte;
@@ -64,28 +77,22 @@ public class Client {
 			
 		} 
 		else {
-			System.out.println("Navre vous ne pouvez pas vous connect� aucun courtier n'est disponible");
+			System.out.println("Aucun courtier n'est disponible");
 		}
 	}
 	 /**@author Vitalina
-     * 
      * make connection with ThreadBource which find for this client 
      * Courtier available and client obtain IP and host of this Courtier 
      * if any Courtier is available client is disconnected 
-     * 
      */
 	public void connexion() {
 		
 			try {
-			//connexion � la bourse
 			sc= new Socket(hote,port);
 			outS=sc.getOutputStream();
 			inS=sc.getInputStream();
-			//in =new BufferedReader(new InputStreamReader(inS));
-			//out=new PrintWriter(outS,true);
 			outObject= new ObjectOutputStream(outS);
 			inObject= new ObjectInputStream(inS);
-			////recupere les numeros de port et @ip du courtier inetaddress et se connecte au courtier
 			Object o=inObject.readObject();
 			if(!(o instanceof String)) {
 				connecte=true;
@@ -99,9 +106,8 @@ public class Client {
 				inscription(); 
 				nameCourtier= (String) inObject.readObject();
 				System.out.println("message du courtier "+nameCourtier+" : "+(String)inObject.readObject());
-			}
-			
-			
+			  }
+					
 			}
 
 			catch (Exception e) {
@@ -128,7 +134,6 @@ public class Client {
 /**@author Vitalina
      * @param clients price ,amount how much he wants to buy of stocks, name of company
      * @return OrdreAchat if it is legal or non return null
-     *
      */
 	public Ordre acheter (double prix, int quantite, String entreprise){
 		if (! achatLegal(entreprise,prix*quantite,quantite)) {
@@ -149,8 +154,7 @@ public class Client {
 	
 	/**@author Vitalina
      * @param clients price ,amount how much he wants to sale of stocks, name of company
-     * @return OrdreVente if it is legal or non return null
-     * 
+     * @return OrdreVente if it is legal or non return null 
      */
 	public Ordre vendre (double prix, int quantite, String entreprise){
 		if(portefeuille.size()==0){
@@ -173,7 +177,6 @@ public class Client {
 	/**@author Vitalina
      *make exchanges between Client, Courtier and ThreadBourse and received notifications
      *if Orders were accepted or non and finally disconnection of this client 
-     * 
      */
 	public void echangeOrdresClientCourtier() {
 		Scanner lect = new Scanner(System.in);
@@ -184,9 +187,11 @@ public class Client {
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
 			int cpt=0;//compte le nbordre qu on va envoyer au courtier
+			
 			//envoyer nbOrdre a traites au courtier
 			outObject.writeObject(nbOrdre);
 			outObject.flush();
+			
 			while(nbOrdre!=0){
 			
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
@@ -278,16 +283,11 @@ public class Client {
 	public boolean achatLegal(String entreprise,double prix,int quantite){
 		
 		double prixReel = prix + tauxDeComission * prix ;
-		//System.out.println("PrixdeApple = "+prixBoursePourEntreprise.get(entreprise));
 		boolean cond1=solde - depensesEventuelles  > prixReel;
-		//System.out.println("solde-depenses = "+(solde - depensesEventuelles));
-		//boolean cond2=prixReel>(quantite*prixBoursePourEntreprise.get(entreprise));
-		//System.out.println("prixrplus garend de E = "+(quantite*prixBoursePourEntreprise.get(entreprise)));
-		return cond1 ;//&&cond2;
+		return cond1 ;
 	}
 	
 	/**@author Vitalina
-     * 
      * disconnection of Client
      */
 	public void deconnexion(){
@@ -301,17 +301,15 @@ public class Client {
 			outS.close();
 			sc.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
+	
 	/**@author Vitalina
      * @param id of Order
      * @return Order from list of orders
      */
-	
-	
 	public Ordre getOrderById(int id) {
 		Ordre res=null;
 		for(Ordre t : ordres) {
@@ -319,6 +317,8 @@ public class Client {
 		}
 		return res;
 	}
+	
+	
 	/**@author Vitalina
      * @param id of Order, boolean if Order was accepted or no
      * deals answer of Bourse and update portefeille according to OrderVante or OrderAchat
@@ -351,8 +351,12 @@ public class Client {
 	}
 	
 	
-	
+	/**@author Vitalina
+     *  Once the order is finished, updates the wallet of the current client only 
+     *  @param Ordre : Buying order
+     */
 	public void majPortefeuilleAchat(Ordre r){
+			
 			double prixR=r.getPrixUnitaire()*r.getQuantiteClient();
 			solde-=(prixR+(prixR*tauxDeComission));
 			
@@ -370,8 +374,8 @@ public class Client {
 	
 	
 	/**@author Vitalina
-     * 
-     * 
+     *  Once the order is finished, updates the wallet of the current client only 
+     *  @param Ordre : Selling order
      */
 	public void majPortefeuilleVente(Ordre r){
 		
@@ -390,19 +394,13 @@ public class Client {
 	
 	
 	/**@author Vitalina
-     * 
-     * 
+     * Shows the market status to the client
      */
 	public void readStateStocks(){
-		
-		
-		try {
-			
-			System.out.println("Client "+nameClient+" veut savoit l etat du marche");
-			
-			//recupère le vecteur eavec des entreprise de Bourse
+		try {			
+			System.out.println("Client "+nameClient+" veut savoit l'etat du marche");
 			prixBoursePourEntreprise =  (HashMap<String, Double>) inObject.readObject();
-			System.out.println("Voila l etat du marche : ");
+			System.out.println("Voila l'etat du marche : ");
 			System.out.println(prixBoursePourEntreprise);
 			
 		}catch (ClassNotFoundException e) {
@@ -417,14 +415,16 @@ public class Client {
 		
 	}
 	
-	//produir envoie des ordres qui on vient de creer
+	/**@author Vitalina
+     * Sends an order to the Broker
+     * @param Ordre
+     */
 	public void Produir(Ordre r){
 		if(r==null){
 			try {
 				outObject.writeObject("null");
 				outObject.flush();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
