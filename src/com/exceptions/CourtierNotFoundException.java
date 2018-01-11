@@ -1,0 +1,22 @@
+package com.exceptions;
+
+public class CourtierNotFoundException extends Exception {
+
+	
+	String msg;
+
+	public CourtierNotFoundException(String msg) {
+		super();
+		this.msg = msg;
+	}
+	@Override
+	public String getMessage() {
+		return msg;
+	}
+	
+	
+	
+	
+	
+	
+}

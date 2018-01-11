@@ -2,6 +2,8 @@ package com.m1sar;
 
 import java.io.Serializable;
 
+import com.exceptions.CourtierNotFoundException;
+
 public abstract class Ordre implements Serializable {
 	
 
@@ -11,16 +13,24 @@ public abstract class Ordre implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5874466353411594169L;
+	/** Name of the company concerned by the order */
 	private String entreprise;
+	/** Name of the client concerned by the order */
 	private String client; //prix proposé par le client
+	/** Quantity wanted by the client */
 	private int quantite;
+	/** Unit Price */
 	private double prixUnitaire; //prix proposé par le client
 	
-	
-	private double prix_Propose_par_Client;
+	/** Price suggested  by the client */
+	private double prixPropose;
+	/** Quantity wanted by the client */
 	private int quantiteClient;
+	/** Name (id) of the broker who works with this client*/
 	private String nomCourtier;
+	/** id of the order */
 	private int id;
+	/** Tells if the order is finished */
 	public boolean estAccepte=false;
 	private static int nb=0;
 	
@@ -42,7 +52,7 @@ public abstract class Ordre implements Serializable {
 	
 
 	public Ordre(String entreprise, String client, double prix_Propose_par_Client,int quantite,String nom){
-		this.prix_Propose_par_Client=prix_Propose_par_Client;
+		this.prixPropose=prix_Propose_par_Client;
 		this.entreprise = entreprise;
 		this.client=client;
 		id=++nb;
@@ -58,12 +68,14 @@ public abstract class Ordre implements Serializable {
 	}
 
 	public double getPrixUnitaire() {
-		return prix_Propose_par_Client;
+		return prixPropose;
 	}
 
 
 	
-	
+	/**@author Lyes
+     * Sets the order as an accomplished order
+     */ 
 	public void setEstFini() {
 		this.estAccepte= true;
 	}
@@ -79,7 +91,7 @@ public abstract class Ordre implements Serializable {
 	@Override
 	public String toString() {
 		return "Ordre [entreprise=" + entreprise + ", client=" + client + ", prixUnitaire=" + prixUnitaire
-				+ ", prix_Propose_par_Client=" + prix_Propose_par_Client + ", quantiteClient=" + quantiteClient
+				+ ", prix_Propose_par_Client=" + prixPropose + ", quantiteClient=" + quantiteClient
 				+ ", nomCourtier=" + nomCourtier + ", estAccepte=" + estAccepte + "]";
 
 	}
