@@ -86,7 +86,6 @@ public class Bourse {
 	           oos.writeObject(informations);
 	           oos.close();
 	           fos.close();
-	           System.out.printf("Les informations de la journée ont bien été sauvegardées");
 	     }catch(IOException ioe) {
 	           ioe.printStackTrace();
 	     }
@@ -139,7 +138,6 @@ public class Bourse {
 	 * @return le premier ordre appertenant au client que traite le courtier nomCourtier
 	 */
 public Ordre consommer(String nomCourtier) {
-	System.out.println("List Ordres dans Bourse = : "+ordres);
 	Ordre ordre=null;
 
 	for (Ordre o:ordres) {
@@ -159,9 +157,9 @@ public Ordre consommer(String nomCourtier) {
 	
 	
 	/**@author Lyes
-     * Gets and returns the order matching with the name of the Broker.
+     * review the orderes received from the broker nomCourtier and send the answer for this broker if it's a buy order from a company
+     * but if this order is matched with another (buy and sell orders) we return the answer to the two brokers
      * @param nomCourtier : the name of broker
-     * @return <tt>Ordre</tt> 
      */
 	
 	public void accord(String nomCourtier) throws IOException { 
@@ -171,7 +169,6 @@ public Ordre consommer(String nomCourtier) {
 		System.out.println(o);
 		if(o!=null) {
 			Entreprise concerned = this.getByName(o.getEntrepriseName());
-			System.out.println(" entreprise concerne dans acoor : "+concerned);		
 			if (o instanceof OrdreAchat) {
 				
 				
@@ -199,6 +196,7 @@ public Ordre consommer(String nomCourtier) {
 						if (ordre instanceof OrdreVente && ordre.estAccepte==false && !(ordre.getNomCourtier().equals(nomCourtier))) {
 							
 							if (matching(o,ordre)) {
+								//avertir les deux courtiers
 								o.setEstAccepte(true);
 								ThreadBourse th1=getThreadByName(nomCourtier);
 								ThreadBourse th2=getThreadByName(ordre.getNomCourtier());
@@ -208,25 +206,23 @@ public Ordre consommer(String nomCourtier) {
 									break;
 								}
 							}
-							//avertir les deux courtiers
+							
 							
 						}	
 					
 					}
 				}
 			if(o.estAccepte==false) {
-				System.out.println("ordre achat non accepte je suis dans bourse");
 				ThreadBourse th=getThreadByName(nomCourtier);
 				if(th!=null) {
 					th.envoyerRep(o.getId(), o.estAccepte);
-				//avertir le courtier dont le nom est nomCourtier
 				}
 				
 			}
 					
 		 }
 		else {
-			for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
+			for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un acheteur existe
 				
 				if (ordre instanceof OrdreAchat && ordre.estAccepte==false && !(ordre.getNomCourtier().equals(nomCourtier))) {
 					
@@ -240,13 +236,12 @@ public Ordre consommer(String nomCourtier) {
 							break;
 						}
 					}
-					//avertir les deux courtiers
+					
 					
 				}	
 			
 			}
 			if(o.estAccepte==false) {
-				System.out.println("ordre vente non accepte je suis dans bourse");
 				ThreadBourse th=getThreadByName(nomCourtier);
 				if(th!=null) {
 					th.envoyerRep(o.getId(), o.estAccepte);
@@ -257,7 +252,7 @@ public Ordre consommer(String nomCourtier) {
 			}
 		}
 		else {
-			System.out.println("pas d'ordre poru ce courtier");//enlever le if null apr�s les tests
+			System.out.println("pas d'ordre poru ce courtier");
 
 		}
 	
@@ -532,8 +527,7 @@ public Ordre consommer(String nomCourtier) {
 
 
 		public void start(Stage stage) {
-	  	
-			
+	  		
 	      stage.setTitle("Evolution des prix");
 	      stage.setOnCloseRequest(e -> System.exit(0));
 	      final CategoryAxis xAxis = new CategoryAxis();
@@ -603,7 +597,7 @@ public Ordre consommer(String nomCourtier) {
 		
 		catch (ArrayIndexOutOfBoundsException e) {
 			
-			System.out.println("Veuillez entre un numéro de port valable");
+			System.out.println("Veuillez entrer un numero de port valable");
 			Scanner in = new Scanner(System.in);
 			nport = Integer.parseInt(in.nextLine());
 		}
@@ -657,6 +651,6 @@ public Ordre consommer(String nomCourtier) {
 		 	
 		 		
 		 		
-		 	 }//end of while
+		 	 }
 		 }
 	}
