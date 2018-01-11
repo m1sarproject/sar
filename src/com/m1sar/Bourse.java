@@ -539,7 +539,7 @@ public Ordre consommer(String nomCourtier) {
 		ServerSocket serveurCourtier=null;
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
-		bourse.afficheGraphe(args); //décommenter pour tester
+		//bourse.afficheGraphe(args); //décommenter pour tester
 
 		try { 
 			serveurCourtier= new ServerSocket(nport); //Socket d'ecoute
