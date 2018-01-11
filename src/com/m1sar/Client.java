@@ -119,7 +119,6 @@ public class Client {
 			outObject.writeObject(nameClient);
 			outObject.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		};
 		

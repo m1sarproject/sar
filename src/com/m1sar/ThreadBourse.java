@@ -268,7 +268,7 @@ public class ThreadBourse extends Thread {
 				e.printStackTrace();
 			} 
 			catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
+				Bourse.listeGraphe
 				e.printStackTrace();
 			}
 			
