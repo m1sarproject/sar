@@ -99,7 +99,11 @@ public class ThreadBourse extends Thread {
 							outObject.flush();
 						}
 						if(info.equals("bye")) {
-							
+							if(bourse.getCourtiers().size()==1){
+								bourse.updatePrice();
+								System.out.println();
+								System.out.println("Le jour numero : "+bourse.getDayid());
+							}
 							bourse.removeBroker(this);
 							break;
 						}
