@@ -496,9 +496,9 @@ public Ordre consommer(String nomCourtier) {
 		
 		catch (ArrayIndexOutOfBoundsException e) {
 			
+			System.out.println("Veuillez entre un numéro de port valable");
 			Scanner in = new Scanner(System.in);
 			nport = Integer.parseInt(in.nextLine());
-			
 		}
 		
 		Bourse bourse = new Bourse();
