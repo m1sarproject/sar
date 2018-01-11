@@ -213,14 +213,18 @@ public class Client {
 			System.out.print("Donnez le nbOrdres a creer : ");
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
-			for(int i=1; i<=nbOrdre;i++){
-				if(i%4!=0 ){
+			int cpt=0;//compte le nbordre qu on va envoyer au courtier
+			//envoyer nbOrdre a traites au courtier
+			outObject.writeObject(nbOrdre);
+			outObject.flush();
+			while(nbOrdre!=0){
+			
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 					String r=lect.nextLine();
 					System.out.print("Donnez le prix : ");
 					Double prix=lect.nextDouble();
 					lect.nextLine();
-					System.out.print("Donnez le nb actions a acheter : ");
+					System.out.print("Donnez le nb actions a acheter ou vendre : ");
 					int nbActions=lect.nextInt();
 					lect.nextLine();
 					System.out.print("Donnez le nom de l entreprise : ");
@@ -236,10 +240,11 @@ public class Client {
 						Produir(ordre);
 						System.out.println("OrdreVente bien envoyer");
 					}
-				}
-				if(i==1){
+				cpt++;
+				nbOrdre--;
+				if(cpt==3){
 					System.out.println("J attends la reponse de la Bourse");
-					for(int j=0;j<1;j++){
+					for(int j=0;j<3;j++){
 						int idOrdre = (int) inObject.readObject();
 						boolean yesOuNon=(boolean) inObject.readObject();
 						getReponseBource(idOrdre,yesOuNon);
@@ -247,10 +252,21 @@ public class Client {
 						System.out.println("Solde de Client : "+solde);
 						
 					}
-			
-					
+					cpt=0;
 				}
 				
+			}
+			if(cpt!=0){
+				System.out.println("J attends la reponse de la Bourse apres sortir de while");
+				for(int j=0;j<cpt;j++){
+					int idOrdre = (int) inObject.readObject();
+					boolean yesOuNon=(boolean) inObject.readObject();
+					getReponseBource(idOrdre,yesOuNon);
+					System.out.println("Portefeille de Client : "+portefeuille);
+					System.out.println("Solde de Client : "+solde);
+					
+				}
+				cpt=0;
 			}
 		outObject.writeObject(new String("bye"));
 		} catch (ClassNotFoundException e) {
@@ -411,6 +427,16 @@ public class Client {
 	
 	//produir envoie des ordres qui on vient de creer
 	public void Produir(Ordre r){
+		if(r==null){
+			try {
+				outObject.writeObject("null");
+				outObject.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 		if(r instanceof OrdreAchat ){
 			System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
 		}
