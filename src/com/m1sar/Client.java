@@ -30,8 +30,7 @@ public class Client {
 	static InetAddress hote;
 	Socket sc;
 	
-	BufferedReader in; 
-	PrintWriter out;
+	
 	OutputStream outS;
 	InputStream inS;
 	private ObjectOutputStream outObject;
@@ -64,6 +63,9 @@ public class Client {
 	
 	 /**@author Vitalina
      * 
+     * make connection with ThreadBource which find for this client 
+     * Courtier available and client obtain IP and host of this Courtier 
+     * if any Courtier is available client is disconnected 
      * 
      */
 	public void connexion(){
@@ -89,56 +91,16 @@ public class Client {
 			nameCourtier= (String) inObject.readObject();
 			System.out.println("message du courtier "+nameCourtier+" : "+(String)inObject.readObject());
 			
-			//cpt=0;
-			//System.out.println("Client "+nameClient+" veut se connecter");
-			//String reponse,req;
-			//reponse=(String) inObject.readObject();
-			
-			//System.out.println("Courtier  repond : "+reponse);
-			//Scanner lect = new Scanner(System.in);
 			}
-			
-			
-			 //l'exception venait du fait que le client se deconnecte alors que dans threadCourtier on 
-			 //essaye de lire ce qu'on voit le client
-			 /*
-			 while(cpt <3) {
-				 System.out.println("Envoyer Ordre au Courtier ou bye : ");
-				 	reponse=lect.nextLine();
-				 	out.println(reponse);
-				    System.out.println("Donnez l'ordre a creer a ou v: ");
-				    req=lect.nextLine();
-					//out.println(req);
-				    outObject= new ObjectOutputStream(outS);
-				    if(req.equals("a")) {
-				    	System.out.println("Donnez le nom de l Entreprise");
-				    	req=lect.nextLine();
-				    	outObject.writeObject(new OrdreAchat(req, this.nameClient, 12.0, 50));
-				    	outObject.flush();
-				    	
-				    }
-				    if(req.equals("v")) {
-				    	System.out.println("Donnez le nom de l Entreprise");
-				    	req=lect.nextLine();
-				    	outObject.writeObject(new OrdreVente(req, this.nameClient, 12.0, 50));
-				    	outObject.flush();
-				    }
-				    reponse=in.readLine();
-				    System.out.println("le courtier a repondu "+reponse);
-				    cpt++;
-				    //in.readLine();				   
-			 	}
-			 
-			  out.println("bye");//mettre fin aux echanges
-			 
-			} */
-			
+
 			catch (Exception e) {
 				
 			}
 	}
 	
-	
+	/**@author Vitalina
+     * sends the Clients name to the Courtier
+     */
 	
 	public void inscription() {
 		
@@ -154,8 +116,9 @@ public class Client {
 	
 	
 /**@author Vitalina
-     * 
-     * envoie un ordre achat qui on vientr de creer
+     * @param clients price ,amount how much he wants to buy of stocks, name of company
+     * @return OrdreAchat if it is legal or non return null
+     *
      */
 	public Ordre acheter (double prix, int quantite, String entreprise){
 		if (! achatLegal(entreprise,prix*quantite,quantite)) {
@@ -175,8 +138,9 @@ public class Client {
 	
 	
 	/**@author Vitalina
+     * @param clients price ,amount how much he wants to sale of stocks, name of company
+     * @return OrdreVente if it is legal or non return null
      * 
-     * envoie un ordre vente qui on vientr de creer
      */
 	public Ordre vendre (double prix, int quantite, String entreprise){
 		if(portefeuille.size()==0)return null;
@@ -192,8 +156,12 @@ public class Client {
 		
 	}
 	
-	//changement ajout de Produit et le traitement des reponses de la bourse avec nb=3 max ordres a envoyer 
 	
+	/**@author Vitalina
+     *make exchanges between Client, Courtier and ThreadBourse and received notifications
+     *if Orders were accepted or non and finally disconnection of this client 
+     * 
+     */
 	public void echangeOrdresClientCourtier() {
 		Scanner lect = new Scanner(System.in);
 		Ordre ordre;
@@ -258,6 +226,7 @@ public class Client {
 				cpt=0;
 			}
 		outObject.writeObject(new String("bye"));
+		deconnexion();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -267,17 +236,19 @@ public class Client {
 	}
 	
 	/**@author Vitalina
-     * 
-     * 
+     * @param name of company and the number of Stocks to buy
+     * @return true or false
+     * check if the condition is legal to sell OrdreVente
      */
 	public boolean venteLegal(String entreprise,int quantite){
 		if(!portefeuille.containsKey(entreprise))return false;
-		return (portefeuille.get(entreprise)-quantiteEventuelleVendu)<quantite;
+		return (portefeuille.get(entreprise)-quantiteEventuelleVendu)>=quantite;
 	}
 	
 	/**@author Vitalina
-     * 
-     * 
+     * @param name of company and the price of all Stocks which Client want to buy
+     * @return true or false
+     * check if the condition is legal to buy OrdreAchat
      */
 	public boolean achatLegal(String entreprise,double prix,int quantite){
 		
@@ -295,10 +266,14 @@ public class Client {
      * 
      */
 	public void deconnexion(){
-		out.println("bye");
+		
 		System.out.println("Client "+nameClient+" se deconnecte");
 		prixBoursePourEntreprise.clear();
 		try {
+			outObject.close();
+			inObject.close();
+			inS.close();
+			outS.close();
 			sc.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
