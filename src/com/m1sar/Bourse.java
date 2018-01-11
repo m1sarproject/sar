@@ -141,32 +141,24 @@ public Ordre consommer(String nomCourtier) {
 			System.out.println(" entreprise concerne dans acoor : "+concerned);
 			if (o instanceof OrdreVente) {
 						
-				concerned.addOrder(o);
-				concerned.incDemandesVentes();			
+		    
 				
 				
 			}
 
 			
 			if (o instanceof OrdreAchat) {
-				System.out.println("dans le if un ordreAchaat");
-			concerned.incDemandesAchat();
-			System.out.println(o);
-			int nbActionsDispo = concerned.getNbActions();
-			int nbActionsVoulus = o.getQuantiteClient();
+				
+				System.out.println(o);
+				int nbActionsDispo = concerned.getNbActions();
+				int nbActionsVoulus = o.getQuantiteClient();
 			
 			double prixEntreprise = concerned.getPrixUnitaireAction();
 			double prixPropose = o.getPrixUnitaire();
-			System.out.println("prix de client propose : "+o.getPrixUnitaire());
-			System.out.println("nbActionDispo : "+nbActionsDispo);
-			System.out.println("nbActionDispo : "+nbActionsDispo);
-			System.out.println("nbActionsVoulus : "+nbActionsVoulus);
-			System.out.println("prixEntreprise : "+prixEntreprise);
 			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
-				System.out.println("hello j'achete de l'entreprise");
 				o.setEstFini();
 				concerned.DecreaseNbActions(nbActionsVoulus);
-				concerned.addOrder(o); //Je stoque l'ordre dans l'entreprise
+				 
 				//return true;	
 				o.setEstAccepte(true);
 				System.out.println("Achat accepte = "+o);
