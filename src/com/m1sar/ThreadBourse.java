@@ -92,6 +92,9 @@ public class ThreadBourse extends Thread {
 						String info=(String)req;
 						if(info.equals("decreClient")) {
 							nbCustomer--;
+							outObject.writeInt(nbCustomer);
+							outObject.flush();
+							System.out.println("j'ai envoyé à courtier nbcustumer");
 						}
 						if(info.equals("bye")) {
 							

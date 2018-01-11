@@ -32,7 +32,7 @@ private Vector<Client> customers= new Vector<Client>();
  * nbCustomer number of customers which are connected to this Broker
  */
 private int id;
-private int nbCustomer;
+private int nbCustomer=0;
 public static double tauxCommission=0.1; //un taux de 10% pour tous les courtiers
 private double accountBalance=0.;
 private int port;
@@ -125,7 +125,8 @@ public void run() {
 		int nb = 1;
     	while (true) { 
     		currentClient = ecouteClient.accept();
-    		nbCustomer++;
+    		//if (nb==1)nbCustomer++;
+    		//System.out.println("nombre client après accepte"+nbCustomer);
     		System.out.println("le client s'est connecte");
 
     			try {
@@ -234,18 +235,21 @@ public void run() {
     		
     	//} celui du if size
     		System.out.println("nbClinet = "+nbCustomer);
-    		if(nbCustomer==0) {
+    		if(nbCustomer<=0) {
 	    		try {
 	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
 						Thread.sleep(timeLimit); //Le sleep a des de�aufauts : si un client se connecte pendant le sleep, il ne le reveille pas du sleep; sinon� revoir
+						System.out.println("avant de recevori nbCustumer");
+    					nbCustomer=inObjectB.readInt();
 					} 
 	    		catch (InterruptedException e) {
 						e.printStackTrace();
 					}
     		}
 	    		
-    		if(nbCustomer==0) {	
+    		if(nbCustomer<=0) {	
 	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse"); 
+	    			
 	    			outObjectB.writeObject("bye");
 	    			break;
     		}
@@ -273,9 +277,8 @@ public Ordre getOrderById(int id) {
 	return res;
 }
 void majClient() throws IOException {
-	
-	currentClient.close();
 	nbCustomer--;
+	currentClient.close();
 	
 }
 public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au dï¿½but de la journï¿½e avant qu'un client ne soit dï¿½co ;il faut ajouter un 
@@ -307,8 +310,10 @@ public static void main(String[] args) throws UnknownHostException {
 	
 	int nport = Integer.parseInt(args[0]);
 	InetAddress hote = InetAddress.getByName(args[1]);
-	
-	Courtier b=new Courtier("George Soros",nport,hote);
+	Scanner lect = new Scanner(System.in);
+	System.out.println("Donnez le nom du courtier :");
+	String nom=lect.nextLine();
+	Courtier b=new Courtier(nom,nport,hote);
 	
 	System.out.println("Le courtier s'est connecté à la bourse");
 	
