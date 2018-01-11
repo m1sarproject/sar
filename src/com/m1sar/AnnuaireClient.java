@@ -87,17 +87,6 @@ public class AnnuaireClient extends Thread {
 		}
 			
 			
-			/*catch (CourtierNotFoundException e) {				
-					try {
-						clientConnecte.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-						}					
-				}*/
-			
-	
-	
-
 	}
 
 	

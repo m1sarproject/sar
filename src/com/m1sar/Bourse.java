@@ -155,10 +155,6 @@ public Ordre consommer(String nomCourtier) {
 			
 			double prixEntreprise = concerned.getPrixUnitaireAction();
 			double prixPropose = o.getPrixUnitaire();
-<<<<<<< HEAD
-			
-=======
->>>>>>> branch 'master' of https://github.com/m1sarproject/sar.git
 			if ( nbActionsDispo > nbActionsVoulus && prixPropose >= prixEntreprise ) {
 				o.setEstFini();
 				concerned.DecreaseNbActions(nbActionsVoulus);

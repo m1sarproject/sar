@@ -286,7 +286,7 @@ public class Client {
 	
 	/**@author Vitalina
      * 
-     * 
+     * disconnection of Client
      */
 	public void deconnexion(){
 		
@@ -305,8 +305,8 @@ public class Client {
 		
 	}
 	/**@author Vitalina
-     * 
-     * 
+     * @param id of Order
+     * @return Order from list of orders
      */
 	
 	
@@ -317,7 +317,10 @@ public class Client {
 		}
 		return res;
 	}
-	
+	/**@author Vitalina
+     * @param id of Order, boolean if Order was accepted or no
+     * deals answer of Bourse and update portefeille according to OrderVante or OrderAchat
+     */
 	public void getReponseBource(int idOrdre, boolean yesOuNon) {
 		Ordre r=getOrderById(idOrdre);
 		System.out.println("Ordre "+r.getPrixUnitaire());
