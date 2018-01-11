@@ -64,7 +64,7 @@ public class Client {
 			
 		} 
 		else {
-			System.out.println("Navre vous ne pouvez pas vous connecté aucun courtier n'est disponible");
+			System.out.println("Navre vous ne pouvez pas vous connectï¿½ aucun courtier n'est disponible");
 		}
 	}
 	 /**@author Vitalina
@@ -221,9 +221,9 @@ public class Client {
 						cpt++;
 					}
 					nbOrdre--;
-					if(cpt==3){
+					if(cpt==2){
 						System.out.println("J attends la reponse de la Bourse");
-						for(int j=0;j<3;j++){
+						for(int j=0;j<2;j++){
 							int idOrdre = (int) inObject.readObject();
 							boolean yesOuNon=(boolean) inObject.readObject();
 							getReponseBource(idOrdre,yesOuNon);
