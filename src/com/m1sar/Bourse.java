@@ -15,7 +15,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Vector;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 
 
 
@@ -28,7 +37,7 @@ public class Bourse {
 	/** A map that shows the price for each company available in the market  */
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
 	/** list of prices for each company, for each day, this is used to draw the evolution of prices  */
-	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
+	private static ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
 	/** list of orders that the market have to check  */
 	private Vector<Ordre> ordres=new Vector<Ordre>();
 	/** number of the current day  */
@@ -479,10 +488,87 @@ public Ordre consommer(String nomCourtier) {
 		}
 		return null;
 	}
+	
+
 
 	
+	public static class Affichage extends Application {
+		
+		
+		private ArrayList <HashMap<String,Double>> prixParEntreprise  = new  ArrayList <HashMap<String,Double>> ();
+		private XYChart.Series[] montab = new XYChart.Series[20]; //On se limite à 20 entreprises maximum
+
+	  public Affichage() {			
+			
+			for (int i = 0;i<listeGraphe.size();i++) {
+			
+			prixParEntreprise.add(listeGraphe.get(i));
+
+			}
+			
+		}
+	  
+
+
+		public void start(Stage stage) {
+	  	
+			
+	      stage.setTitle("Evolution des prix");
+	      stage.setOnCloseRequest(e -> System.exit(0));
+	      final CategoryAxis xAxis = new CategoryAxis();
+	      final NumberAxis yAxis = new NumberAxis();
+	       xAxis.setLabel("Jours");
+	       yAxis.setLabel("Prix");
+	       xAxis.autosize();
+	       yAxis.autosize();
+	      final LineChart<String,Number> lineChart =  new LineChart<String,Number>(xAxis,yAxis);
+	      lineChart.setTitle("Evolution des prix");
+	        
+	      Set<String> nomEntreprises = prixParEntreprise.get(0).keySet();
+
+	      XYChart.Series series = null;
+	      int index=0;
+			
+	      for (String nom : nomEntreprises) {
+				
+				 series = new XYChart.Series();
+				 series.setName(nom);
+				 
+				 
+		       for (int i=0; i < prixParEntreprise.size(); i++)  {
+			 		
+		    	  if (prixParEntreprise.get(i).get(nom) != null)
+		      		series.getData().add( new XYChart.Data(i+"-"+nom, prixParEntreprise.get(i).get(nom)));
+		      		
+		      	}
+		        
+		       montab[index++]=series;
+		        
+			}
+	      
+
+			for(int i=0;i<index;i++)
+			  lineChart.getData().add(montab[i]);
+
+	      Scene scene  = new Scene(lineChart,800,600);              
+	      stage.setScene(scene);
+	      stage.show();
+	  }
+
+
+
+		  public static void main(String[] args) {
+		      launch(args);
+		  }
+}
 	
 	
+	
+	public void afficheGraphe (String [] args) {
+		
+        Affichage.main(args);
+		
+	}
 	public static void main(String[] args) throws IOException{
 
 		int nport=0;
@@ -503,6 +589,7 @@ public Ordre consommer(String nomCourtier) {
 		
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
+		//bourse.afficheGraphe(args);
 		ServerSocket serveurCourtier=null;
 		
 		try { 
