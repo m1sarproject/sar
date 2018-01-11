@@ -60,8 +60,10 @@ public class Bourse {
 																					 
 			for (Entreprise entreprise : entreprises) {
 				
-				int delta = ( entreprise.getNbDemandesAchats() - entreprise.getNbDemandeVentes() ) / entreprise.getNbActions(); 
-				Double nouveauPrix =  entreprise.getPrixUnitaireAction()+delta;
+				double delta = (( entreprise.getNbDemandesAchats() - entreprise.getNbDemandeVentes() )*1.0 / entreprise.getNbActions()); 
+				
+				
+				Double nouveauPrix =  (entreprise.getPrixUnitaireAction()*1.0)*(1.0+delta);
 				
 				prixParEntreprise.put(entreprise.getName(),nouveauPrix);
 				
@@ -512,8 +514,27 @@ public Ordre consommer(String nomCourtier) {
 	}
 	
 
-
 	
+	
+	public int getDayid() {
+		return dayid;
+	}
+
+	public void setDayid(int dayid) {
+		this.dayid = dayid;
+	}
+
+	public Vector<ThreadBourse> getCourtiers() {
+		return courtiers;
+	}
+
+	public void setCourtiers(Vector<ThreadBourse> courtiers) {
+		this.courtiers = courtiers;
+	}
+
+
+
+
 	public static class Affichage extends Application {
 		
 		
