@@ -100,7 +100,7 @@ public class Client {
 				int portCourtier=inObject.readInt();
 				sc.close();
 				Socket connexionCourtier=new Socket(host, portCourtier);
-				System.out.println("conenxion au courtier reussi");
+				System.out.println("Connexion au Courtier reussi");
 				outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
 				inObject = new ObjectInputStream(connexionCourtier.getInputStream());
 				inscription(); 
@@ -158,7 +158,7 @@ public class Client {
      */
 	public Ordre vendre (double prix, int quantite, String entreprise){
 		if(portefeuille.size()==0){
-			System.out.println("pas de vente P vide");
+			System.out.println("Pas de Vente, car Portefeille est vide");
 			return null;
 		}
 		if ( ! venteLegal(entreprise,quantite) ) {
@@ -182,7 +182,7 @@ public class Client {
 		Scanner lect = new Scanner(System.in);
 		Ordre ordre=null;
 		try {
-			System.out.println("Hello mon Courtier je vais t envoyer des ORDRES");
+			System.out.println("Echange des ORDRES");
 			System.out.print("Donnez le nbOrdres a creer : ");
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
@@ -196,14 +196,15 @@ public class Client {
 			
 					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
 					String r=lect.nextLine();
+					System.out.print("Donnez le nom de l entreprise : ");
+					String nom_entreprise=lect.nextLine();
 					System.out.print("Donnez le prix : ");
 					Double prix=lect.nextDouble();
 					lect.nextLine();
-					System.out.print("Donnez le nb actions a acheter ou vendre : ");
+					System.out.print("Donnez le nombre d actions a acheter ou vendre : ");
 					int nbActions=lect.nextInt();
 					lect.nextLine();
-					System.out.print("Donnez le nom de l entreprise : ");
-					String nom_entreprise=lect.nextLine();
+					
 					if(r.equals("a")){
 						
 						ordre=acheter(prix, nbActions, nom_entreprise);
@@ -241,7 +242,7 @@ public class Client {
 				
 				}
 				if(cpt!=0){
-					System.out.println("J attends la reponse de la Bourse apres sortir de while");
+					System.out.println("J attends la reponse de la Bourse");
 					for(int j=0;j<cpt;j++){
 						int idOrdre = (int) inObject.readObject();
 						boolean yesOuNon=(boolean) inObject.readObject();
@@ -253,6 +254,7 @@ public class Client {
 					cpt=0;
 				}
 				outObject.writeObject(new String("bye"));
+				System.out.println("Client "+nameClient+" a fini d envoyer des ORDRES");
 				deconnexion();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -309,11 +311,11 @@ public class Client {
      * @return Order from list of orders
      */
 	public Ordre getOrderById(int id) {
-		Ordre res=null;
+		
 		for(Ordre t : ordres) {
-			if(t.getId()==id)res=t;
+			if(t.getId()==id)return t;
 		}
-		return res;
+		return null;
 	}
 	
 	
@@ -323,11 +325,11 @@ public class Client {
      */
 	public void getReponseBource(int idOrdre, boolean yesOuNon) {
 		Ordre r=getOrderById(idOrdre);
-		System.out.println("Ordre "+r.getPrixUnitaire());
 		
 		if(yesOuNon) {
 			if(r instanceof OrdreAchat) {
-				System.out.println("dans le if un ordreAchaat");
+				
+				
 				majPortefeuilleAchat(r);
 				depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantiteClient());
 				
@@ -338,9 +340,11 @@ public class Client {
 			}
 		}
 		if(r instanceof OrdreAchat) {
+			System.out.println("OrdreAchat traite : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+", reponse de la Bourse : "+yesOuNon);
 			depensesEventuelles-=(r.getPrixUnitaire()*r.getQuantiteClient());
 		}
 		if(r instanceof OrdreVente) {
+			System.out.println("OrdreVente traite : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+", reponse de la Bourse : "+yesOuNon);
 			quantiteEventuelleVendu-=r.getQuantiteClient();
 		}
 		ordres.remove(r);
@@ -428,11 +432,10 @@ public class Client {
 			
 		}
 		if(r instanceof OrdreAchat ){
-			System.out.println("Client "+nameClient+" envoie un Ordre d Achat au courtier");
+			System.out.println("Client "+nameClient+" envoie un Ordre d Achat au Courtier : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+",  prix : "+r.getPrixUnitaire());
 		}
 		if(r instanceof OrdreVente){
-			System.out.println("Client "+nameClient+" envoie un Ordre de Vente au courtier");
-			
+			System.out.println("Client "+nameClient+" envoie un Ordre de Vente au Courtier : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+",  prix : "+r.getPrixUnitaire());
 		}
 		try {
 			outObject.writeObject(r);
