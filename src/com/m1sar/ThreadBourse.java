@@ -21,17 +21,20 @@ import java.util.Vector;
 
 public class ThreadBourse extends Thread {
 
+	/** Socket to communicate with the broker*/
     private Socket sCourtier; //socket pour communiuqer avec courtier
+	/** State of the market */
 	private Map<String,Double> prixParEntreprise=new HashMap<String,Double>();
 	private int nbCustomer=0;
+	/** The market */
 	private Bourse bourse;  //la bourse qui a cree le Threadcourtier 
 	private OutputStream outS;
 	private InputStream inS;
 	private ObjectOutputStream outObject;
 	private ObjectInputStream inObject;
+	/** Name of the Broker which was created */
 	private String nomCourtier;
 	private int nport;
-	//le temps qu'un courtier attend avant de se deconnecter
 	
 	
 	
@@ -46,13 +49,14 @@ public class ThreadBourse extends Thread {
 		}
 	  
 	  
+	  
 	  public void connexionCourtier(){
 		  try {
 				outS=sCourtier.getOutputStream();
 				inS =sCourtier.getInputStream();
 				outObject = new ObjectOutputStream(outS);
 				inObject = new ObjectInputStream(inS);
-				System.out.println("j'envoi le numero de port au courtier ");
+				System.out.println("J'envoi le numero de port au courtier ");
 				outObject.writeInt(nport);
 				outObject.flush();
 				outObject.writeObject(bourse.getPrixParEntreprise());
@@ -78,7 +82,6 @@ public class ThreadBourse extends Thread {
     public void run() {
     	
     	connexionCourtier();
-    	//recuperer la liste des prix 
     	prixParEntreprise=bourse.getPrixParEntreprise();
    
     	Ordre ordre_client;
@@ -99,9 +102,8 @@ public class ThreadBourse extends Thread {
 						}
 						if(info.equals("bye")) {
 							
-							//courtier se deconnecte  on enleve le threadCourtier de la liste
 							bourse.removeBroker(this);
-							break;//sortir du while
+							break;
 						}
 						if(req.equals("null")){
 							System.out.println("Je suis null threadBourse");
@@ -115,16 +117,17 @@ public class ThreadBourse extends Thread {
 						cpt++;
 						nbOrdres--;
 						ordre_client= (Ordre)req;
-						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
+						System.out.println(" ordres reçu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
-						System.out.println(" nOrdre : "+cpt);
-						System.out.println(" nbOrdres : "+nbOrdres);
+
 					}
 
 					if(cpt==2) {
 
+
 						for (int i = 0; i < 2; i++) {
 							System.out.println("je repond au courtier acceptation ");
+
 							bourse.accord(nomCourtier);
 							
 						}
@@ -132,7 +135,7 @@ public class ThreadBourse extends Thread {
 					}
 					if(cpt<2 && nbOrdres==0){
 						for (int i = 0; i < cpt; i++) {
-							System.out.println("je repond au courtier acceptation ");
+							System.out.println("Je repond au courtier : acceptation ");
 						    bourse.accord(nomCourtier);
 							
 						}
@@ -154,20 +157,19 @@ public class ThreadBourse extends Thread {
     /**
      * the brocker sends to his customers the information about the share parices of each company in the stock market  
      */
-    public void sendPriceCompanies() throws IOException {//quand est ce que s'est fait? au debut de la journee avant qu'un client ne soit deco ;il faut ajouter un 
+    public void sendPriceCompanies() throws IOException { 
     	outObject=new ObjectOutputStream(outS);
     	outObject.writeObject(prixParEntreprise);
-    	outObject.flush();						//nombre pour representer les jours
+    	outObject.flush();						
     	
     }
     /**
      * @param ordre the order passed by  the  customer 
-     * send to the stock market the order  
+     * send the order to the stock market  
      */
 
     public void SurReceptionDe(Ordre ordre) {
     	bourse.getOrdres().add(ordre);
-    	System.out.println("je suis dans SRD");
     	Entreprise concerned =bourse.getByName(ordre.getEntrepriseName());
     	if (ordre instanceof OrdreVente) {
 			
@@ -180,27 +182,32 @@ public class ThreadBourse extends Thread {
     	}
 
     }
- 
+    
+    /**
+     * Answers to the broker if the order is ok or not  
+     * @param id : the id of the broker
+     * @rep : the answere : true/false
+     */
     public void envoyerRep(int id,boolean rep) throws IOException {
     	outObject.writeObject(id);
 		outObject.writeObject(rep);
     }
+    
     public void incNbClient() {
     	if (estDispo()) {nbCustomer++; return;}
-    
     	throw new UnsupportedOperationException("Le courtier a deja deux clients en charge");
     }
+    
     public boolean estDispo() {
 		return (nbCustomer<2);
 	}
+    
     public int getNport() {
 		return nport;
 	}
+    
     public InetAddress getInetAddress() {
 		return sCourtier.getInetAddress();
 	}
-	
-
-	
-	
+		
 }

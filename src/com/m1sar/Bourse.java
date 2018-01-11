@@ -14,22 +14,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.Vector;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 
 
 
 public class Bourse {
 
-	
+	/** list of all companies available in the market  */
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
+	/** list of all brokers working in the market  */
 	private Vector<ThreadBourse> courtiers = new Vector<ThreadBourse> ();
+	/** A map that shows the price for each company available in the market  */
 	private HashMap<String,Double> prixParEntreprise=new HashMap<String,Double>() ;
-	private ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
+	/** list of prices for each company, for each day, this is used to draw the evolution of prices  */
+	private static ArrayList<HashMap<String,Double>> listeGraphe=new ArrayList<HashMap<String,Double>>();
+	/** list of orders that the market have to check  */
 	private Vector<Ordre> ordres=new Vector<Ordre>();
-	//List d'ordres 
-	
-	//SRD :Stoque l'ordre dans la liste et les traite facteur
-	private int dayid; 
+	/** number of the current day  */
+	private int dayid=0; 
 	
 	public Bourse() {
 		
@@ -44,8 +56,8 @@ public class Bourse {
 	
 	public HashMap<String,Double> updatePrice() {
 		
-			prixParEntreprise = new HashMap<String,Double> (); //Je recrée à chaque fois cette map, donc inutile  
-																					  // d'appeller Replace () pour ma map
+			prixParEntreprise = new HashMap<String,Double> (); 
+																					 
 			for (Entreprise entreprise : entreprises) {
 				
 				int delta = ( entreprise.getNbDemandesAchats() - entreprise.getNbDemandeVentes() ) / entreprise.getNbActions(); 
@@ -53,9 +65,7 @@ public class Bourse {
 				
 				prixParEntreprise.put(entreprise.getName(),nouveauPrix);
 				
-			}
-		 //Création de Map<String,Double> qui mets à jour les prix par nom d'entreprise, cet objet sera envoyé à tous les courtiers et à tous les clients
-	
+			}	
 			
 			listeGraphe.add(prixParEntreprise);
 			dayid++;
@@ -65,6 +75,9 @@ public class Bourse {
 	}
 	
 	
+    /**@author Lyes
+     * At the end of the day, saves the informations serialized to a file
+     */
 	public void writeToFile(HashMap informations) {
 	
 		try {
@@ -80,6 +93,9 @@ public class Bourse {
   }
 	
 	
+    /**@author Lyes
+     * Reads from file the history
+     */
 	public HashMap<String,Double> readFromFile(String filename) {
 		
 		HashMap<String,Double> informations = null;
@@ -101,10 +117,15 @@ public class Bourse {
 		
 	}
 	
+	/**@author Lyes
+     * Gets and returns the Company matching with the name passed as argument.
+     * @param name : the name of the company
+     * @return <tt>Entreprise</tt> 
+     * @throws NoSuchElementException if the name does not match with all companies
+     */
 	
 	public Entreprise getByName(String name) {
-		
-		
+			
 		for (Entreprise entreprise : entreprises) {
 			
 			if (entreprise.getName().equals(name)) return entreprise;
@@ -112,6 +133,7 @@ public class Bourse {
 		
 		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
 	}
+
 	/**
 	 * 
 	 * @return le premier ordre appertenant au client que traite le courtier nomCourtier
@@ -130,11 +152,21 @@ public Ordre consommer(String nomCourtier) {
 		ordres.remove(ordre);
 	}
 	return ordre;
+}
 
 	
-}
-	public void accord(String nomCourtier) throws IOException { //privéligie le prix le moins cher en cas d'achats
-		boolean rentre=false;
+
+	
+	
+	/**@author Lyes
+     * Gets and returns the order matching with the name of the Broker.
+     * @param nomCourtier : the name of broker
+     * @return <tt>Ordre</tt> 
+     */
+	
+	public void accord(String nomCourtier) throws IOException { 
+		
+
 		Ordre o=consommer(nomCourtier);
 		System.out.println(o);
 		if(o!=null) {
@@ -162,7 +194,7 @@ public Ordre consommer(String nomCourtier) {
 							
 				}
 				else {
-					for (  Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
+					for ( Ordre ordre : concerned.getOrdres()) {	//Regarde si un vendeur existe
 						
 						if (ordre instanceof OrdreVente && ordre.estAccepte==false && !(ordre.getNomCourtier().equals(nomCourtier))) {
 							
@@ -226,11 +258,17 @@ public Ordre consommer(String nomCourtier) {
 		}
 		else {
 			System.out.println("pas d'ordre poru ce courtier");//enlever le if null apr�s les tests
+
 		}
 	
 	}
 		
-	
+    /**@author Lyes
+     * Checks if the buying order matchs with the selling order, returns true if so.
+     * @param achat : the buying order
+     * @param vente : the selling order
+     * @return <tt>boolean</tt> 
+     */
 	public boolean matching(Ordre achat,Ordre vente) {
 		
 		return (achat.getQuantiteClient() == vente.getQuantiteClient() && achat.getPrixUnitaire() == vente.getPrixUnitaire() && vente.getEntrepriseName().equals(achat.getEntrepriseName()));
@@ -360,10 +398,12 @@ public Ordre consommer(String nomCourtier) {
 		
 	}	
 	
-	
+    /**@author Lyes
+     * Initializes with a list of companies, and the prices for each company
+     * @return <tt>void</tt> 
+     */
 	public void initCompanies() {
 		
-		// Creation des entreprises ...
 		List<Entreprise> companies = new ArrayList<Entreprise>();
 		
 		Entreprise e1 = new Entreprise("Kerima Moda", 10,2);
@@ -418,6 +458,11 @@ public Ordre consommer(String nomCourtier) {
 		
 	}
 
+	
+    /**@author Lyes
+     * Initializes the prices for each company
+     * @return <tt>void</tt> 
+     */
 	public void initPrixParEntreprise() {
 		for(Entreprise e:entreprises) {
 			prixParEntreprise.put(e.getName(),e.getPrixUnitaireAction());
@@ -426,18 +471,36 @@ public Ordre consommer(String nomCourtier) {
 	}
 	
 	
+    /**@author Lyes
+     * Returns the hashMap that shows the price of an action for each company 
+     * @return <tt>void</tt> 
+     */
 	public HashMap<String, Double> getPrixParEntreprise() {
 		return prixParEntreprise;
 	}
 	
-	
+    /**@author Lyes
+     * Returns the vector of Orders
+     * @return <tt>void</tt> 
+     */
 	public Vector<Ordre> getOrdres() {
 		return ordres;
 	}
 
+    /**@author Lyes
+     * Sets the orders for the market
+     * @param the vector of orders to be set
+     * @return <tt>void</tt> 
+     */
 	public void setOrdres(Vector<Ordre> ordres) {
 		this.ordres = ordres;
 	}
+	
+    /**@author Lyes
+     * Returns the Broker from its name
+     * @param the Name (id) of the Broker to be returned
+     * @return <tt>ThreadBourse</tt> 
+     */
 	public ThreadBourse getThreadByName(String nomTH) {
 		for(ThreadBourse t:courtiers) {
 			if(t.getNomCourtier().equals(nomTH)) {
@@ -446,17 +509,113 @@ public Ordre consommer(String nomCourtier) {
 		}
 		return null;
 	}
+	
 
+
+	
+	public static class Affichage extends Application {
+		
+		
+		private ArrayList <HashMap<String,Double>> prixParEntreprise  = new  ArrayList <HashMap<String,Double>> ();
+		private XYChart.Series[] montab = new XYChart.Series[20]; //On se limite à 20 entreprises maximum
+
+	  public Affichage() {			
+			
+			for (int i = 0;i<listeGraphe.size();i++) {
+			
+			prixParEntreprise.add(listeGraphe.get(i));
+
+			}
+			
+		}
+	  
+
+
+		public void start(Stage stage) {
+	  	
+			
+	      stage.setTitle("Evolution des prix");
+	      stage.setOnCloseRequest(e -> System.exit(0));
+	      final CategoryAxis xAxis = new CategoryAxis();
+	      final NumberAxis yAxis = new NumberAxis();
+	       xAxis.setLabel("Jours");
+	       yAxis.setLabel("Prix");
+	       xAxis.autosize();
+	       yAxis.autosize();
+	      final LineChart<String,Number> lineChart =  new LineChart<String,Number>(xAxis,yAxis);
+	      lineChart.setTitle("Evolution des prix");
+	        
+	      Set<String> nomEntreprises = prixParEntreprise.get(0).keySet();
+
+	      XYChart.Series series = null;
+	      int index=0;
+			
+	      for (String nom : nomEntreprises) {
+				
+				 series = new XYChart.Series();
+				 series.setName(nom);
+				 
+				 
+		       for (int i=0; i < prixParEntreprise.size(); i++)  {
+			 		
+		    	  if (prixParEntreprise.get(i).get(nom) != null)
+		      		series.getData().add( new XYChart.Data(i+"-"+nom, prixParEntreprise.get(i).get(nom)));
+		      		
+		      	}
+		        
+		       montab[index++]=series;
+		        
+			}
+	      
+
+			for(int i=0;i<index;i++)
+			  lineChart.getData().add(montab[i]);
+
+	      Scene scene  = new Scene(lineChart,800,600);              
+	      stage.setScene(scene);
+	      stage.show();
+	  }
+
+
+
+		  public static void main(String[] args) {
+		      launch(args);
+		  }
+}
+	
+	
+	
+	public void afficheGraphe (String [] args) {
+		
+        Affichage.main(args);
+		
+	}
 	public static void main(String[] args) throws IOException{
 
 		int nport=0;
-		nport=Integer.parseInt(args[0]);
+		
+		try {
+			
+			nport=Integer.parseInt(args[0]);
+
+			
+		}
+		
+		catch (ArrayIndexOutOfBoundsException e) {
+			
+			System.out.println("Veuillez entre un numéro de port valable");
+			Scanner in = new Scanner(System.in);
+			nport = Integer.parseInt(in.nextLine());
+		}
+		
 		Bourse bourse = new Bourse();
 		bourse.initCompanies();
+		//bourse.afficheGraphe(args);
 		ServerSocket serveurCourtier=null;
 		
 		try { 
-			serveurCourtier= new ServerSocket(nport); //Socket d'ecoute
+			
+			serveurCourtier= new ServerSocket(nport); 
 		}
 		
 		catch (Exception e) {System.err.println("La creation du serveur d'ecoute a echoue");}
@@ -475,7 +634,7 @@ public Ordre consommer(String nomCourtier) {
 			 			bourse.updatePrice();
 			 		}
 		 		System.out.println("La bourse attend un courtier");
-				Socket courtierConnecte = serveurCourtier.accept();			//Le courtier se connecte a  la socket de communication
+				Socket courtierConnecte = serveurCourtier.accept();			
 				
 				System.out.println("Connexion Courtier acceptee par Bourse");	
 				
@@ -484,7 +643,7 @@ public Ordre consommer(String nomCourtier) {
 				
 				System.out.println("Le nom du courtier est : "+nomcourtier);
 				
-				ThreadBourse tc=new ThreadBourse(courtierConnecte,++nport, bourse, nomcourtier); //Passer la map des prix en parametre au courtier
+				ThreadBourse tc=new ThreadBourse(courtierConnecte,++nport, bourse, nomcourtier);
 				bourse.addBroker(tc);		
 
 				}

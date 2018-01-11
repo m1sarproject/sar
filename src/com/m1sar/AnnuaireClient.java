@@ -12,13 +12,19 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import com.exceptions.CourtierNotFoundException;
+
 
 
 public class AnnuaireClient extends Thread {
 	
+	/** Port number of AnnuaireClient */
 	private int nport;
+	/** Listening socket (ServerSocket) */
 	private ServerSocket serveurClient=null;
+	/** Socket of the current client */
 	private Socket clientConnecte = null;
+	/** List of all brokers */
 	private Vector<ThreadBourse> listcourtiers;
 
 	public AnnuaireClient(int nport,Vector<ThreadBourse> courtiers) {
@@ -30,36 +36,45 @@ public class AnnuaireClient extends Thread {
 	
 	
 	
-	
-	public ThreadBourse getFreeCourtier() {
+	/**@author Lyes
+     * Gets an avialable broker and sets it to the client
+	 * @throws CourtierNotFoundException 
+     */ 
+	public ThreadBourse getFreeCourtier() throws CourtierNotFoundException {
 		
 		for (ThreadBourse courtier : listcourtiers) {
 			if (courtier.estDispo())  
 				{
-				courtier.incNbClient();//incrementer nombre de client
+				courtier.incNbClient();
 				return courtier;	
 				}
 		}
 		
-		return null;
+		throw new CourtierNotFoundException("Pas de courtier disponible");
 	}
+	
 	
 	public void run () {
 		
 		try {
 			serveurClient = new ServerSocket(nport);
-			System.out.println("Le serveur client est a  l'ecoute sur le port "+nport);
+			System.out.println("Le serveur client est aï¿½ l'ecoute sur le port "+nport);
 		
 		
 		while (true) {
 			
 			clientConnecte = serveurClient.accept();
 			System.out.println("Connexion client accepter par BourseClient");	
-			ThreadBourse tcourtier=getFreeCourtier();
+			ThreadBourse tcourtier=null;
+			try {
+				tcourtier = getFreeCourtier();
+			} catch (CourtierNotFoundException e) {
+				System.out.println("Pas de courtier disponible");
+				e.printStackTrace();
+			}
 			OutputStream outS=clientConnecte.getOutputStream();
 			ObjectOutputStream outObject=new ObjectOutputStream(outS);
 			if(tcourtier!=null) {
-			    //envoyer le numero de port et  @ip inetAddress du courtier au client
 			    outObject.writeObject(tcourtier.getInetAddress());
 			    outObject.flush();
 			    outObject.writeInt(tcourtier.getNport());
