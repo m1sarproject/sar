@@ -456,7 +456,7 @@ public class Client {
 		Scanner lect = new Scanner(System.in);
 		System.out.println("Donnez le nom du client :");
 		String nom=lect.nextLine();
-		Client client = new Client (nom,210.0,nport,hote);
+		Client client = new Client (nom,100000.0,nport,hote);
 		
 		
 	}
