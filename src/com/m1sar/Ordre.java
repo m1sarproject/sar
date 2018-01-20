@@ -1,6 +1,7 @@
 package com.m1sar;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.exceptions.CourtierNotFoundException;
 
@@ -113,6 +114,5 @@ public abstract class Ordre implements Serializable {
 		this.client = client;
 	}
 	
-	 
-
+	
 }

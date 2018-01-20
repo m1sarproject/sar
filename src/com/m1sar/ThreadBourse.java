@@ -125,7 +125,7 @@ public class ThreadBourse extends Thread {
 						cpt++;
 						nbOrdres--;
 						ordre_client= (Ordre)req;
-						System.out.println(" ordres reÃ§u: "+ordre_client.getEntrepriseName());
+						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
 
 					}
@@ -197,8 +197,12 @@ public class ThreadBourse extends Thread {
      * @rep : the answere : true/false
      */
     public void envoyerRep(int id,boolean rep) throws IOException {
+    	System.out.println("avant envoyer rep");
     	outObject.writeObject(id);
+    	outObject.flush();
 		outObject.writeObject(rep);
+		outObject.flush();
+		System.out.println("après envoyer rep");
     }
     
     public void incNbClient() {
@@ -207,6 +211,7 @@ public class ThreadBourse extends Thread {
     }
     
     public boolean estDispo() {
+    	
 		return (nbCustomer<2);
 	}
     
@@ -214,7 +219,19 @@ public class ThreadBourse extends Thread {
 		return nport;
 	}
     
-    public InetAddress getInetAddress() {
+    public int getNbCustomer() {
+		return nbCustomer;
+	}
+
+
+
+	public void setNbCustomer(int nbCustomer) {
+		this.nbCustomer = nbCustomer;
+	}
+
+
+
+	public InetAddress getInetAddress() {
 		return sCourtier.getInetAddress();
 	}
 		

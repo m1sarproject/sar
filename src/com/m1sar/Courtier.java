@@ -108,6 +108,7 @@ public void connexion(){
  *  */
 public void inscription(Socket sc) throws IOException {
 	outObjectB.writeObject(name);
+	outObjectB.flush();
 	
 }
 
@@ -153,10 +154,16 @@ public void run() {
 				    					outObjectB.flush();
 				    					//majClient();
 				    					System.out.println("je lis le nombre des clients restants");
-										String s=(String)inObjectB.readObject();
-										System.out.println("j'ai lu le nombre de clients"+ s);
-										nbCustomer=Integer.parseInt(s);
-									
+										Object c=inObjectB.readObject();
+										if(c instanceof String) {
+											String s=(String) c;
+											System.out.println("j'ai lu le nombre de clients string"+ s);
+											nbCustomer=Integer.parseInt(s);
+										}else {
+											nbCustomer=(Integer)c;
+											System.out.println("j'ai lu nombre client un entier"+nbCustomer);
+										}
+										
 				    					break;
 				    				}
 		    					if(rep.equals("null")){
@@ -197,7 +204,9 @@ public void run() {
 				    				}
 				    				
 		    						outObjectC.writeObject(idrecu);
+		    						outObjectC.flush();
 		    						outObjectC.writeObject(rep);
+		    						outObjectC.flush();
 		    						
 		    					}
 		    					nOrdre=0;
@@ -218,7 +227,9 @@ public void run() {
 				    				}
 				    				
 		    						outObjectC.writeObject(idrecu);
+		    						outObjectC.flush();
 		    						outObjectC.writeObject(rep);
+		    						outObjectC.flush();
 		    						
 		    					}
 		    					nOrdre=0;
@@ -240,6 +251,7 @@ public void run() {
     		if(nbCustomer==0) {	
 	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse");
 	    			outObjectB.writeObject("bye");
+	    			outObjectB.flush();
 	    			break;
     		}
 	    		
