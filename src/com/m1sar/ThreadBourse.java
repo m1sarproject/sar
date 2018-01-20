@@ -90,6 +90,7 @@ public class ThreadBourse extends Thread {
     	while(true){
     		try {	
 					System.out.println("Bourse recoit un message de courtier");
+					System.out.println(inObject.readObject());
 					Object req=inObject.readObject();
 					if(req instanceof Integer ) nbOrdres=(int) req;
 					if(req instanceof String) {
