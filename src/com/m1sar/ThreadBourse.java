@@ -103,14 +103,14 @@ public class ThreadBourse extends Thread {
 							String s=Integer.toString(nbCustomer);
 							outObject.writeObject(s);
 							outObject.flush();
-							System.out.println("j'ai envoyé à courtier"+s);
+							//System.out.println("j'ai envoyé à courtier "+s);
 						}
 						if(info.equals("bye")) {
-							/*if(bourse.getCourtiers().size()==1){
+							if(bourse.getCourtiers().size()==1){
 								bourse.updatePrice();
 								System.out.println();
-								System.out.println("Le jour numero t : "+bourse.getDayid());
-							}*/
+								System.out.println("Le jour numero : "+bourse.getDayid());
+							}
 							bourse.removeBroker(this);
 							break;
 						}
@@ -125,7 +125,6 @@ public class ThreadBourse extends Thread {
 						cpt++;
 						nbOrdres--;
 						ordre_client= (Ordre)req;
-						System.out.println(" ordres recu: "+ordre_client.getEntrepriseName());
 						SurReceptionDe(ordre_client);
 
 					}
@@ -197,12 +196,12 @@ public class ThreadBourse extends Thread {
      * @rep : the answere : true/false
      */
     public void envoyerRep(int id,boolean rep) throws IOException {
-    	System.out.println("avant envoyer rep");
+    	
     	outObject.writeObject(id);
     	outObject.flush();
 		outObject.writeObject(rep);
 		outObject.flush();
-		System.out.println("après envoyer rep");
+		
     }
     
     public void incNbClient() {

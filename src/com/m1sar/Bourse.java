@@ -186,7 +186,7 @@ public Ordre consommer(String nomCourtier) {
 					ThreadBourse th=getThreadByName(nomCourtier);
 					if(th!=null) {
 						th.envoyerRep(o.getId(), o.estAccepte);
-						System.out.println("reponse envoye"+o.estAccepte);
+						//System.out.println("reponse envoye"+o.estAccepte);
 					//avertir le courtier dont le nom est nomCourtier
 					}
 					
@@ -409,17 +409,19 @@ public Ordre consommer(String nomCourtier) {
 	public void initCompanies() {
 		
 		List<Entreprise> companies = new ArrayList<Entreprise>();
-		
-		Entreprise e1 = new Entreprise("Kerima Moda", 100,20);
+		Entreprise e0 = new Entreprise("Samsung", 100,20);
+		Entreprise e1 = new Entreprise("Adidas", 100,20);
 		Entreprise e2 = new Entreprise("Microsoft", 200,10);
 		Entreprise e3 = new Entreprise("Apple", 200,15);
 		Entreprise e4 = new Entreprise("Ubisoft", 150, 6);
 		
+		companies.add(e0);
 		companies.add(e1);
 		companies.add(e2);
 		companies.add(e3);
 		companies.add(e4);
 		
+		HashMap<String,Double> m0 = new HashMap<String,Double>();
 		HashMap<String,Double> m1 = new HashMap<String,Double>();
 		HashMap<String,Double> m2 = new HashMap<String,Double>();
 		HashMap<String,Double> m3 = new HashMap<String,Double>();
@@ -646,6 +648,8 @@ public Ordre consommer(String nomCourtier) {
 		
 		System.out.println("Bourse est ouverte ");
 		System.out.println("Le jour numero : "+bourse.dayid);
+		System.out.println("Etat du Marche : ");
+		System.out.println(bourse.prixParEntreprise);
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
 		AnnuaireClient bourseclient = new AnnuaireClient (++nport,bourse.courtiers); 
 		while(true) {		
@@ -654,11 +658,7 @@ public Ordre consommer(String nomCourtier) {
 		 		try{
 		 		
 		 
-		 		if ( bourse.courtiers.isEmpty() && bourse.dayid>0 ) {
-		 				
-			 			bourse.updatePrice();
-			 			System.out.println("Le jour numero : "+bourse.dayid);
-			 		}
+		 		
 		 		System.out.println("La bourse attend un courtier");
 				Socket courtierConnecte = serveurCourtier.accept();			
 				
