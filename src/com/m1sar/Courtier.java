@@ -130,7 +130,7 @@ public void run() {
 		    			inObjectC = new ObjectInputStream(inSC);
 		    			outObjectC = new ObjectOutputStream(outSC);
 		    			nomclient=(String)inObjectC.readObject(); 
-		    			System.out.println(" le client "+ nomclient+" vient de s'inscrire");
+		    			System.out.println("Le Client "+ nomclient+" vient de s'inscrire");
 		    			outObjectC.writeObject(name);
 		    			outObjectC.flush();
 		    			outObjectC.writeObject(new String("Bienvenu cher client "+nomclient+", vous pouvez envoyez vos ordre"));
@@ -153,13 +153,16 @@ public void run() {
 				    					outObjectB.writeObject("decreClient");
 				    					outObjectB.flush();
 				    					//majClient();
+				    					//System.out.println("je lis le nombre des clients restants");
 										Object c=inObjectB.readObject();
 										if(c instanceof String) {
 											String s=(String) c;
+											//System.out.println("j'ai lu le nombre de clients string"+ s);
 											nbCustomer=Integer.parseInt(s);
 										}else {
 											nbCustomer=(Integer)c;
-											
+											//System.out.println("j'ai lu nombre client un entier"+nbCustomer);
+
 										}
 										
 				    					break;
@@ -176,7 +179,7 @@ public void run() {
 		    					    nbOrdres--;
 		    					    //envoie de l'ordre a bourse
 		    					    Ordre ordre = (Ordre) req; 
-					    			System.out.println("j'ai recu l'ordre "+ordre.getId()+" du client"+nomclient);
+					    			System.out.println("j'ai recu l'ordre "+ordre.getEntrepriseName()+" du client : "+nomclient);
 					    			transmettreOrdreABourse(ordre);
 					    			System.out.println("j'ai transmis l'ordre a la bourse");
 			    					//ajouter l'ordre dans la liste d'ordre de courtier
@@ -188,6 +191,7 @@ public void run() {
 		    					//j'ai envoy√© les 2 ordres j'attends les acceptations de la bourse
 		    					for(int j=0;j<2;j++) {
 		    						System.out.println("j'attend que la bourse me reponde");
+
 				    				int idrecu=(Integer)inObjectB.readObject();
 				    				boolean rep=(boolean)inObjectB.readObject();
 				    				//r√©cup√©rer l'ordre dont j'ai recu la reponse
@@ -195,10 +199,12 @@ public void run() {
 				    				//calculer la commission
 				    				CalculCommission(rep, r);
 				    				if(rep==false) {
-				    					System.out.println("mon solde apres l'ordre N∞  "+r.getId()+" qui est refuse "+" est: "+accountBalance);
+
+				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" refuse est de : "+accountBalance);
 				    				}
 				    				else {
-				    					System.out.println("mon solde apres l'ordre N∞  "+r.getId()+" qui est accepte "+" est: "+accountBalance);
+				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" accepte est de : "+accountBalance);
+
 				    				}
 				    				
 		    						outObjectC.writeObject(idrecu);
@@ -218,10 +224,12 @@ public void run() {
 				    				Ordre r=getOrderById(idrecu);
 				    				CalculCommission(rep, r);
 				    				if(rep==false) {
-				    					System.out.println("mon solde apres l'ordre N∞ "+r.getId()+" qui est refuse "+" est: "+accountBalance);
+
+				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" refuse est de : "+accountBalance);
 				    				}
 				    				else {
-				    					System.out.println("mon solde apres l'ordre N∞  "+r.getId()+" qui est accepte "+" est: "+accountBalance);
+				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" accepte est de : "+accountBalance);
+
 				    				}
 				    				
 		    						outObjectC.writeObject(idrecu);
