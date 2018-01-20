@@ -14,6 +14,7 @@ import java.util.Vector;
 
 
 
+
 public class AnnuaireClient extends Thread {
 	
 	/** Port number of AnnuaireClient */
@@ -39,16 +40,21 @@ public class AnnuaireClient extends Thread {
 	 * @throws CourtierNotFoundException 
      */ 
 	public ThreadBourse getFreeCourtier()   {
-		
+		int n =100;
+		ThreadBourse t=null;
 		for (ThreadBourse courtier : listcourtiers) {
-			if (courtier.estDispo())  
+			if(n>courtier.getNbCustomer()) {
+				t=courtier;
+				n=courtier.getNbCustomer();
+			}
+			/*if (courtier.estDispo())  
 				{
 				courtier.incNbClient();
 				return courtier;	
-				}
+				}*/
 		}
-		
-		return null;
+		t.incNbClient();
+		return t;
 		
 	}
 	

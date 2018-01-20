@@ -1,7 +1,6 @@
 package com.m1sar;
 
 import java.util.ArrayList;
-@SuppressWarnings("unused")
 
 public class OrdreAchat extends Ordre{
 

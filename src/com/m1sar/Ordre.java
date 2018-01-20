@@ -3,7 +3,6 @@ package com.m1sar;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
 
 public abstract class Ordre implements Serializable {
 	

@@ -3,7 +3,6 @@ package com.m1sar;
 import java.util.ArrayList;
 import java.util.Vector;
 
-@SuppressWarnings("unused")
 public class Entreprise {
 
 	private String name;

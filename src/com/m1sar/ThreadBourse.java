@@ -18,7 +18,7 @@ import java.util.Vector;
 
 
 
-@SuppressWarnings("unused")
+
 public class ThreadBourse extends Thread {
 
 	/** Socket to communicate with the broker*/
@@ -103,7 +103,7 @@ public class ThreadBourse extends Thread {
 							String s=Integer.toString(nbCustomer);
 							outObject.writeObject(s);
 							outObject.flush();
-							System.out.println("j'ai envoyï¿½ ï¿½ courtier"+s);
+							System.out.println("j'ai envoyé à courtier"+s);
 						}
 						if(info.equals("bye")) {
 							/*if(bourse.getCourtiers().size()==1){
@@ -202,7 +202,7 @@ public class ThreadBourse extends Thread {
     	outObject.flush();
 		outObject.writeObject(rep);
 		outObject.flush();
-		System.out.println("aprï¿½s envoyer rep");
+		System.out.println("après envoyer rep");
     }
     
     public void incNbClient() {
