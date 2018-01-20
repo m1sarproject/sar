@@ -64,7 +64,7 @@ public class AnnuaireClient extends Thread {
 		while (true) {
 			
 			clientConnecte = serveurClient.accept();
-			System.out.println("Connexion client accepter par BourseClient");	
+			System.out.println("Le client s'est connecte et recupere les informations de son courtier");	
 			ThreadBourse tcourtier=null;
 			tcourtier = getFreeCourtier();
 			OutputStream outS=clientConnecte.getOutputStream();
