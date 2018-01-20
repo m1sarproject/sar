@@ -88,11 +88,11 @@ public void connexion(){
 	
 	try {
 	    sc= new Socket(hote,port);
-	    inscription(sc);
 		outSB=sc.getOutputStream();
 		outObjectB= new ObjectOutputStream(outSB);
 		inSB=sc.getInputStream(); //communication avec bourse
 		inObjectB = new ObjectInputStream(inSB);
+		inscription(sc);
 		this.portecoute=inObjectB.readInt();
 		prixParEntreprise=(HashMap<String,Double>)inObjectB.readObject();
 		
@@ -107,10 +107,7 @@ public void connexion(){
  *  @param Socket sc : the socket to send the name to the market
  *  */
 public void inscription(Socket sc) throws IOException {
-	
-	OutputStream outS=sc.getOutputStream();
-	out=new PrintWriter(outS,true);
-	out.println(name);
+	outObjectB.writeObject(name);
 	
 }
 
@@ -153,11 +150,17 @@ public void run() {
 		    					if(rep.equals("bye")) {
 				    					//supprimer le client et fermer sa socket et decremente nbcustumer
 				    					outObjectB.writeObject("decreClient");
-				    					majClient();
+				    					outObjectB.flush();
+				    					//majClient();
+				    					System.out.println("je lis le nombre des clients restants");
+										String s=(String)inObjectB.readObject();
+										System.out.println("j'ai lu le nombre de clients"+ s);
+										nbCustomer=Integer.parseInt(s);
+									
 				    					break;
 				    				}
 		    					if(rep.equals("null")){
-		    					    nbOrdres--;
+		    					   nbOrdres--;
 		    					   outObjectB.writeObject("null");
 		    					   outObjectB.flush();
 		    					}
@@ -200,10 +203,7 @@ public void run() {
 		    					nOrdre=0;
 		    				}
 
-		    				
-		    				
 		    				if(nOrdre<2 && nbOrdres==0){
-
 		    					for(int j=0;j<nOrdre;j++) {
 				    				int idrecu=(Integer)inObjectB.readObject();
 				    				boolean rep=(boolean)inObjectB.readObject();
@@ -236,18 +236,8 @@ public void run() {
 					e.printStackTrace();
 				}
     			
-    		if(nbCustomer<=0) {
-	    		try {
-	    			    System.out.println(prefixe() + "Je n'ai aucun client, J'attend si un client me contacte");
-						Thread.sleep(timeLimit);//attendre un peu avant de me deconnecter dans le cas ou un client peut me contacter
-    					nbCustomer=inObjectB.readInt();
-					} 
-	    		catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-    		}
 	    		
-    		if(nbCustomer<=0) {	
+    		if(nbCustomer==0) {	
 	    			System.out.println(prefixe() + "Je n'ai plus de clients, je me deconnecte de la bourse");
 	    			outObjectB.writeObject("bye");
 	    			break;

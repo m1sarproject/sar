@@ -104,6 +104,7 @@ public class Client {
 				outObject=new ObjectOutputStream(connexionCourtier.getOutputStream());
 				inObject = new ObjectInputStream(connexionCourtier.getInputStream());
 				inscription(); 
+				System.out.println("je recupere nom du courtier");
 				nameCourtier= (String) inObject.readObject();
 				System.out.println(nameCourtier+" : "+(String)inObject.readObject());
 			  }
@@ -111,7 +112,7 @@ public class Client {
 			}
 
 			catch (Exception e) {
-				
+				System.out.println(e.getStackTrace());
 			}
 	}
 	

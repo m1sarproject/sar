@@ -56,6 +56,8 @@ public class ThreadBourse extends Thread {
 				inS =sCourtier.getInputStream();
 				outObject = new ObjectOutputStream(outS);
 				inObject = new ObjectInputStream(inS);
+				nomCourtier=(String)inObject.readObject();
+				System.out.println("Le nom du courtier est : "+nomCourtier);
 				System.out.println("J'envoi le numero de port au courtier ");
 				outObject.writeInt(nport);
 				outObject.flush();
@@ -63,6 +65,9 @@ public class ThreadBourse extends Thread {
 				outObject.flush();
 
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -89,25 +94,23 @@ public class ThreadBourse extends Thread {
     	int cpt=0;
     	while(true){
     		try {	
-
-					
-					
-
 					Object req=inObject.readObject();
 					if(req instanceof Integer ) nbOrdres=(int) req;
 					if(req instanceof String) {
 						String info=(String)req;
 						if(info.equals("decreClient")) {
 							nbCustomer--;
-							outObject.writeInt(nbCustomer);
+							String s=Integer.toString(nbCustomer);
+							outObject.writeObject(s);
 							outObject.flush();
+							System.out.println("j'ai envoyé à courtier"+s);
 						}
 						if(info.equals("bye")) {
-							if(bourse.getCourtiers().size()==1){
+							/*if(bourse.getCourtiers().size()==1){
 								bourse.updatePrice();
 								System.out.println();
-								System.out.println("Le jour numero : "+bourse.getDayid());
-							}
+								System.out.println("Le jour numero t : "+bourse.getDayid());
+							}*/
 							bourse.removeBroker(this);
 							break;
 						}

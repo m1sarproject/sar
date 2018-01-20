@@ -661,10 +661,10 @@ public Ordre consommer(String nomCourtier) {
 				
 				System.out.println("Connexion Courtier acceptee par Bourse");	
 				
-				BufferedReader in =new BufferedReader(new InputStreamReader(courtierConnecte.getInputStream()));
-				String nomcourtier = in.readLine();
-				
-				System.out.println("Le nom du courtier est : "+nomcourtier);
+				//BufferedReader in =new BufferedReader(new InputStreamReader(courtierConnecte.getInputStream()));
+			//	String nomcourtier = in.readLine();
+				String nomcourtier="test";
+				//System.out.println("Le nom du courtier est : "+nomcourtier);
 				
 				ThreadBourse tc=new ThreadBourse(courtierConnecte,++nport, bourse, nomcourtier);
 				bourse.addBroker(tc);		
