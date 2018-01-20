@@ -47,13 +47,8 @@ public class AnnuaireClient extends Thread {
 				t=courtier;
 				n=courtier.getNbCustomer();
 			}
-			/*if (courtier.estDispo())  
-				{
-				courtier.incNbClient();
-				return courtier;	
-				}*/
 		}
-		t.incNbClient();
+		if(t!=null)t.incNbClient();
 		return t;
 		
 	}

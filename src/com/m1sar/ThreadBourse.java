@@ -103,7 +103,6 @@ public class ThreadBourse extends Thread {
 							String s=Integer.toString(nbCustomer);
 							outObject.writeObject(s);
 							outObject.flush();
-							System.out.println("j'ai envoyé à courtier"+s);
 						}
 						if(info.equals("bye")) {
 							/*if(bourse.getCourtiers().size()==1){

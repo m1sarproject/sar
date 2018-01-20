@@ -153,15 +153,13 @@ public void run() {
 				    					outObjectB.writeObject("decreClient");
 				    					outObjectB.flush();
 				    					//majClient();
-				    					System.out.println("je lis le nombre des clients restants");
 										Object c=inObjectB.readObject();
 										if(c instanceof String) {
 											String s=(String) c;
-											System.out.println("j'ai lu le nombre de clients string"+ s);
 											nbCustomer=Integer.parseInt(s);
 										}else {
 											nbCustomer=(Integer)c;
-											System.out.println("j'ai lu nombre client un entier"+nbCustomer);
+											
 										}
 										
 				    					break;
@@ -189,7 +187,7 @@ public void run() {
 
 		    					//j'ai envoyé les 2 ordres j'attends les acceptations de la bourse
 		    					for(int j=0;j<2;j++) {
-		    						System.out.println("j'attend que la bourse me réponde");
+		    						System.out.println("j'attend que la bourse me reponde");
 				    				int idrecu=(Integer)inObjectB.readObject();
 				    				boolean rep=(boolean)inObjectB.readObject();
 				    				//récupérer l'ordre dont j'ai recu la reponse
@@ -197,10 +195,10 @@ public void run() {
 				    				//calculer la commission
 				    				CalculCommission(rep, r);
 				    				if(rep==false) {
-				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est refuse "+" est: "+accountBalance);
+				    					System.out.println("mon solde apres l'ordre N�  "+r.getId()+" qui est refuse "+" est: "+accountBalance);
 				    				}
 				    				else {
-				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est accepte "+" est: "+accountBalance);
+				    					System.out.println("mon solde apres l'ordre N�  "+r.getId()+" qui est accepte "+" est: "+accountBalance);
 				    				}
 				    				
 		    						outObjectC.writeObject(idrecu);
@@ -220,10 +218,10 @@ public void run() {
 				    				Ordre r=getOrderById(idrecu);
 				    				CalculCommission(rep, r);
 				    				if(rep==false) {
-				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est refuse "+" est: "+accountBalance);
+				    					System.out.println("mon solde apres l'ordre N� "+r.getId()+" qui est refuse "+" est: "+accountBalance);
 				    				}
 				    				else {
-				    					System.out.println("mon solde après l'ordre N° "+r.getId()+" qui est accepte "+" est: "+accountBalance);
+				    					System.out.println("mon solde apres l'ordre N�  "+r.getId()+" qui est accepte "+" est: "+accountBalance);
 				    				}
 				    				
 		    						outObjectC.writeObject(idrecu);
