@@ -18,6 +18,10 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
+import com.m1sar.Entreprise;
+import com.m1sar.Ordre;
+import com.m1sar.ThreadBourse;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -28,6 +32,7 @@ import javafx.stage.Stage;
 
 
 
+@SuppressWarnings("unused")
 public class Bourse {
 
 	/** list of all companies available in the market  */
@@ -167,8 +172,11 @@ public Ordre consommer(String nomCourtier) {
      */
 	
 	public void accord(String nomCourtier) throws IOException { 
+		
+
 		Ordre o=consommer(nomCourtier);
-		if((o!=null)&&o.estAccepte==false) {
+		System.out.println(o);
+		if(o!=null) {
 			Entreprise concerned = this.getByName(o.getEntrepriseName());
 			if (o instanceof OrdreAchat) {
 				System.out.println("Bource traite OrdreAchat de "+o.getClientName()+" : "+o.getEntrepriseName()+", quantite : "+o.getQuantiteClient());		
@@ -186,7 +194,6 @@ public Ordre consommer(String nomCourtier) {
 					ThreadBourse th=getThreadByName(nomCourtier);
 					if(th!=null) {
 						th.envoyerRep(o.getId(), o.estAccepte);
-						System.out.println("reponse envoye"+o.estAccepte);
 					//avertir le courtier dont le nom est nomCourtier
 					}
 					
@@ -205,8 +212,7 @@ public Ordre consommer(String nomCourtier) {
 								ThreadBourse th2=getThreadByName(ordre.getNomCourtier());
 								if(th1!=null && th2!=null) {
 									th1.envoyerRep(o.getId(), o.estAccepte);
-									ordre.setEstAccepte(true);
-									//th2.envoyerRep(ordre.getId(), true);
+									th2.envoyerRep(ordre.getId(), true);
 									break;
 								}
 							}
@@ -236,8 +242,7 @@ public Ordre consommer(String nomCourtier) {
 						ThreadBourse th2=getThreadByName(ordre.getNomCourtier());
 						if(th1!=null && th2!=null) {
 							th1.envoyerRep(o.getId(), o.estAccepte);
-							ordre.setEstAccepte(true);
-							//th2.envoyerRep(ordre.getId(), true);
+							th2.envoyerRep(ordre.getId(), true);
 							break;
 						}
 					}
@@ -257,11 +262,8 @@ public Ordre consommer(String nomCourtier) {
 			}
 		}
 		else {
-			if(o!=null) {
-				ThreadBourse th=getThreadByName(nomCourtier);
-				th.envoyerRep(o.getId(), o.estAccepte);
-			}
-			
+
+			System.out.println("Pas d'ordre pour ce Courtier");
 
 		}
 	
@@ -685,5 +687,4 @@ public Ordre consommer(String nomCourtier) {
 		 		
 		 	 }
 		 }
-		
 	}

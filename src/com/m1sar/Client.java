@@ -255,7 +255,6 @@ public class Client {
 					cpt=0;
 				}
 				outObject.writeObject(new String("bye"));
-				outObject.flush();
 				System.out.println("Client "+nameClient+" a fini d envoyer des ORDRES");
 				deconnexion();
 			} catch (ClassNotFoundException e) {

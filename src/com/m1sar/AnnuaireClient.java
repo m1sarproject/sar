@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
-import com.exceptions.CourtierNotFoundException;
-
 
 
 public class AnnuaireClient extends Thread {
@@ -41,21 +39,16 @@ public class AnnuaireClient extends Thread {
 	 * @throws CourtierNotFoundException 
      */ 
 	public ThreadBourse getFreeCourtier()   {
-		int n =100;
-		ThreadBourse t=null;
+		
 		for (ThreadBourse courtier : listcourtiers) {
-			if(n>courtier.getNbCustomer()) {
-				t=courtier;
-				n=courtier.getNbCustomer();
-			}
-			/*if (courtier.estDispo())  
+			if (courtier.estDispo())  
 				{
 				courtier.incNbClient();
 				return courtier;	
-				}*/
+				}
 		}
-		t.incNbClient();
-		return t;
+		
+		return null;
 		
 	}
 	

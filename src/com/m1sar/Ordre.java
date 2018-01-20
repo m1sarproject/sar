@@ -3,7 +3,7 @@ package com.m1sar;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.exceptions.CourtierNotFoundException;
+@SuppressWarnings("unused")
 
 public abstract class Ordre implements Serializable {
 	
