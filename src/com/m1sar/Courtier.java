@@ -262,7 +262,10 @@ public void run() {
     	
 	} catch (IOException e) {
 		e.printStackTrace();
-	} 
+	}
+	finally {
+		deconnexion();
+	}
 	
 	
 }
@@ -316,7 +319,20 @@ public void transmettreOrdreABourse( Ordre ordre) throws IOException {
 public String prefixe() {
 	return name+" : ";
 }
-
+public void deconnexion(){
+	
+	try {
+		outObjectB.close();
+		inObjectB.close();
+		outObjectC.close();
+		inObjectC.close();
+		sc.close();
+		currentClient.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	
+}
 
 public static void main(String[] args) throws UnknownHostException {
 	

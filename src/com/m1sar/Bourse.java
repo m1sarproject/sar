@@ -41,7 +41,7 @@ public class Bourse {
 	/** list of orders that the market have to check  */
 	private Vector<Ordre> ordres=new Vector<Ordre>();
 	/** number of the current day  */
-	private int dayid=0; 
+	private int dayid=1; 
 	
 	public Bourse() {
 		
@@ -71,6 +71,7 @@ public class Bourse {
 			
 			listeGraphe.add(prixParEntreprise);
 			dayid++;
+			System.out.println(prixParEntreprise);
 			writeToFile(prixParEntreprise);
 			return prixParEntreprise;
 			
@@ -406,10 +407,10 @@ public Ordre consommer(String nomCourtier) {
 		
 		List<Entreprise> companies = new ArrayList<Entreprise>();
 		
-		Entreprise e1 = new Entreprise("Kerima Moda", 10,2);
-		Entreprise e2 = new Entreprise("Microsoft", 20,10);
-		Entreprise e3 = new Entreprise("Apple", 20,15);
-		Entreprise e4 = new Entreprise("Ubisoft", 15, 6);
+		Entreprise e1 = new Entreprise("Kerima Moda", 100,20);
+		Entreprise e2 = new Entreprise("Microsoft", 200,10);
+		Entreprise e3 = new Entreprise("Apple", 200,15);
+		Entreprise e4 = new Entreprise("Ubisoft", 150, 6);
 		
 		companies.add(e1);
 		companies.add(e2);

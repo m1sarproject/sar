@@ -40,7 +40,7 @@ public class AnnuaireClient extends Thread {
      * Gets an avialable broker and sets it to the client
 	 * @throws CourtierNotFoundException 
      */ 
-	public ThreadBourse getFreeCourtier() throws CourtierNotFoundException {
+	public ThreadBourse getFreeCourtier()   {
 		
 		for (ThreadBourse courtier : listcourtiers) {
 			if (courtier.estDispo())  
@@ -50,7 +50,8 @@ public class AnnuaireClient extends Thread {
 				}
 		}
 		
-		throw new CourtierNotFoundException("Pas de courtier disponible");
+		return null;
+		
 	}
 	
 	
@@ -66,12 +67,7 @@ public class AnnuaireClient extends Thread {
 			clientConnecte = serveurClient.accept();
 			System.out.println("Connexion client accepter par BourseClient");	
 			ThreadBourse tcourtier=null;
-			try {
-				tcourtier = getFreeCourtier();
-			} catch (CourtierNotFoundException e) {
-				System.out.println("Pas de courtier disponible");
-				e.printStackTrace();
-			}
+			tcourtier = getFreeCourtier();
 			OutputStream outS=clientConnecte.getOutputStream();
 			ObjectOutputStream outObject=new ObjectOutputStream(outS);
 			if(tcourtier!=null) {

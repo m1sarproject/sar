@@ -89,8 +89,10 @@ public class ThreadBourse extends Thread {
     	int cpt=0;
     	while(true){
     		try {	
-					System.out.println("Bourse recoit un message de courtier");
-					System.out.println(inObject.readObject());
+
+					
+					
+
 					Object req=inObject.readObject();
 					if(req instanceof Integer ) nbOrdres=(int) req;
 					if(req instanceof String) {
@@ -99,7 +101,6 @@ public class ThreadBourse extends Thread {
 							nbCustomer--;
 							outObject.writeInt(nbCustomer);
 							outObject.flush();
-							System.out.println("j'ai envoy� � courtier nbcustumer");
 						}
 						if(info.equals("bye")) {
 							if(bourse.getCourtiers().size()==1){
@@ -111,8 +112,7 @@ public class ThreadBourse extends Thread {
 							break;
 						}
 						if(req.equals("null")){
-							System.out.println("Je suis null threadBourse");
-    					
+	   					
     					    nbOrdres--;
     					}
 					}
@@ -131,7 +131,7 @@ public class ThreadBourse extends Thread {
 
 
 						for (int i = 0; i < 2; i++) {
-							System.out.println("je repond au courtier acceptation ");
+							
 
 							bourse.accord(nomCourtier);
 							
@@ -140,7 +140,7 @@ public class ThreadBourse extends Thread {
 					}
 					if(cpt<2 && nbOrdres==0){
 						for (int i = 0; i < cpt; i++) {
-							System.out.println("Je repond au courtier : acceptation ");
+							
 						    bourse.accord(nomCourtier);
 							
 						}
