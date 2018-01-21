@@ -25,7 +25,16 @@ La classe Client qui peut acheter ou vendre des actions
 
 @SuppressWarnings("unused")
 public class Client {
-
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+	
 	public static int cpt=0;
 
 	
@@ -77,7 +86,7 @@ public class Client {
 			
 		} 
 		else {
-			System.out.println("Aucun courtier n'est disponible");
+			System.out.println(ANSI_RED+"Aucun courtier n'est disponible"+ANSI_RESET);
 		}
 	}
 	 /**@author Vitalina
@@ -162,7 +171,7 @@ public class Client {
 			return null;
 		}
 		if ( ! venteLegal(entreprise,quantite) ) {
-			System.out.println("ce Vente n est pas legal");
+			System.out.println("Cette vente n'est pas legal !");
 			return null;
 		}
 		
@@ -183,7 +192,7 @@ public class Client {
 		Ordre ordre=null;
 		try {
 			System.out.println("Echange des ORDRES");
-			System.out.print("Donnez le nbOrdres a creer : ");
+			System.out.print(ANSI_GREEN+"Donnez le nombres d'ordres a creer : "+ANSI_RESET);
 			int nbOrdre=lect.nextInt();
 			lect.nextLine();
 			int cpt=0;//compte le nbordre qu on va envoyer au courtier
@@ -194,23 +203,23 @@ public class Client {
 			
 			while(nbOrdre!=0){
 			
-					System.out.print("Donnez l Ordre a cree 'v'-Vente ou 'a'-Achat : ");
+					System.out.print(ANSI_GREEN+"Donnez l'ordre a creer 'v'pour Vente ou 'a'pour Achat : ");
 					String r=lect.nextLine();
-					System.out.print("Donnez le nom de l entreprise : ");
+					System.out.print("Indiquez le nom de l'entreprise : ");
 					String nom_entreprise=lect.nextLine();
-					System.out.print("Donnez le prix : ");
+					System.out.print("Indiquez le prix : ");
 					Double prix=lect.nextDouble();
 					lect.nextLine();
-					System.out.print("Donnez le nombre d actions a acheter ou vendre : ");
+					System.out.print("Donnez le nombre d'actions que vous souhaitez: "+ANSI_RESET);
 					int nbActions=lect.nextInt();
 					lect.nextLine();
 					
-					if(r.equals("a")){
+					if(r.equals("a") || r.equals("A")) {
 						
 						ordre=acheter(prix, nbActions, nom_entreprise);
 						Produir(ordre);
 						if(ordre!=null){
-							System.out.println("OrdreAchat bien envoyer");
+							System.out.println("OrdreAchat transmis avec succes");
 							}
 						
 						
@@ -219,7 +228,7 @@ public class Client {
 						ordre=vendre(prix, nbActions, nom_entreprise);
 						Produir(ordre);
 						if(ordre!=null){
-						System.out.println("OrdreVente bien envoyer");
+						System.out.println("OrdreVente transmis avec succes");
 						}
 					}
 					if(ordre!=null){
@@ -242,20 +251,20 @@ public class Client {
 				
 				}
 				if(cpt!=0){
-					System.out.println("J attends la reponse de la Bourse");
+					System.out.println("Jattends la reponse de la Bourse");
 					for(int j=0;j<cpt;j++){
 						int idOrdre = (int) inObject.readObject();
 						boolean yesOuNon=(boolean) inObject.readObject();
 						getReponseBource(idOrdre,yesOuNon);
-						System.out.println("Portefeille de Client : "+portefeuille);
-						System.out.println("Solde de Client : "+solde);
+						System.out.println(ANSI_GREEN+"Voici le Portefeille du Client : "+portefeuille);
+						System.out.println("Solde actuel du client Client : "+solde+ANSI_RESET);
 					
 					}
 					cpt=0;
 				}
 				outObject.writeObject(new String("bye"));
 				outObject.flush();
-				System.out.println("Client "+nameClient+" a fini d envoyer des ORDRES");
+				System.out.println("Client "+nameClient+" a fini de transmettre ses ordres");
 				deconnexion();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -432,11 +441,11 @@ public class Client {
 			}
 			
 		}
-		if(r instanceof OrdreAchat ){
-			System.out.println("Client "+nameClient+" envoie un Ordre d Achat au Courtier : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+",  prix : "+r.getPrixUnitaire());
+		if(r instanceof OrdreAchat ){ 
+			System.out.println(ANSI_GREEN+"Client "+nameClient+" envoie un Ordre d Achat au Courtier : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+",  prix : "+r.getPrixUnitaire()+ANSI_RESET);
 		}
 		if(r instanceof OrdreVente){
-			System.out.println("Client "+nameClient+" envoie un Ordre de Vente au Courtier : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+",  prix : "+r.getPrixUnitaire());
+			System.out.println(ANSI_GREEN+"Client "+nameClient+" envoie un Ordre de Vente au Courtier : "+r.getEntrepriseName()+", quantite : "+r.getQuantiteClient()+",  prix : "+r.getPrixUnitaire()+ANSI_RESET);
 		}
 		try {
 			outObject.writeObject(r);
@@ -455,7 +464,7 @@ public class Client {
 		int nport = Integer.parseInt(args[0]);
 		InetAddress hote = InetAddress.getByName(args[1]);
 		Scanner lect = new Scanner(System.in);
-		System.out.println("Donnez le nom du client :");
+		System.out.println(ANSI_GREEN+"Donnez le nom du client :"+ANSI_RESET);
 		String nom=lect.nextLine();
 		Client client = new Client (nom,100000.0,nport,hote);
 		

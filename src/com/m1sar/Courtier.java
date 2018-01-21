@@ -22,6 +22,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Courtier extends Thread{
 
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
 
 private String name;
 /** nb is used to ensure that the name of the broker is unique */
@@ -179,9 +188,9 @@ public void run() {
 		    					    nbOrdres--;
 		    					    //envoie de l'ordre a bourse
 		    					    Ordre ordre = (Ordre) req; 
-					    			System.out.println("j'ai recu l'ordre "+ordre.getEntrepriseName()+" du client : "+nomclient);
+					    			System.out.println("J'ai recu l'ordre "+ANSI_GREEN+ordre.getEntrepriseName()+ANSI_RESET+" du client : "+nomclient);
 					    			transmettreOrdreABourse(ordre);
-					    			System.out.println("j'ai transmis l'ordre a la bourse");
+					    			System.out.println("J'ai transmis l'ordre a la bourse");
 			    					//ajouter l'ordre dans la liste d'ordre de courtier
 			    					listeOrdre.add(ordre);
 		    				}
@@ -190,7 +199,7 @@ public void run() {
 
 		    					//j'ai envoyé les 2 ordres j'attends les acceptations de la bourse
 		    					for(int j=0;j<2;j++) {
-		    						System.out.println("j'attend que la bourse me reponde");
+		    						System.out.println("J'attend que la bourse me reponde");
 
 				    				int idrecu=(Integer)inObjectB.readObject();
 				    				boolean rep=(boolean)inObjectB.readObject();
@@ -200,10 +209,10 @@ public void run() {
 				    				CalculCommission(rep, r);
 				    				if(rep==false) {
 
-				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" refuse est de : "+accountBalance);
+				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" refuse est de : "+ANSI_GREEN+accountBalance+ANSI_RESET);
 				    				}
 				    				else {
-				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" accepte est de : "+accountBalance);
+				    					System.out.println("mon solde apres avoir recu l'ordre "+r.getEntrepriseName()+" accepte est de : "+ANSI_GREEN+accountBalance+ANSI_RESET);
 
 				    				}
 				    				
@@ -350,7 +359,7 @@ public static void main(String[] args) throws UnknownHostException {
 	System.out.println("Donnez le nom du courtier :");
 	String nom=lect.nextLine();
 	Courtier b=new Courtier(nom,nport,hote);
-	System.out.println("je me suis connecte a la bourse");
+	System.out.println(ANSI_GREEN+"je me suis connecte a la bourse"+ANSI_RESET);
 	
 	}
 

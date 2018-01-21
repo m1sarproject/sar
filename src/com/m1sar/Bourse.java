@@ -28,8 +28,19 @@ import javafx.stage.Stage;
 
 
 
+
 public class Bourse {
 
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+	
 	/** list of all companies available in the market  */
 	private Vector<Entreprise> entreprises = new Vector<Entreprise> ();
 	/** list of all brokers working in the market  */
@@ -89,7 +100,7 @@ public class Bourse {
 	           oos.writeObject(informations);
 	           oos.close();
 	           fos.close();
-	           System.out.printf("Les informations de la journnee ont bien ete sauvegardees");
+	           System.out.printf(ANSI_GREEN+"Les informations de la journnee ont bien ete sauvegardees"+ANSI_RESET);
 	     }catch(IOException ioe) {
 	           ioe.printStackTrace();
 	     }
@@ -134,7 +145,7 @@ public class Bourse {
 			if (entreprise.getName().equals(name)) return entreprise;
 		}
 		
-		throw new NoSuchElementException("L'entreprise que vous cherchez n'existe pas");
+		throw new NoSuchElementException(ANSI_RED+"L'entreprise que vous cherchez n'existe pas"+ANSI_RESET);
 	}
 
 	/**
@@ -614,10 +625,13 @@ public Ordre consommer(String nomCourtier) {
         Affichage.main(args);
 		
 	}
+	
+	
+	
 	public static void main(String[] args) throws IOException{
 
 		int nport=0;
-		
+
 		try {
 			
 			nport=Integer.parseInt(args[0]);
@@ -628,7 +642,7 @@ public Ordre consommer(String nomCourtier) {
 		catch (ArrayIndexOutOfBoundsException e) {
 			
 
-			System.out.println("Veuillez entre un numero de port valable");
+			System.out.println(ANSI_GREEN + "Bonjour, Veuillez entrer un numero de port valable : "+ ANSI_RESET);
 			Scanner in = new Scanner(System.in);
 			nport = Integer.parseInt(in.nextLine());
 		}
@@ -646,9 +660,9 @@ public Ordre consommer(String nomCourtier) {
 		catch (Exception e) {System.err.println("La creation du serveur d'ecoute a echoue");}
 		
 		
-		System.out.println("Bourse est ouverte ");
-		System.out.println("Le jour numero : "+bourse.dayid);
-		System.out.println("Etat du Marche : ");
+		System.out.println("La Bourse est ouverte ");
+		System.out.println("Nous sommes au jour numero : "+bourse.dayid);
+		System.out.println("L'Etat du Marche : ");
 		System.out.println(bourse.prixParEntreprise);
 		System.out.println("Le serveur courtier est a l'ecoute sur le port "+nport);
 		AnnuaireClient bourseclient = new AnnuaireClient (++nport,bourse.courtiers); 
@@ -659,10 +673,10 @@ public Ordre consommer(String nomCourtier) {
 		 		
 		 
 		 		
-		 		System.out.println("La bourse attend un courtier");
+		 		System.out.println("La bourse attend un courtier \n");
 				Socket courtierConnecte = serveurCourtier.accept();			
 				
-				System.out.println("Connexion Courtier acceptee par Bourse");	
+				System.out.println(ANSI_GREEN + "La connexion du Courtier est acceptee par la Bourse \n"+ ANSI_RESET);	
 				
 				//BufferedReader in =new BufferedReader(new InputStreamReader(courtierConnecte.getInputStream()));
 			//	String nomcourtier = in.readLine();
