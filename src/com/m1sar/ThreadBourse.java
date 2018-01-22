@@ -39,10 +39,9 @@ public class ThreadBourse extends Thread {
 	
 	
 	
-	  public ThreadBourse(Socket sCourtier,int nport, Bourse b,String nom) {
+	  public ThreadBourse(Socket sCourtier,int nport, Bourse b) {
 			super();
 			this.bourse=b;
-			this.nomCourtier=nom;
 			this.sCourtier = sCourtier;
 			this.nport=nport;
 			start();
@@ -58,7 +57,6 @@ public class ThreadBourse extends Thread {
 				inObject = new ObjectInputStream(inS);
 				nomCourtier=(String)inObject.readObject();
 				System.out.println("Le nom du courtier est : "+nomCourtier);
-				System.out.println("J'envoi le numero de port au courtier ");
 				outObject.writeInt(nport);
 				outObject.flush();
 				outObject.writeObject(bourse.getPrixParEntreprise());

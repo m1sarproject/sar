@@ -81,7 +81,7 @@ public Courtier(String name,int port,InetAddress hte) {
 
 
 /**
- * informe le client de la transaction (accord) effectuï¿½e pour qu'ils mettent ï¿½ jours leurs portefeuilles
+ * informe le client de la transaction (accord) effectue pour qu'ils mettent ï¿½ jours leurs portefeuilles
  */
 public void SendAccordInformation() {
 	
@@ -161,16 +161,14 @@ public void run() {
 				    					//supprimer le client et fermer sa socket et decremente nbcustumer
 				    					outObjectB.writeObject("decreClient");
 				    					outObjectB.flush();
-				    					//majClient();
-				    					//System.out.println("je lis le nombre des clients restants");
 										Object c=inObjectB.readObject();
 										if(c instanceof String) {
 											String s=(String) c;
-											//System.out.println("j'ai lu le nombre de clients string"+ s);
+											
 											nbCustomer=Integer.parseInt(s);
 										}else {
 											nbCustomer=(Integer)c;
-											//System.out.println("j'ai lu nombre client un entier"+nbCustomer);
+											
 
 										}
 										

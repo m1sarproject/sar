@@ -58,7 +58,7 @@ public class AnnuaireClient extends Thread {
 		
 		try {
 			serveurClient = new ServerSocket(nport);
-			System.out.println("Le serveur client est a l'ecoute sur le port "+nport);
+			System.out.println("L'annuaire client  est a l'ecoute sur le port "+nport);
 		
 		
 		while (true) {
@@ -74,7 +74,6 @@ public class AnnuaireClient extends Thread {
 			    outObject.flush();
 			    outObject.writeInt(tcourtier.getNport());
 			    outObject.flush();
-			    System.out.println("Envoie des parametres au client reussi");
 			}
 			else {
 				outObject.writeObject("Aucun Courtier n'est disponible");

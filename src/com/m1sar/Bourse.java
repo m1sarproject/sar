@@ -197,7 +197,7 @@ public Ordre consommer(String nomCourtier) {
 					ThreadBourse th=getThreadByName(nomCourtier);
 					if(th!=null) {
 						th.envoyerRep(o.getId(), o.estAccepte);
-						//System.out.println("reponse envoye"+o.estAccepte);
+						
 					//avertir le courtier dont le nom est nomCourtier
 					}
 					
@@ -217,7 +217,7 @@ public Ordre consommer(String nomCourtier) {
 								if(th1!=null && th2!=null) {
 									th1.envoyerRep(o.getId(), o.estAccepte);
 									ordre.setEstAccepte(true);
-									//th2.envoyerRep(ordre.getId(), true);
+									
 									break;
 								}
 							}
@@ -248,7 +248,7 @@ public Ordre consommer(String nomCourtier) {
 						if(th1!=null && th2!=null) {
 							th1.envoyerRep(o.getId(), o.estAccepte);
 							ordre.setEstAccepte(true);
-							//th2.envoyerRep(ordre.getId(), true);
+							
 							break;
 						}
 					}
@@ -678,12 +678,7 @@ public Ordre consommer(String nomCourtier) {
 				
 				System.out.println(ANSI_GREEN + "La connexion du Courtier est acceptee par la Bourse \n"+ ANSI_RESET);	
 				
-				//BufferedReader in =new BufferedReader(new InputStreamReader(courtierConnecte.getInputStream()));
-			//	String nomcourtier = in.readLine();
-				String nomcourtier="test";
-				//System.out.println("Le nom du courtier est : "+nomcourtier);
-				
-				ThreadBourse tc=new ThreadBourse(courtierConnecte,++nport, bourse, nomcourtier);
+				ThreadBourse tc=new ThreadBourse(courtierConnecte,++nport, bourse);
 				bourse.addBroker(tc);		
 
 				}
