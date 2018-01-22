@@ -18,13 +18,13 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Vector;
 
-import javafx.application.Application;
+/*import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
+import javafx.stage.Stage;*/
 
 
 
@@ -549,7 +549,7 @@ public Ordre consommer(String nomCourtier) {
 
 
 
-	public static class Affichage extends Application {
+	/*public static class Affichage extends Application {
 		
 		
 		private ArrayList <HashMap<String,Double>> prixParEntreprise  = new  ArrayList <HashMap<String,Double>> ();
@@ -616,15 +616,15 @@ public Ordre consommer(String nomCourtier) {
 		  public static void main(String[] args) {
 		      launch(args);
 		  }
-}
+}*/
 	
 	
 	
-	public void afficheGraphe (String [] args) {
+	/*public void afficheGraphe (String [] args) {
 		
         Affichage.main(args);
 		
-	}
+	}*/
 	
 	
 	
