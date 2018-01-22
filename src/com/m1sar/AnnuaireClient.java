@@ -44,8 +44,11 @@ public class AnnuaireClient extends Thread {
 		ThreadBourse t=null;
 		for (ThreadBourse courtier : listcourtiers) {
 			if(n>courtier.getNbCustomer()) {
-				t=courtier;
-				n=courtier.getNbCustomer();
+				if(courtier.estDispo()) {
+					t=courtier;
+					n=courtier.getNbCustomer();
+				}
+				
 			}
 		}
 		if(t!=null)t.incNbClient();

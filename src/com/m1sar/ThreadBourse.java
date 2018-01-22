@@ -39,7 +39,7 @@ public class ThreadBourse extends Thread {
 	
 	
 	
-	  public ThreadBourse(Socket sCourtier,int nport, Bourse b) {
+ public ThreadBourse(Socket sCourtier,int nport, Bourse b) {
 			super();
 			this.bourse=b;
 			this.sCourtier = sCourtier;
@@ -203,7 +203,7 @@ public class ThreadBourse extends Thread {
     
     public void incNbClient() {
     	if (estDispo()) {nbCustomer++; return;}
-    	throw new UnsupportedOperationException("Le courtier a deja deux clients en charge");
+    	//throw new UnsupportedOperationException("Le courtier a deja deux clients en charge");
     }
     
     public boolean estDispo() {

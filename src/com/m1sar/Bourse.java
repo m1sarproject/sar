@@ -420,11 +420,11 @@ public Ordre consommer(String nomCourtier) {
 	public void initCompanies() {
 		
 		List<Entreprise> companies = new ArrayList<Entreprise>();
-		Entreprise e0 = new Entreprise("Samsung", 100,20);
+		Entreprise e0 = new Entreprise("Samsung", 50,20);
 		Entreprise e1 = new Entreprise("Adidas", 100,20);
-		Entreprise e2 = new Entreprise("Microsoft", 200,10);
-		Entreprise e3 = new Entreprise("Apple", 200,15);
-		Entreprise e4 = new Entreprise("Ubisoft", 150, 6);
+		Entreprise e2 = new Entreprise("Microsoft", 100,10);
+		Entreprise e3 = new Entreprise("Apple", 100,15);
+		Entreprise e4 = new Entreprise("Ubisoft", 100, 6);
 		
 		companies.add(e0);
 		companies.add(e1);
